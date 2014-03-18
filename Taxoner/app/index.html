@@ -6,18 +6,6 @@
         <link rel="stylesheet" type="text/css" href="css/layout.css" /> 
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <link rel="stylesheet" type="text/css" href="css/colors.css" />
-        <!-- Internet Explorer HTML5 enabling script: -->
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-            <style type="text/css">
-    
-                .clear {
-                    zoom: 1;
-                    display: block;
-                }
-    
-            </style>    
-        <![endif]-->
     </head>
     <body>
         <div id="page-wrapper"><div id="page">
@@ -52,7 +40,13 @@
                                         <ul class="menu clearfix">                        
                                             <li class="leaf"><a href="#/Introduction">Introduction</a></li>   
                                             <li class="leaf"><a style="cursor: pointer;" onclick="reloadForm('/taxform')">Taxoner</a></li>
+                                            <ul class="menu clearfix">
+                                                <li class="leaf"><a href="#/datainfo">Database</a></li>
+                                            </ul>                                            
                                             <li class="leaf"><a style="cursor: pointer;" onclick="reloadForm('/geneassignment')">Gene Assignment</a></li>
+                                            <ul class="menu clearfix">
+                                                <li class="leaf"><a href="#/genedatainfo">Database</a></li>
+                                            </ul>       
                                             <li class="leaf"><a style="cursor: pointer;" onclick="reloadForm('/datacreator')">Create database</a></li>                                            
                                         </ul> 
                                     </div>
