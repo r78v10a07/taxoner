@@ -7,34 +7,48 @@
             <input id='seq' size="80" value="/home/roberto/work/geneassign/reads/454.fastq"/><br>
             Full path to output directory:<br>
             <input id='o' size="80" value="/home/roberto/work/geneassign/test"/><br>
-            Path to bowtie2 indexes of database:<br>
-            <input id='dbPath' size="80" value="/home/roberto/work/geneassign/db/Roberto_db"/>
+            Database to be used during the alignment:<br>
+            <table>
+                <tr style="background: none;">
+                    <td>Database to be used during the alignment:</td>
+                </tr>
+                <tr style="background: none;">
+                    <td>
+                        <select id = "dbList" multiple="multiple" required="required" size="7" onclick="verifyDBList(this.form)" >
+                            <option value = "0" title="Select to use all databases">All</option>
+                            <option value = "1" selected="selected" title="Bacteria database">Bacteria</option>
+                            <option value = "2" title="Viruses database">Viruses</option>
+                            <option value = "3" title="Fungi database">Fungi</option>
+                            <option value = "4" title="Select to set your own database">Other</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div id="otherDB">                            
+                        </div>                        
+                    </td>
+                </tr>                 
+            </table>
             Path to nodes.dmp file from NCBI Taxonomy database:<br>
             <input id='taxpath' size="80" value="databases/nodes.dmp"/>
         </fieldset>  
         <fieldset title='Input section' style="padding-left: 5px">
             <legend>Optional inputs</legend>
-            <br>
-            <!--
-            <font title="Example: 9606,10239 to exclude human and viruses">
-            Align reads against host, and remove host reads(taxIds coma separated):
-            </font>            
-            <textarea id='host' cols="80"></textarea>-->
-            <font title="Example: 0.fasta,1.fasta of the bowtie indexes">Names of index files to which reads will be aligned (bowtie index base names coma separated):</font> 
-            <input id='dbNames' size="80" title="Example: 0.fasta,1.fasta of the bowtie indexes"/><br>
-            <font title="Align reads against host, and remove host reads">
-            No filter by host:</font>
-            <input id='nohostfilter' type="checkbox" title="Align reads against host, and remove host reads"/>&nbsp;&nbsp;
-            <font title="Max hits searched for each read during alignment (def: 10)">Max hits:</font>  
-            <input id='bt2maxhits' size="2" value="10" title="Max hits searched for each read during alignment (def: 10)"/>&nbsp;&nbsp;
-            <font title="Alignment score (0.001 - 1)">Score:</font>   
-            <input id='neighborscore' size="3" value="0.99" title="Alignment score (0.001 - 1)"/><br>
-            <font title="Get all valid alignments with bowtie2">All alignments:</font>  
-            <input id='bt2allhits' type="checkbox" title="Get all valid alignments with bowtie2"/> &nbsp;&nbsp;
-            <font title="Redo nearest neighbor search for alignment files in the specified output folder">Do not realign:</font>  
-            <input id='onlyneighbor' type="checkbox" title="Redo nearest neighbor search for alignment files in the specified output folder"/>&nbsp;&nbsp;
-            <font title="1 thread per 8GB of RAM">Number of threads:</font> 
-            <input id='p' size="2" value="1" title="1 thread per 8GB of RAM"/>
+            <br> 
+            <div align="center">
+                <font title="Align reads against host, and remove host reads">
+                No filter by host:</font>
+                <input id='nohostfilter' type="checkbox" title="Align reads against host, and remove host reads"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <font title="Max hits searched for each read during alignment (def: 10)">Max hits:</font>  
+                <input id='bt2maxhits' size="2" value="10" title="Max hits searched for each read during alignment (def: 10)"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <font title="Alignment score (0.001 - 1)">Score:</font>   
+                <input id='neighborscore' size="3" value="0.99" title="Alignment score (0.001 - 1)"/><br>
+                <font title="Get all valid alignments with bowtie2">All alignments:</font>  
+                <input id='bt2allhits' type="checkbox" title="Get all valid alignments with bowtie2"/> &nbsp;&nbsp;&nbsp;&nbsp;
+                <font title="Redo nearest neighbor search for alignment files in the specified output folder">Do not realign:</font>  
+                <input id='onlyneighbor' type="checkbox" title="Redo nearest neighbor search for alignment files in the specified output folder"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <font title="1 thread per 8GB of RAM">Number of threads:</font> 
+                <input id='p' size="2" value="1" title="1 thread per 8GB of RAM"/>
+            </div>
         </fieldset>  
         <div class='required' id='submit' >
             <input  type="button" value="Run!" onclick='JavaScript:xmlhttpUpload("http://127.0.0.1:8083/?cmd=./bin/taxoner", "taxForm", "0")'>

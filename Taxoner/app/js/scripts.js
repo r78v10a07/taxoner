@@ -35,10 +35,10 @@ function getFormData(strURL, formName) {
     if (formName == "taxForm") {
         var seq = document.getElementById("seq").value;
         var o = document.getElementById("o").value;
-        var dbPath = document.getElementById("dbPath").value;
+        var dbPath = document.getElementById("dbPath");
         var taxpath = document.getElementById("taxpath").value;
-        //var host = document.getElementById("host").value;
-        var dbNames = document.getElementById("dbNames").value;
+        var dbList = document.getElementById("dbList").value;
+        var dbNames = document.getElementById("dbNames");
         var nohostfilter = document.getElementById("nohostfilter").checked;
         var bt2maxhits = document.getElementById("bt2maxhits").value;
         var neighborscore = document.getElementById("neighborscore").value;
@@ -56,7 +56,8 @@ function getFormData(strURL, formName) {
             return null;
         }
 
-        if (typeof (dbPath) == "undefined" || dbPath == null || dbPath == "") {
+        if ((typeof (dbList) == "undefined" || dbList == null || dbList == "") &&
+                (typeof (dbPath) == "undefined" || dbPath == null || dbPath == "")) {
             alert("Set the path to the bowtie2 indexes of database, please");
             return null;
         }
@@ -68,16 +69,30 @@ function getFormData(strURL, formName) {
 
         result[0] = strURL + "%20-seq%20" + seq
                 + "%20-o%20" + o
-                + "%20-dbPath%20" + dbPath
-                + "%20-taxpath%20" + taxpath;
+                + "%20-taxpath%20" + taxpath + "%20dddd" + dbList + "dddd%20";
 
-/*
-        if (typeof (host) != "undefined" && host != null && host != "") {
-            result[0] = result[0] + "%20-host%20" + host;
-        }*/
-
+        if (dbList == 0) {
+            /* Align with all DB */
+            result[0] = result[0] + "%20-dbPath%20/home/roberto/work/geneassign/db/Roberto_db";
+        } else if (dbList == 1) {
+            /* Align with Bacteria */
+            result[0] = result[0] + "%20-dbPath%20/home/roberto/work/geneassign/db/Roberto_db"
+                    + "%20-dbNames%200.fasta";
+        } else if (dbList == 2) {
+            /* Align with Viruses */
+            result[0] = result[0] + "%20-dbPath%20/home/roberto/work/geneassign/db/Roberto_db"
+                    + "%20-dbNames%201.fasta";
+        } else if (dbList == 3) {
+            /* Align with Fungi */
+            result[0] = result[0] + "%20-dbPath%20/home/roberto/work/geneassign/db/Roberto_db"
+                    + "%20-dbNames%201.fasta";
+        } else if (dbList == 4) {
+            /* Align with own DB */
+            result[0] = result[0] + "%20-dbPath%20" + dbPath.value;
+        }
+        
         if (typeof (dbNames) != "undefined" && dbNames != null && dbNames != "") {
-            result[0] = result[0] + "%20-dbNames%20" + dbNames;
+            result[0] = result[0] + "%20-dbNames%20" + dbNames.value;
         }
 
         if (nohostfilter == true) {
@@ -182,3 +197,18 @@ function duplicateFormInput(formName) {
         formName.outDir.value = formName.inFile.value + ".out";
     }
 }
+
+function verifyDBList(formName) {
+    if (formName.name == "taxForm") {
+        if (formName.dbList.value == 4) {
+            var htmlToInsert = "Path to bowtie2 indexes of database:<br><input id='dbPath' size='54'/><br>"
+                    + "<font title='Example: 0.fasta,1.fasta of the bowtie indexes'>"
+                    + "Names of index files to which reads will be aligned (OPTIONAL):</font><br>"
+                    + "<input id='dbNames' size='54' title='Example: 0.fasta,1.fasta'/>";
+
+            document.getElementById("otherDB").innerHTML = htmlToInsert;
+        } else {
+            document.getElementById("otherDB").innerHTML = "";
+        }
+    }
+} 
