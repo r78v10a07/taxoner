@@ -37,7 +37,7 @@ function getFormData(strURL, formName) {
         var o = document.getElementById("o").value;
         var dbPath = document.getElementById("dbPath").value;
         var taxpath = document.getElementById("taxpath").value;
-        var host = document.getElementById("host").value;
+        //var host = document.getElementById("host").value;
         var dbNames = document.getElementById("dbNames").value;
         var nohostfilter = document.getElementById("nohostfilter").checked;
         var bt2maxhits = document.getElementById("bt2maxhits").value;
@@ -71,9 +71,10 @@ function getFormData(strURL, formName) {
                 + "%20-dbPath%20" + dbPath
                 + "%20-taxpath%20" + taxpath;
 
+/*
         if (typeof (host) != "undefined" && host != null && host != "") {
             result[0] = result[0] + "%20-host%20" + host;
-        }
+        }*/
 
         if (typeof (dbNames) != "undefined" && dbNames != null && dbNames != "") {
             result[0] = result[0] + "%20-dbNames%20" + dbNames;
