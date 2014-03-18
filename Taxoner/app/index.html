@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" ng-app="myApp">
+    <head>
+        <meta charset="utf-8">
+        <title>Taxoner</title>
+        <link rel="stylesheet" type="text/css" href="themes/bartik/css/layout.css" /> 
+        <link rel="stylesheet" type="text/css" href="themes/bartik/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="themes/bartik/css/colors.css" />
+        <!-- Internet Explorer HTML5 enabling script: -->
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <style type="text/css">
+    
+                .clear {
+                    zoom: 1;
+                    display: block;
+                }
+    
+            </style>    
+        <![endif]-->
+    </head>
+    <body>
+        <div id="page-wrapper"><div id="page">
+                <div id="header" class="with-secondary-menu">
+                    <div class="section clearfix">
+                        <div id="main-title">
+                            <div style="background-image: url('themes/bartik/images/itk_header_img.png');">
+                                <hgroup>
+                                    <h2><a href="http://pongor.itk.ppke.hu/">Pázmány Péter Catholic University - University of National Excellence&nbsp;</a></h2>
+                                    <h1><a href="http://pongor.itk.ppke.hu/">Faculty of Information Technology and Bionics&nbsp;</a></h1>
+                                </hgroup>
+                            </div>
+                        </div>
+
+                        <div id="main-menuxx" class="navigationxx" style="text-align: right;">
+                            <span style="color: #fff;font-size: 17px;">Jedlik&nbsp;Laboratories:&nbsp;Bioinformatics</span>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="messages">
+                    <div class="section clearfix">
+                    </div>
+                </div>
+                <div id="main-wrapper" class="clearfix">
+                    <div id="main" class="clearfix">
+                        <div id="sidebar-first" class="column sidebar">
+                            <div class="section">
+                                <div class="region region-sidebar-first">
+                                    <div id="block-system-navigation" class="block block-system block-menu">
+                                        <h2>Navigation</h2>
+                                        <ul class="menu clearfix">                        
+                                            <li class="leaf"><a href="#/Introduction">Introduction</a></li>   
+                                            <li class="leaf"><a style="cursor: pointer;" onclick="reloadForm('/taxform')">Taxoner</a></li>
+                                            <li class="leaf"><a style="cursor: pointer;" onclick="reloadForm('/geneassignment')">Gene Assignment</a></li>
+                                            <li class="leaf"><a style="cursor: pointer;" onclick="reloadForm('/datacreator')">Create database</a></li>                                            
+                                        </ul> 
+                                    </div>
+                                </div>
+                                <img src="img/logo.gif" alt="" width="150" height="150">
+                                <br>
+                                <br>
+                            </div>
+                        </div> 
+                        <div id="content" class="column">
+                            <div class="section">
+                                <a id="main-content"></a>
+                                <div ng-view></div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="footer-wrapper">
+                    <div class="section">
+                        <div id="footer" class="clearfix">
+                            <p>Powered by <a href="http://angularjs.org/">AngularJS</a> and <a href="http://nodejs.org/">Node.js</a><br>
+                                <a href="#/server_crew"><b>Lorinc Pongor</b>, <b>Roberto Vera</b> &amp; <b>Sándor Pongor</b></a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- In production use:
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+        -->
+        <script src="lib/angular/angular.js"></script>
+        <script src="lib/angular/angular-route.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/services.js"></script>
+        <script src="js/controllers.js"></script>
+        <script src="js/filters.js"></script>
+        <script src="js/directives.js"></script>
+        <script src="js/scripts.js"></script>
+    </body>
+</html>

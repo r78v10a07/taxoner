@@ -1,0 +1,48 @@
+Taxoner manual
+==============
+
+Fast alignment and microorgaism classification .....
+
+
+
+
+Options
+-------
+
+	-seq		Input reads (fastq format, single-end) to align against database
+
+	-dbPath		Path to bowtie2 indexes of database
+			If -dbNames not specified, then reads will be aligned to all indexes in folder
+
+	-o		Output folder name
+
+	-taxpath	Nodes.dmp file from NCBI database
+
+Optional:
+
+	-host		Align reads against host, and remove host reads
+
+	-p		Number of threads used for analysis
+	
+	-dbNames	Names of index files to which reads will be aligned 
+
+	-no-host-filter	Do not filter host
+
+	-bt2-maxhits	Max hits searched for each read during alignment (def: 10)
+
+	-bt2-allhits	Get all valid alignments with bowtie2
+
+	-only-neighbor	Do not realign, redo nearest neighbor search for 
+			alignment files in the specified output folder
+
+	-neighbor-score	Alignment score at which reads are reduced to 
+			nearest neighbor. Value has to be between 0.001 - 1.
+			Default: 0.99
+
+example usage:
+
+indexes are in: /home/lorinc/fasta/ folder. This folder only contains bacteria!!! The /home/lorinc/fulldb contains the entire nt database parsed.
+
+The organism specific databases (Bacteria, Viruses, Archaea, Fungi) have to be created)
+
+./a.out -dbPath /home/lorinc/fasta/ -taxpath /home/lorinc/annotation/nodes.dmp -seq /home/lorinc/reads/ill.fastq -p 6 -o resFull/
