@@ -1,0 +1,11 @@
+{
+    "name": "Taxoner",
+    "version": "1.0.0",
+    "description": "Taxoner local HTML interface.",
+    "main": "server.js",
+    "author": "Roberto Vera Alvarez",
+    "email": "r78v10a07@gmail.com",
+    "dependencies": {
+        "express": "~3.4.4"
+    }
+}

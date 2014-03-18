@@ -1,0 +1,20 @@
+<div id="result" >
+    <form id="geneForm" name="geneForm">
+        <fieldset title='Input section' style="padding-left: 5px">    
+            <legend>Input</legend>
+            <br>
+            Full path to input file:<br>
+            <input id='inFile' name="inFile" size="80" onkeyup="duplicateFormInput(this.form)"/><br>
+            Full path to output file:<br>
+            <input id='outDir' name="outDir" size="80"/><br>
+            Full path to database binary file:<br>
+            <input id='binDB' size="80" value="/home/roberto/work/geneassign/db/geneassign/taxoner_DB.bin"/><br>
+            Full path to database index file:<br>
+            <input id='indDB' size="80" value="/home/roberto/work/geneassign/db/geneassign/taxoner_DB.ind"/><br>
+        </fieldset>
+        <div class='required' id='submit' >
+            <input type="button" value="Run!" onclick='JavaScript:xmlhttpUpload("http://127.0.0.1:8083/?cmd=./bin/cgassignment", "geneForm", "2")'>
+            <input type='reset' />
+        </div>
+    </form>
+</div>
