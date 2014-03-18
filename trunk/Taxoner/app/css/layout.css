@@ -1,0 +1,126 @@
+
+/* ---------- Basic Layout Styles ----------- */
+
+html,
+body,
+#page  {
+    height: 100%;
+}
+#page-wrapper {
+    min-height: 100%;
+    min-width: 960px;
+}
+#header div.section,
+#featured div.section,
+#messages div.section,
+#main,
+#triptych,
+#footer{
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#header div.section {
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: top right;
+}
+.region-header {
+    float: right; /* LTR */
+    margin: 0 5px 10px;
+}
+.with-secondary-menu .region-header {
+    margin-top: 3em;
+}
+.without-secondary-menu .region-header {
+    margin-top: 15px;
+}
+#secondary-menu {
+    position: relative;
+    right: 0; /* LTR */
+    top: 0;
+    width: 480px;
+}
+#content,
+#sidebar-first,
+#sidebar-second,
+.region-triptych-first,
+.region-triptych-middle,
+.region-triptych-last,
+.region-footer-firstcolumn,
+.region-footer-secondcolumn,
+.region-footer-thirdcolumn,
+.region-footer-fourthcolumn {
+    display: inline-block;
+}
+.one-sidebar #content {
+    width: 720px;
+}
+.two-sidebars #content {
+    width: 480px;
+}
+.no-sidebars #content {
+    width: 960px;
+    float: none;
+}
+#sidebar-first,
+#sidebar-second {  
+}
+#main-wrapper {
+    position: relative;
+    float:left;
+    min-height: 300px;
+    width: 100%;
+}
+
+.section {
+    padding: 0 5px ;
+}
+
+.sidebar {
+    position: relative;
+    float:left;
+    left:0;
+    width:20%;
+    height: 100%;
+}
+
+#content{
+    position: relative;
+    float:right;
+    width:75%;
+    height: 75%; 
+}
+
+#breadcrumb {
+    margin: 0 15px;
+}
+.region-triptych-first,
+.region-triptych-middle,
+.region-triptych-last {
+    margin: 20px 20px 30px;
+    width: 280px;
+}
+#footer-wrapper {  
+    display: inline-block;
+    padding: 35px 5px 30px;
+    width: 100%;    
+    height: 150px;
+}
+#footer-wrapper .section {
+    padding: 0 5px ;
+}
+.region-footer-firstcolumn,
+.region-footer-secondcolumn,
+.region-footer-thirdcolumn,
+.region-footer-fourthcolumn {
+    padding: 0 10px;
+}
+#footer {
+    margin: 0 auto;
+}
+
+.required {
+    alignment-adjust: central;    
+    text-align: end;
+}
