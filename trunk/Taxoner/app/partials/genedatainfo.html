@@ -1,2 +1,54 @@
 <h1 class="title" id="page-title">Gene Assignment<sup>®</sup> database</h1>
 
+The gene assignment database includes two binary files: 
+
+<ul>
+    <li><a href="http://pongor.itk.ppke.hu/geneassigment/taxoner_DB.bin">taxoner_DB.bin</a>: the binary file with the GenBank info</li>
+    <li><a href="http://pongor.itk.ppke.hu/geneassigment/taxoner_DB.ind">taxoner_DB.ind</a>: an index with the GenBank Gi and the offset in the taxoner_DB.bin</li>
+</ul>
+
+<p>
+    This two files should be copied to the folder: <i>databases/</i> on the Taxoner folder.
+</p>
+
+<p>
+    The files were created using this text file 
+    <a href="http://pongor.itk.ppke.hu/geneassigment/taxoner_DB.txt.gz">
+        taxoner_DB.txt.gz
+    </a>. This text file is created using a 
+    <a href="http://taxoner.googlecode.com/svn/trunk/Taxoner/src/cgassignment/create_Taxoner_DB.sql">
+        SQL script
+    </a> on the 
+    <a href="http://code.google.com/p/jbiowh/">
+        JBioWH        
+    </a> relational schema with the modules GenBank, ProtClust and EGGNog inserted.
+</p>
+
+<p>
+    To create the binary files:
+</p>
+<ol>
+    <li>Create the <i>taxoner_DB.txt</i> file:<br>
+        <ul>
+            <li>Install the JBioWH relational schema. See <a href="http://code.google.com/p/jbiowh/wiki/InstallationGuide">the installation guide</a></li>
+            <li>Load the Taxonomy database. See <a href="http://code.google.com/p/jbiowh/wiki/TaxonomyCF">the guide</a></li>
+            <li>Load the GenBank database. See <a href="http://code.google.com/p/jbiowh/wiki/GenBankCF">the guide</a></li>
+            <li>Load the NCBI Protein Cluster database. See <a href="http://code.google.com/p/jbiowh/wiki/NCBIProtClustCF">the guide</a></li>
+            <li>Load the COG and EGGNog databases. See <a href="http://code.google.com/p/jbiowh/wiki/COGCF">the guide</a></li>
+            <li>Execute the <i>create_Taxoner_DB.sql</i> script on your server
+                <pre>
+    mysql biowh < create_Taxoner_DB.sql   
+                </pre>
+                Copy the file <i>/tmp/taxoner_DB.txt</i> to your home.
+            </li>
+        </ul>
+    </li>
+    <li>
+        Run the <i>cgassignment</i> program to create the binary files from the Taxoner folder
+        <pre> 
+    ./bin/cgassignment -w -t ~/taxoner_DB.txt -b databases/taxoner_DB.bin -i databases/taxoner_DB.ind
+        </pre>
+    </li>
+
+</ol>
+
