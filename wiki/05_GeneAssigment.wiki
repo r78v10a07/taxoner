@@ -1,2 +1,32 @@
 #labels Featured,Phase-Design
 = Gene Assignment =
+
+The *gene assignment* program is a standalone C program that take the alignment ouput in the *Taxoner* format and maps the hits to genes specified in [http://www.ncbi.nlm.nih.gov/genbank/ GenBank]. 
+
+The identifiers of the genes are stored either in a relational database, prepared with [http://code.google.com/p/jbiowh/ JBioWH] facility, or are stored in the form of a binary file with a B-Tree index. This stored form contains the *from-to* location of each gene, the identifier and pointers to the [http://www.ncbi.nlm.nih.gov/COG/ COG]-[http://eggnog.embl.de EGGnog] functional classification terms. 
+
+If a read is mapped to one single genome, and the hit overlaps with one or more genes, each of the concerned genes will receive one hit. 
+
+After evaluating all hits in this manner, a potentially large number of genes will have hits assigned. The utility can limply list the genes with the number of hits, or, can combine the genes into functional categories, using the [http://www.ncbi.nlm.nih.gov/COG/ COG]-[http://eggnog.embl.de EGGnog] scheme. As result, the hits collected by single genes will be added up to higher categories, and graphics statistics can be made.
+
+== Command line program ==
+
+The *GeneAssignment* source code is located in <i>src/cgassignment/</i> folder. The executable is located in the <i>bin/</i> folder.
+
+The *GeneAssignment* options are:
+
+{{{
+Usage: ./bin/cgassignment 
+
+
+Options:
+-------
+
+-h,   --help                        Display this usage information.
+-w,                                 Set the process to create the binary file and index
+-t,   --text                        The input text file (*Taxoner* output or text database if the -w option is used)
+-b,   --bin                         The binary file
+-i,   --index                       The index file
+-o,   --output                      The output file
+
+}}}
