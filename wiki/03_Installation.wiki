@@ -1,2 +1,42 @@
 #labels Featured,Phase-Deploy
 = Installation =
+
+== Source code ==
+
+The source code should be copied from the Project svn server using:
+
+{{{
+svn checkout https://taxoner.googlecode.com/svn/trunk/Taxoner Taxoner
+}}}
+
+== Compilation ==
+
+To compile go to the *src* folder and type *make*:
+
+{{{
+cd Taxoner/src
+make
+}}}
+
+This will copy in the *bin* folder the programs.
+
+== Databases ==
+
+Download and locate into the *databases* folder the databases following the [07_TaxonerDataInfo Taxoner] and [05_GeneAssigment GeneAssignment] guides.
+
+== [http://nodejs.org/ Nodes.JS] server ==
+
+The [http://nodejs.org/ Nodes.JS] server start three local html servers using [http://taxoner.googlecode.com/svn/trunk/Taxoner/server.js this] script. 
+
+To start the server run the [http://taxoner.googlecode.com/svn/trunk/Taxoner/start.sh start.sh] script and copy into your web browser this address: {{{http://127.0.0.1:8081}}}
+
+{{{
+ cd Taxoner
+ ./start.sh
+}}}
+
+There will be three local html servers:
+
+  *  The main HTML web server is running on {{{http://127.0.0.1:8081}}}. The users have to copy and paste this address into their web browsers.
+  *  The server to show files over a HTML request is running on {{{http://127.0.0.1:8082}}}
+  *  The server to run system commands is running on {{{http://127.0.0.1:8083}}}
