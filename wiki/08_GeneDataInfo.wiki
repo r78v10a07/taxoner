@@ -20,16 +20,21 @@ To create the binary files:
         <ul>
             <li>Install the JBioWH relational schema. See [http://code.google.com/p/jbiowh/wiki/InstallationGuide the installation guide]</li>
             <li>Load the Taxonomy database. See [http://code.google.com/p/jbiowh/wiki/TaxonomyCF the guide]</li>
-            <li>Load the GenBank database. See [http://code.google.com/p/jbiowh/wiki/GenBankCF the guide]</li>
+            <li>Load the !GenBank database. See [http://code.google.com/p/jbiowh/wiki/GenBankCF the guide]</li>
             <li>Load the NCBI Protein Cluster database. See [http://code.google.com/p/jbiowh/wiki/NCBIProtClustCF the guide]</li>
             <li>Load the COG and EGGNog databases. See [http://code.google.com/p/jbiowh/wiki/COGCF the guide]</li>
             <li>Execute the <i>create_Taxoner_DB.sql</i> script on your server
-                {{{mysql biowh < create_Taxoner_DB.sql}}}
+                {{{
+mysql biowh < create_Taxoner_DB.sql
+                }}}
             </li>
             <li>Copy the file <i>/tmp/taxoner_DB.txt</i> to your home.</li>
         </ul>
     
     <li>
         Run the <i>cgassignment</i> program to create the binary files from the Taxoner folder
-        {{{./bin/cgassignment -w -t ~/taxoner_DB.txt -b databases/taxoner_DB.bin -i databases/taxoner_DB.ind}}}
+
+        {{{
+./bin/cgassignment -w -t ~/taxoner_DB.txt -b databases/taxoner_DB.bin -i databases/taxoner_DB.ind
+        }}}
     </li>
