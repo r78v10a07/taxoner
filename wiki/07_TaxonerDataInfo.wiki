@@ -1,2 +1,10 @@
 #labels Featured,Phase-Deploy
 = Taxoner database =
+
+The Taxoner database are created .....
+
+  # Bacteria (bowtie numbers 0-2)
+  # Viruses (bowtie numbers 3-5)
+  # Fungi (bowtie numbers 6-8)
+
+The database is available from [http://pongor.itk.ppke.hu/taxoner/ here]
