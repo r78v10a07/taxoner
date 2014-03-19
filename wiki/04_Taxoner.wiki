@@ -1,2 +1,74 @@
 #labels Featured,Phase-Design
 = Taxoner =
+
+== Description ==
+
+*Taxoner* is a C program that identifies taxonomy, primarily bacteria by mapping NGS reads against a comprehensive sequence database such as [ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nt.gz nt] database of [https://www.ncbi.nlm.nih.gov NCBI] or its predefined subsets. 
+
+In the preprocessing phase, the database is divided into partitions and indexed with the bowtie2 package. Alignment is carried out with bowtie2 and the taxonomies are identified with a lowest common ancestor search algorithm.  
+
+The standard output of *Taxoner* are:
+
+  * A summary of the found taxonomies.
+  * Alignments in the SAMtools format.
+
+The characteristic feature of *Taxoner* is that it can run on average desktop computers. 
+
+*Taxoner* can be used in multiple ways, such as:
+
+  # A standalone taxonomy classification program.
+  # An aligner paired with a taxon classifier.
+  # In combination with other aligners and taxon detection programs. 
+
+For instance, a program like [http://huttenhower.sph.harvard.edu/metaphlan Metaphlan] can be used as a fast estimator of the bacterial community, and *Taxoner* can be used then to identify the underlying strains and other, non-bacterial organisms.
+
+== Command line program ==
+
+The *Taxoner* source code is located in <i>src/taxoner/</i> folder. The executable is located in the <i>bin/</i> folder.
+
+The *Taxoner* options are:
+
+{{{
+Taxoner version 2.0
+        Align NGS reads to large databases like NCBI nr/nt/complete genomes...
+
+        Please index database with other program first
+
+Usage: ./taxoner -dbPath <folder_path> -taxpath <taxonomy _file> -seq <NGS_reads>
+
+Options:
+-------
+
+        -seq            Input reads (fastq format, single-end) to align against database
+
+        -dbPath         Path to bowtie2 indexes of database
+                        If -dbNames not specified, then reads will be aligned to all indexes in folder
+
+        -o              Output folder name
+
+        -taxpath        Nodes.dmp file from NCBI database
+
+
+Optionals:
+
+        -host           Align reads against host, and remove host reads
+
+        -p              Number of threads used for analysis
+        
+        -dbNames        Names of index files to which reads will be aligned 
+
+        -no-host-filter Do not filter host
+
+        -bt2-maxhits    Max hits searched for each read during alignment (def: 10)
+
+        -bt2-allhits    Get all valid alignments with bowtie2
+
+        -only-neighbor  Do not realign, redo nearest neighbor search for 
+                        alignment files in the specified output folder
+
+        -neighbor-score Alignment score at which reads are reduced to 
+                        nearest neighbor. Value has to be between 0.001 - 1.
+                        Default: 0.99
+
+
+}}}
