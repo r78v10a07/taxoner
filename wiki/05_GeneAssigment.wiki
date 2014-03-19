@@ -11,9 +11,9 @@ After evaluating all hits in this manner, a potentially large number of genes wi
 
 == Command line program ==
 
-The *GeneAssignment* source code is located in <i>src/cgassignment/</i> folder. The executable is located in the <i>bin/</i> folder.
+The *!GeneAssignment* source code is located in <i>src/cgassignment/</i> folder. The executable is located in the <i>bin/</i> folder.
 
-The *GeneAssignment* options are:
+The *!GeneAssignment* options are:
 
 {{{
 Usage: ./bin/cgassignment 
