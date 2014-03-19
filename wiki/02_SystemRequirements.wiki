@@ -1,2 +1,8 @@
 #labels Featured,Phase-Requirements
 = System Requirements =
+
+The programs are designed for Unix-likes operating systems. It requires the [http://bowtie-bio.sourceforge.net/bowtie2/index.shtml Bowtie2] program installed and included into the user {{{$PATH}}} environment variable.
+
+The GNU GCC compiler is required for compile the source code.
+
+The Graphical interface is javascript based web site developed using [http://angularjs.org/ AngularJS] and running over a [http://nodejs.org/ Nodes.JS] server.
