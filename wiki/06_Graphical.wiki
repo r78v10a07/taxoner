@@ -1,6 +1,12 @@
 #labels Featured,Phase-Implementation
 = Graphical Interface =
 
+The Graphical interface is javascript based web site developed using [http://angularjs.org/ AngularJS] and running over a [http://nodejs.org/ Nodes.JS] server.
+
+This graphical interface is designed to be used just *locally*. <font color=red>It is not designed to be used as a server.</font> The *path* inputs in the interface are local paths following the normal Unix way. 
+
+The *path* set on the gra
+
 == Taxoner == 
 
 http://taxoner.googlecode.com/svn/wiki/image/code1.jpg
