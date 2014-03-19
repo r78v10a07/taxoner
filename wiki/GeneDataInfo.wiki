@@ -1,4 +1,4 @@
-= Gene Assignment<sup>®</sup> database =
+= Gene Assignment database =
 
 The gene assignment database includes two binary files: 
 
@@ -32,4 +32,3 @@ To create the binary files:
         Run the <i>cgassignment</i> program to create the binary files from the Taxoner folder
         {{{./bin/cgassignment -w -t ~/taxoner_DB.txt -b databases/taxoner_DB.bin -i databases/taxoner_DB.ind}}}
     </li>
-
