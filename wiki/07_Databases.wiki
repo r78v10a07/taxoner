@@ -1,6 +1,7 @@
+#labels Featured,Phase-Deploy
 = Databases =
 
-The *Taxoner* and *GeneAssignment* programs use databases previously created. To download the databases run this command on the Taxoner folder
+The *Taxoner* and *!GeneAssignment* programs use databases previously created. To download the databases run this command on the Taxoner folder
 
 {{{
 ./bin/dbDownloader.sh
