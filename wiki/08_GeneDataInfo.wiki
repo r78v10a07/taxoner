@@ -35,6 +35,6 @@ mysql biowh < create_Taxoner_DB.sql
         Run the <i>cgassignment</i> program to create the binary files from the Taxoner folder
 
         {{{
-./bin/cgassignment -w -t ~/taxoner_DB.txt -b databases/taxoner_DB.bin -i databases/taxoner_DB.ind
+./bin/cgassignment -w -t ~/taxoner_DB.txt -b databases/geneassignment/taxoner_DB.bin -i databases/geneassignment/taxoner_DB.ind
         }}}
     </li>
