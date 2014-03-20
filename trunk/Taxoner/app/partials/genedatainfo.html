@@ -3,17 +3,22 @@
 The gene assignment database includes two binary files: 
 
 <ul>
-    <li><a href="http://pongor.itk.ppke.hu/~roberto/geneassigment/taxoner_DB.bin">taxoner_DB.bin</a>: the binary file with the GenBank info</li>
-    <li><a href="http://pongor.itk.ppke.hu/~roberto/geneassigment/taxoner_DB.ind">taxoner_DB.ind</a>: an index with the GenBank Gi and the offset in the taxoner_DB.bin</li>
+    <li><a href="http://pongor.itk.ppke.hu/~roberto/geneassignment/taxoner_DB.bin">taxoner_DB.bin</a>: the binary file with the GenBank info</li>
+    <li><a href="http://pongor.itk.ppke.hu/~roberto/geneassignment/taxoner_DB.ind">taxoner_DB.ind</a>: an index with the GenBank Gi and the offset in the taxoner_DB.bin</li>
 </ul>
 
 <p>
-    This two files should be copied to the folder: <i>databases/</i> on the Taxoner folder.
+    This two files should be copied to the folder: <i>databases/geneassignment/</i> on the Taxoner folder or run:
 </p>
+
+<pre>
+cd databases/
+wget -r --reject "index.html*" -e robots=off -np -nH --cut-dirs=1 http://pongor.itk.ppke.hu/~roberto/geneassignment/
+</pre>
 
 <p>
     The files were created using this text file 
-    <a href="http://pongor.itk.ppke.hu/~roberto/geneassigment/taxoner_DB.txt.gz">
+    <a href="http://pongor.itk.ppke.hu/~roberto/geneassignment/taxoner_DB.txt.gz">
         taxoner_DB.txt.gz
     </a>. This text file is created using a 
     <a href="http://taxoner.googlecode.com/svn/trunk/Taxoner/src/cgassignment/create_Taxoner_DB.sql">
