@@ -15,5 +15,5 @@ Get the full directory and put it in the <i>databases/</i> folder on the Taxoner
 
 <pre>
     cd databases
-    wget -r -nP -nH --cut-dirs=2 http://pongor.itk.ppke.hu/~roberto/taxoner/bowtie2/
+    wget -r --reject "index.html*" -e robots=off -np -nH --cut-dirs=2 http://pongor.itk.ppke.hu/~roberto/taxoner/bowtie2/
 </pre>
