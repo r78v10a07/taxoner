@@ -1,4 +1,4 @@
-= Taxoner Server: The Crew = 
+= Taxoner: The Crew = 
 
 || http://taxoner.googlecode.com/svn/trunk/Taxoner/app/img/lorinc.jpg || http://taxoner.googlecode.com/svn/trunk/Taxoner/app/img/roberto.jpg ||
 || Lorinc Pongor,<br>PhD Student [http://pongor.itk.ppke.hu/pazmany/sites/default/files/cv/lorincpongor.pdf CV] || Roberto Vera,<br>PhD Student [http://pongor.itk.ppke.hu/pazmany/sites/default/files/cv/robertovera.pdf CV] ||
