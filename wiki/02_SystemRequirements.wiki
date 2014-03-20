@@ -5,4 +5,6 @@ The programs are designed for Unix-likes operating systems. It requires the [htt
 
 The GNU GCC compiler is required for compile the source code.
 
+The *wget* and *unzip* programs are required to download the databases.
+
 The Graphical interface is javascript based web site developed using [http://angularjs.org/ AngularJS] and running over a [http://nodejs.org/ Nodes.JS] server.
