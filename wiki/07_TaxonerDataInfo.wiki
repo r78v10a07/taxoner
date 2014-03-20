@@ -3,8 +3,16 @@
 
 The Taxoner database are created .....
 
-  # Bacteria (bowtie numbers 0-2)
-  # Viruses (bowtie numbers 3-5)
-  # Fungi (bowtie numbers 6-8)
+  # Bacteria (bact.0.fasta, bact.1.fasta, bact.2.fasta, bact.3.fasta)
+  # Archaea (archaea.0.fasta)
+  # Viruses (virus.0.fasta)
+  # Fungi (fungi.0.fasta)
 
-The database is available from [http://pongor.itk.ppke.hu/taxoner/ here]
+The database is available from [http://pongor.itk.ppke.hu/~roberto/taxoner/bowtie2/ here]
+
+Get the full directory and put it in the <i>databases/</i> folder on the Taxoner folder.
+
+{{{
+    cd databases
+    wget -r -nP -nH --cut-dirs=2 http://pongor.itk.ppke.hu/~roberto/taxoner/bowtie2/
+}}}
