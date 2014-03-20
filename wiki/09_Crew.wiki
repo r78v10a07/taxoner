@@ -12,11 +12,11 @@
     <tr style="background: #FFF">
         <td>
             Lorinc Pongor,<br>
-            PhD Student <a href="http://pongor.itk.ppke.hu/pazmany/sites/default/files/cv/lorincpongor.pdf">CV</a>
+            PhD Student [http://pongor.itk.ppke.hu/pazmany/sites/default/files/cv/lorincpongor.pdf CV]
         </td>
         <td>
             Roberto Vera,<br>
-            PhD Student <a href="http://pongor.itk.ppke.hu/pazmany/sites/default/files/cv/robertovera.pdf">CV</a>
+            PhD Student [http://pongor.itk.ppke.hu/pazmany/sites/default/files/cv/robertovera.pdf CV]
         </td>
     </tr>
     <tr style="background: #FFF">
@@ -30,11 +30,11 @@
     <tr style="background: #FFF">
         <td>
             Balázs Ligeti,<br>
-            PhD Student <a href="http://pongor.itk.ppke.hu/pazmany/sites/default/files/cv/balazsligeti.pdf">CV</a>
+            PhD Student [http://pongor.itk.ppke.hu/pazmany/sites/default/files/cv/balazsligeti.pdf CV]
         </td>
         <td>
             Sándor Pongor,<br>
-            PhD, DSc, HAS <a href="http://pongor.itk.ppke.hu/pazmany/sites/default/files/cv/sandorpongor.pdf">CV</a>
+            PhD, DSc, HAS [http://pongor.itk.ppke.hu/pazmany/sites/default/files/cv/sandorpongor.pdf CV]
         </td>
     </tr>
 </table>
