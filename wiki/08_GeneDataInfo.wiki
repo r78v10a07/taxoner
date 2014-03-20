@@ -4,13 +4,13 @@
 The gene assignment database includes two binary files: 
 
 <ul>
-    <li>[http://pongor.itk.ppke.hu/~roberto/geneassigment/taxoner_DB.bin taxoner_DB.bin]: the binary file with the !GenBank info</li>
-    <li>[http://pongor.itk.ppke.hu/~roberto/geneassigment/taxoner_DB.ind taxoner_DB.ind]: an index with the !GenBank Gi and the offset in the taxoner_DB.bin</li>
+    <li>[http://pongor.itk.ppke.hu/~roberto/geneassignment/taxoner_DB.bin taxoner_DB.bin]: the binary file with the !GenBank info</li>
+    <li>[http://pongor.itk.ppke.hu/~roberto/geneassignment/taxoner_DB.ind taxoner_DB.ind]: an index with the !GenBank Gi and the offset in the taxoner_DB.bin</li>
 </ul>
 
 This two files should be copied to the folder: <i>databases/</i> on the Taxoner folder.
 
-The files were created using this text file [http://pongor.itk.ppke.hu/~roberto/geneassigment/taxoner_DB.txt.gz taxoner_DB.txt.gz]. This text file is created using a [http://taxoner.googlecode.com/svn/trunk/Taxoner/src/cgassignment/create_Taxoner_DB.sql SQL script] on the [http://code.google.com/p/jbiowh/ JBioWH] relational schema with the modules !GenBank, !ProtClust and EGGNog inserted.
+The files were created using this text file [http://pongor.itk.ppke.hu/~roberto/geneassignment/taxoner_DB.txt.gz taxoner_DB.txt.gz]. This text file is created using a [http://taxoner.googlecode.com/svn/trunk/Taxoner/src/cgassignment/create_Taxoner_DB.sql SQL script] on the [http://code.google.com/p/jbiowh/ JBioWH] relational schema with the modules !GenBank, !ProtClust and EGGNog inserted.
 
 
 To create the binary files:
