@@ -22,7 +22,14 @@ This will copy in the *bin* folder the programs.
 
 == Databases ==
 
-Download and locate into the *databases* folder the databases following the [07_TaxonerDataInfo Taxoner] and [08_GeneDataInfo GeneAssignment] guides.
+Download and locate into the *databases* folder the databases following the [07_TaxonerDataInfo Taxoner] and [08_GeneDataInfo GeneAssignment] guides or use the script:
+
+{{{
+cd Taxoner
+./bin/dbDownloader.sh
+}}}
+
+Please note that the full *Taxoner* database is around 100GB.
 
 == [http://nodejs.org/ Nodes.JS] server ==
 
