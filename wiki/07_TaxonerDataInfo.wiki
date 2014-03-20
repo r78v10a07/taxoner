@@ -10,7 +10,7 @@ The Taxoner database are created .....
 
 The database is available from [http://pongor.itk.ppke.hu/~roberto/taxoner/bowtie2/ here]
 
-Get the full directory and put it in the <i>databases/bowtie2/</i> folder on the Taxoner folder.
+Get the full directory contents and put it in the <i>databases/bowtie2/</i> folder on the Taxoner folder.
 
 {{{
     cd databases
