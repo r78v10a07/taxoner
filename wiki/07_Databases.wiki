@@ -7,4 +7,6 @@ The *Taxoner* and *!GeneAssignment* programs use databases previously created. T
 ./bin/dbDownloader.sh
 }}}
 
-The *wget* and *unzip* programs have to be installed and included in your {{{$PATH}}} environment variable
+The *wget* and *unzip* programs have to be installed and included in your {{{$PATH}}} environment variable.
+
+Please note that the full *Taxoner* database is around 100GB. See [07_TaxonerDataInfo Taxoner] database description if you want to use a specific files. 
