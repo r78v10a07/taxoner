@@ -73,24 +73,28 @@ function getFormData(strURL, formName) {
 
         if (dbList == 0) {
             /* Align with all DB */
-            result[0] = result[0] + "%20-dbPath%20/home/roberto/work/geneassign/db/Roberto_db";
+            result[0] = result[0] + "%20-dbPath%20databases/bowtie2";
         } else if (dbList == 1) {
             /* Align with Bacteria */
-            result[0] = result[0] + "%20-dbPath%20/home/roberto/work/geneassign/db/Roberto_db"
-                    + "%20-dbNames%200.fasta";
+            result[0] = result[0] + "%20-dbPath%20databases/bowtie2"
+                    + "%20-dbNames%20bact.0.fasta,bact.1.fasta,bact.2.fasta,bact.3.fasta";
         } else if (dbList == 2) {
-            /* Align with Viruses */
-            result[0] = result[0] + "%20-dbPath%20/home/roberto/work/geneassign/db/Roberto_db"
-                    + "%20-dbNames%201.fasta";
+            /* Align with Archaea */
+            result[0] = result[0] + "%20-dbPath%20databases/bowtie2"
+                    + "%20-dbNames%20archaea.0.fasta";
         } else if (dbList == 3) {
-            /* Align with Fungi */
-            result[0] = result[0] + "%20-dbPath%20/home/roberto/work/geneassign/db/Roberto_db"
-                    + "%20-dbNames%201.fasta";
+            /* Align with Viruses */
+            result[0] = result[0] + "%20-dbPath%20databases/bowtie2"
+                    + "%20-dbNames%20virus.0.fasta";
         } else if (dbList == 4) {
+            /* Align with Fungi */
+            result[0] = result[0] + "%20-dbPath%20databases/bowtie2"
+                    + "%20-dbNames%20fungi.0.fasta";
+        } else if (dbList == 5) {
             /* Align with own DB */
             result[0] = result[0] + "%20-dbPath%20" + dbPath.value;
         }
-        
+
         if (typeof (dbNames) != "undefined" && dbNames != null && dbNames != "") {
             result[0] = result[0] + "%20-dbNames%20" + dbNames.value;
         }
@@ -198,9 +202,14 @@ function duplicateFormInput(formName) {
     }
 }
 
+/**
+ * Insert the input to use an extra bowtie database
+ * 
+ * @param {type} formName the form name
+ */
 function verifyDBList(formName) {
     if (formName.name == "taxForm") {
-        if (formName.dbList.value == 4) {
+        if (formName.dbList.value == 5) {
             var htmlToInsert = "Path to bowtie2 indexes of database:<br><input id='dbPath' size='54'/><br>"
                     + "<font title='Example: 0.fasta,1.fasta of the bowtie indexes'>"
                     + "Names of index files to which reads will be aligned (OPTIONAL):</font><br>"

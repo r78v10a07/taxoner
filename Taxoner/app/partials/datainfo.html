@@ -3,9 +3,17 @@
 The Taxoner database are created .....
 
 <ul class="menu clearfix">
-    <li class="leaf">Bacteria (bowtie numbers 0-2)</li>
-    <li class="leaf">Viruses (bowtie numbers 3-5)</li>
-    <li class="leaf">Fungi (bowtie numbers 6-8)</li>
+    <li class="leaf">Bacteria (bact.0.fasta, bact.1.fasta, bact.2.fasta, bact.3.fasta)</li>
+    <li class="leaf">Archaea (archaea.0.fasta)</li>
+    <li class="leaf">Viruses (virus.0.fasta)</li>
+    <li class="leaf">Fungi (fungi.0.fasta)</li>
 </ul>
 
-The database is available from <a href="http://pongor.itk.ppke.hu/taxoner/">here</a>
+The database is available from <a href="http://pongor.itk.ppke.hu/~roberto/taxoner/bowtie2/">here</a>
+
+Get the full directory and put it in the <i>databases/</i> folder on the Taxoner folder.
+
+<pre>
+    cd databases
+    wget -r -nP -nH --cut-dirs=2 http://pongor.itk.ppke.hu/~roberto/taxoner/bowtie2/
+</pre>
