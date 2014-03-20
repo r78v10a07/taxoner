@@ -1,0 +1,9 @@
+= Databases =
+
+The *Taxoner* and *GeneAssignment* programs use databases previously created. To download the databases run this command on the Taxoner folder
+
+{{{
+./bin/dbDownloader.sh
+}}}
+
+The *wget* and *unzip* programs have to be installed and included in your {{{$PATH}}} environment variable
