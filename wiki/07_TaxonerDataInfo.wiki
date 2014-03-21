@@ -1,8 +1,6 @@
 #labels Phase-Deploy
 = Taxoner database =
 
-The Taxoner database are created .....
-
   # Bacteria (bact.0.fasta, bact.1.fasta, bact.2.fasta, bact.3.fasta)
   # Archaea (archaea.0.fasta)
   # Viruses (virus.0.fasta)
