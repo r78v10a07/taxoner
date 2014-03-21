@@ -69,7 +69,7 @@ function getFormData(strURL, formName) {
 
         result[0] = strURL + "%20-seq%20" + seq
                 + "%20-o%20" + o
-                + "%20-taxpath%20" + taxpath + "%20dddd" + dbList + "dddd%20";
+                + "%20-taxpath%20" + taxpath;
 
         if (dbList == 0) {
             /* Align with all DB */
