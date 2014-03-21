@@ -29,7 +29,7 @@ cd Taxoner
 ./bin/dbDownloader.sh
 }}}
 
-Please note that the full *Taxoner* database is around 100GB.
+Please note that the full *Taxoner* database is around 32 GB.
 
 == [http://nodejs.org/ Nodes.JS] server ==
 
