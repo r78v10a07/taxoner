@@ -32,6 +32,10 @@ char * specifiedDb = NULL;
 
 int NoAlignment = 0;
 
+int FilterVirus = 1;
+
+char * bowtieFolder = NULL;
+
 char * InputName = NULL;
 char * OutputName = NULL;
 
@@ -232,6 +236,7 @@ void checkParams(void) {
     int bad = 0;
     int i = 0;
     int temp = 0;
+    char tempBuffer[BUFSIZ];
     InitializedData();
     CreateDbElements();
 
@@ -332,6 +337,20 @@ void checkParams(void) {
             printf("No paired-end file named %s founf\n", pairedFile);
         }
     }
+
+    strcpy(tempBuffer, bowtieFolder);
+
+    if(bowtieFolder[strlen(bowtieFolder) - 1] != '/')
+        strcat(tempBuffer, "/");
+
+    strcat(tempBuffer, "./bowtie2");
+
+    if(CheckFile(tempBuffer) == 0)
+        {
+            printf("No executable found named: %s\n", tempBuffer);
+            printf("Exiting\n");
+            exit(EXIT_FAILURE);
+        }
 
     if (bad > 0) {
         printf("Found %d problem(s) with input files\nExiting\n", bad);
@@ -511,6 +530,10 @@ void CheckCommands(char * source[], int num) {
             pairedFile = CopyString(source[i + 1], strlen(source[i + 1]));
             pairedend = 1;
         }
+
+        if (IsEqual(source[i], "-bowtie2") == 0)
+            bowtieFolder = CopyString(source[i + 1], strlen(source[i + 1]));
+
     }
 
     PrintInputParams();

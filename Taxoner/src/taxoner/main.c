@@ -9,26 +9,36 @@
 #include <pthread.h>
 #include <unistd.h>
 
-//another comment
+/*
+Authors: Lorinc Pongor, Roberto Vera, Balazs Ligeti
+email: pongorlorinc@gmail.com
+date: march 23, 2014
 
+Purpose: Fast microbila classification of NGS reads
+Language: C
+*/
+
+//another comment
+//struct taxons: Store information about taxonomy
 struct Taxons {
     int id;
     char * path;
     struct Taxons * next;
 };
 
+//struct REadChunk: store SAM information in memory
 struct ReadChunk {
-    char * data;
-    int datalength;
-    int accession;
-    int seqstart;
-    int seqlen;
-    float as;
-    int taxon;
-    int iter;
+    char * data; //SAM line
+    int datalength; //SAM length
+    int accession; //accession id fom ncbi
+    int seqstart;  //starting position of read
+    int seqlen; //length of read
+    float as;   //alignment score
+    int taxon;  //taxon id (from ncbi)
+    int iter;   //iterator at multithread option
     int element;
     int pos;
-    char * chel;
+    char * chel;    //pointer position in *data
     int tempPos;
     int nameElement;
     struct ReadChunk * node;
@@ -43,12 +53,12 @@ typedef struct {
 
 rint * tax = NULL;
 
+/*multithreaded option*/
 int TotalSams = 0;
-int chunkSize = 40000;
+int chunkSize = 40000; //number of reads for each thread
 int AllTax = 100; //max taxons while multithread reading
 
-
-int tempnode;
+int tempnode; //temporary storing of taxonomy
 
 char * NeighborName = NULL;
 
@@ -59,6 +69,8 @@ struct ReadChunk * RMaster = NULL;
 struct ReadChunk * Rhead = NULL;
 struct ReadChunk * Rcurr = NULL;
 
+
+/*retrieveTime: Get current time, and store in times variable*/
 void retrieveTime(void) {
     time(&timer);
     tm_info = localtime(&timer);
@@ -81,6 +93,8 @@ void retrieveTime(void) {
     free(tax);
 }*/
 
+
+/*isVirus: Check if taxon id is a virus or other sequences, and exclude from results*/
 int isVirus(int a) {
     int temptax = a;
     int l1 = 0;
@@ -89,12 +103,12 @@ int isVirus(int a) {
     if (a == -1)
         return 1;
 
-    //printf("%d\n", a);
+    if(FilterVirus == 0)
+        return 0;
 
     while (n[temptax].id != n[temptax].nextId && l1 < AllTax) {
         if (temptax == 10239 || temptax == 28384)
             return 1;
-        //printf("%d;", s1[l1]);
         temptax = n[temptax].nextId;
         l1++;
     }
@@ -102,6 +116,8 @@ int isVirus(int a) {
     return 0;
 }
 
+//ReadChunk * RemoveVirus(struct ReadChunk * psr)
+//Remove virus reads form ReadChunk linked list
 struct ReadChunk * RemoveVirus(struct ReadChunk * psr) {
     int counts = 0;
     struct ReadChunk * tempStruct = psr->next;
@@ -119,6 +135,9 @@ struct ReadChunk * RemoveVirus(struct ReadChunk * psr) {
     return psr;
 }
 
+//CheckFile(char * input)
+//Checks is input is an existing file
+//returns 1 if exists, 0 if not
 int CheckFile(char * input)
 {
     if( access( input, F_OK ) != -1 ) {
@@ -128,6 +147,8 @@ int CheckFile(char * input)
     }
 }
 
+//createTaxons(int num, char * p)
+//Created Taxons struct
 void createTaxons(int num, char * p) {
     struct Taxons *psr = (struct Taxons *) calloc(1, sizeof (struct Taxons));
 
@@ -142,6 +163,8 @@ void createTaxons(int num, char * p) {
     thead->path = CopyString(p, strlen(p));
 }
 
+//AddTaxons(int num, char * p)
+//If taxons list exists, adds new element to linked list
 void AddTaxons(int num, char * p) {
     struct Taxons *psr = (struct Taxons *) calloc(1, sizeof (struct Taxons));
 
@@ -158,6 +181,8 @@ void AddTaxons(int num, char * p) {
     tcurr = psr;
 }
 
+//PrintTaxons(void)
+//prints data stored in Taxons linked list
 void PrintTaxons(void) {
     while (thead != NULL) {
         tcurr = thead;
@@ -169,112 +194,15 @@ void PrintTaxons(void) {
     }
 }
 
-/*void CopyTaxons(void)
-{
-    printf("Filling taxon id(s) and path(s) into memory\n");
-    while(thead != NULL)
-    {
-        tcurr = thead;
-        thead = tcurr->next;
-
-        if(tcurr->id > 0 && tcurr->id < maxTax)
-        {
-            tax[tcurr->id].path = (char *)calloc(strlen(tcurr->path) + 1, sizeof(char));
-            strncpy(tax[tcurr->id].path, tcurr->path, strlen(tcurr->path));
-        }
-
-        else
-        {
-            printf("There was a problem with taxon id: %d (path: %s)\n", tcurr->id, tcurr->path);
-            printf("Maybe it is smaller than 0 or bigger than %d?\n", maxTax-1);
-        }
-
-        free(tcurr->path);
-        free(tcurr);
-    }
-}*/
-
-/*void Allocatetaxons(int num)
-{
-    int i = 0;
-    tax = (rint *)calloc(num + 1, sizeof(rint));
-
-    if(tax == NULL)
-    {
-        printf("Could not allocate struct\nExiting\n");
-        exit(EXIT_FAILURE);
-    }
-
-    num++;
-
-    for(i = 0; i < num; i++)
-    {
-        tax[i].path = NULL;
-    }
-
-    CopyTaxons();
-}*/
-
-/*void readTaxonomyFile(char * source)
-{
-    FILE * handle = fopen(source, "r+");
-    char line[BUFSIZ];
-    int token;
-    char * ptr, * input;
-    int taxa;
-    int count = 0;
-
-    printf("\n--------------------------------------\n");
-    printf("Taxonomy info\n");
-    printf("\nReading taxonomy file (%s)\n", source);
-
-    while(fgets(line, sizeof(line), handle))
-    {
-        input = CopyString(line, strlen(line) - 1);
-        ptr = strtok(input, "\t");
-        token = 0;
-        count++;
-        //printf("%s\n", line);
-        while(ptr != NULL)
-        {
-            if(token == 0)
-                taxa = atoi(ptr);
-
-            if(token == 1)
-            {
-                if(thead == NULL)
-                    createTaxons(taxa, ptr);
-
-                else
-                    AddTaxons(taxa, ptr);
-
-                if(taxa > maxTax)
-                    maxTax = taxa;
-            }
-
-            token++;
-            ptr = strtok(NULL, "\t");
-        }
-
-        free(input);
-    }
-
-    maxTax++;
-
-    fclose(handle);
-    printf("Found %d taxons, %d was the largest id number\n", count, maxTax);
-    //PrintTaxons();
-    Allocatetaxons(maxTax + 1);
-    printf("--------------------------------------\n\n");
-}*/
-
+//databaseAlignment(int num, char * infile)
+//Aligns reads in 'inFile' to the 'num' element in the database
 int databaseAlignment(int num, char * infile) {
     retrieveTime();
     char * partailfulldb;
     char * partialdb;
-    char command[BUFSIZ];
-    char outf[BUFSIZ];
-    char Tempcat[BUFSIZ];
+    char command[BUFSIZ]; //command for bowtie2
+    char outf[BUFSIZ]; //temporary
+    char Tempcat[BUFSIZ]; //stores string for command
 
     memset( outf, '\0', sizeof( outf ));
     memset( command, '\0', sizeof( command ));
@@ -290,18 +218,28 @@ int databaseAlignment(int num, char * infile) {
     strcat(outf, partialdb);
     strcat(outf,".sam");
 
-    strcat(Tempcat, "bowtie2 ");
+    if(bowtieFolder == NULL)
+        strcat(Tempcat, "bowtie2 ");
 
-    if(inputfasta == 1)
+    else {
+        sprintf(Tempcat, "%s", bowtieFolder);
+        if(bowtieFolder[strlen(bowtieFolder) - 1] != '/')
+            strcat(Tempcat, "/");
+
+        strcat(Tempcat, "./bowtie2 ");
+        //printf("Bow: %s\n", Tempcat);
+        //exit(EXIT_FAILURE);
+    }
+
+    if(inputfasta == 1) //if reads are in fasta format
         strcat(Tempcat, "-f ");
 
-    strcat(Tempcat, "-p");
+    strcat(Tempcat, "-p"); //number of threads
 
-    //printf("databaseAlignment: [%s] [%s] [%s]\n", infile, outaln, partialdb);
     if (allHits == 1) {
         if (filterHost == 1 && host != NULL) {
             //printf("1\n");
-            if(pairedend == 1) {
+            if(pairedend == 1) { //if reads are paired-end
                 sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -a %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, partailfulldb, infile, pairedFile, outaln, partialdb);
             }
 
@@ -388,18 +326,13 @@ int databaseAlignment(int num, char * infile) {
         }
     }
 
-
     printf("Command: %s\n", command);
-
-    //exit(EXIT_FAILURE);
     fflush(NULL);
-    //system(command);
     printf("Index: %s\nReads: %s\nStart time: %s\n", partialdb, infile, times);
     fflush(NULL);
-    //printf("Aligning %s to database no. %d (%s)\n", infile, num, dbElements[num]);
     printf("Bowtie2 output:\n");
     fflush(NULL);
-    //system(command);
+    system(command); //run command
 
     if(CheckFile(outf) == 0) {
         printf("Could not find alignment file: %s\nWas the correct format specified for reads? (fstq or fasta?)\n", outf);
@@ -418,6 +351,9 @@ int databaseAlignment(int num, char * infile) {
     return 0;
 }
 
+//hostAlignment(void)
+//This function aligns reads to the specified host index
+//does not suppport paired-end input reads
 int hostAlignment(void) {
     char command[BUFSIZ];
     retrieveTime();
@@ -441,6 +377,8 @@ int hostAlignment(void) {
     return 0;
 }
 
+//printPreDatabaseInfo(void)
+//prints all the index names that are used in analysis
 void printPreDatabaseInfo(void) {
     char command[BUFSIZ];
     retrieveTime();
@@ -450,6 +388,8 @@ void printPreDatabaseInfo(void) {
     fflush(NULL);
 }
 
+//Alignments(void)
+//Calls alignment functions for each bowtie2 index specified
 void Alignments(void) {
     int i = 0;
 
@@ -460,7 +400,7 @@ void Alignments(void) {
             databaseAlignment(i, nohost);
         }
 
-        return;
+        return; //if alignment is against host, returns
     }
 
 
@@ -479,6 +419,8 @@ void FreeNames(char ** source) {
     if (source) free(source);
 }
 
+//ReturnName(char * input, char * dest)
+//copies read name from SAM line from input to dest
 char * ReturnName(char * input, char * dest) {
     int j = 0;
     int len = strlen(input) - 1;
@@ -496,6 +438,8 @@ char * ReturnName(char * input, char * dest) {
     return dest;
 }
 
+//FreeReadStruct(struct ReadChunk * abc, FILE * output)
+//Reads ReadStruct linked list, and prints results to file
 void FreeReadStruct(struct ReadChunk * abc, FILE * output) {
     struct ReadChunk * temp = NULL;
     struct ReadChunk * Direct = NULL;
@@ -511,14 +455,9 @@ void FreeReadStruct(struct ReadChunk * abc, FILE * output) {
             i = 0;
             temp = Direct;
             Direct = Direct->next;
-
-            //printf("%s\n", temp->data);
-            //if(temp->data)
-            //free(temp->data);
-
             tempOut = ReturnName(temp->data, tempOut);
 
-            if (temp->as > 0)
+            if (temp->as > 0) //check if alignment score is ok
                 fprintf(output, "%s\t%d\t%d\t%.3f\t%d\t%d\n", tempOut, temp->taxon, temp->accession, temp->as, temp->seqstart, (temp->seqlen + temp->seqstart));
             //printf( "%s\t%d\t%d\t%.3f\t%d\t%d\n", tempOut, temp->taxon, temp->accession, temp->as, temp->seqstart, temp->seqlen);
 
@@ -532,7 +471,6 @@ void FreeReadStruct(struct ReadChunk * abc, FILE * output) {
     if (tempOut) {
         free(tempOut);
     }
-    //psr = NULL;
 }
 
 void FreeReadStruct2(struct ReadChunk * abc) {
@@ -572,6 +510,10 @@ void FreeReadStruct2(struct ReadChunk * abc) {
     //psr = NULL;
 }
 
+//GetToken(char * source, char delim, int length, int prev)
+//looks for token specified by 'delim' in 'source'. 'Prev' tells function to continue
+//from specified position in string.
+//Returns position where 'delim' can be found in string
 int GetToken(char * source, char delim, int length, int prev) {
     int i;
 
@@ -586,6 +528,10 @@ int GetToken(char * source, char delim, int length, int prev) {
     return -1;
 }
 
+//ReturnLength(char * source, char delim, int length, int prev)
+//looks for token specified by 'delim' in 'source'. 'Prev' tells function to continue
+//from specified position in string.
+//Returns position where 'delim' can be found in string
 int ReturnLength(char * source, char delim, int length, int prev) {
     int i;
     int retCount = 0;
@@ -600,6 +546,9 @@ int ReturnLength(char * source, char delim, int length, int prev) {
     return -1;
 }
 
+//ReturnNeighbor(int a, int b)
+//looks for nearest neighbor for taxons 'a' and 'b', and returns
+//nearest neighbor id (integer)
 int ReturnNeighbor(int a, int b) {
     int * s1, * s2;
     int l1, l2, i, j;
@@ -618,33 +567,22 @@ int ReturnNeighbor(int a, int b) {
     l1 = 0;
     l2 = 0;
 
-    //printf("\nold: ");
-
-    while (n[temptax].id != n[temptax].nextId && l1 < AllTax) {
+    while (n[temptax].id != n[temptax].nextId && l1 < AllTax) { //store taxID lineage in s1
         s1[l1] = temptax;
-        //printf("%d;", s1[l1]);
         temptax = n[temptax].nextId;
         l1++;
     }
-
-
-    //printf("\nnew: ");
     temptax = b;
-
-    while (n[temptax].id != n[temptax].nextId && l2 < AllTax) {
+    while (n[temptax].id != n[temptax].nextId && l2 < AllTax) { //store taxID lineage in s2
         s2[l2] = temptax;
-        //printf("%d;", s2[l2]);
         temptax = n[temptax].nextId;
         l2++;
     }
-
-    //printf("\n\n");
 
     if (l1 > l2) {
         j = l1 - 1;
 
         for (i = l2 - 1; i > -1; i--) {
-            //printf("%d - %d\n", s2[i], s1[j]);
             if (s2[i] == s1[j])
                 temptax = s2[i];
 
@@ -657,7 +595,6 @@ int ReturnNeighbor(int a, int b) {
         j = l2 - 1;
 
         for (i = l1 - 1; i > -1; i--) {
-            //printf("%d - %d\n", s2[j], s1[i]);
             if (s2[j] == s1[i])
                 temptax = s1[i];
 
@@ -674,6 +611,8 @@ int ReturnNeighbor(int a, int b) {
     return temptax;
 }
 
+//FreeTaxons(struct ReadChunk * psr) {
+//Frees Taxon struct pointed by 'psr'
 void FreeTaxons(struct ReadChunk * psr) {
     if (psr->data)
         free(psr->data);
@@ -708,6 +647,8 @@ struct ReadChunk * CheckTaxonId(struct ReadChunk * psr) {
     return psr;
 }
 
+//CheckIfAligned(char * input)
+//checks if SAM line stored in 'input' is aligned
 int CheckIfAligned(char * input) {
     if (strstr(input, "AS:i") != NULL)
         return 0;
@@ -715,6 +656,8 @@ int CheckIfAligned(char * input) {
     return 1;
 }
 
+//ReadChunk * FreeNextBranch(struct ReadChunk * psr)
+//Frees found branch
 struct ReadChunk * FreeNextBranch(struct ReadChunk * psr) {
     struct ReadChunk * tempStruct = psr->next;
     psr->next = NULL;
@@ -726,6 +669,8 @@ struct ReadChunk * FreeNextBranch(struct ReadChunk * psr) {
     return psr;
 }
 
+//ParallelNeighbor(void * voidA)
+//looks for nearest neighbors in reads stored in '*voidA'
 void * ParallelNeighbor(void * voidA) {
     struct ReadChunk * psr = (struct ReadChunk *) voidA;
     int asd = 0;
@@ -734,7 +679,6 @@ void * ParallelNeighbor(void * voidA) {
         if (psr->next != NULL && psr->iter > 3) {
             if (psr->next->nameElement == psr->nameElement && psr->as != -1) {
                 if (psr->next->next != NULL) {
-                    //printf("%s\n%s\n (%.2f - %.2f)\n", psr->data, psr->next->data, psr->as, psr->next->as);
                     if (psr->next->as > NSc * psr->as)
                         psr->taxon = ReturnNeighbor(psr->taxon, psr->next->taxon);
 
@@ -754,35 +698,8 @@ void * ParallelNeighbor(void * voidA) {
     }
 }
 
-void CPUParallelCalc(struct ReadChunk * psr) {
-    int i, j;
-    char * tempplace, * toks;
-    struct ReadChunk * asd = psr;
-
-    while (asd != NULL) {
-        psr = asd;
-        asd = asd->node;
-
-        while (psr != NULL) {
-            tempplace = CopyString(psr->data, strlen(psr->data));
-            toks = strtok(tempplace, "\t");
-
-            while (toks != NULL) {
-                for (i = 0; i < 100; i++) {
-
-                }
-
-                toks = strtok(NULL, "\t");
-            }
-
-            //if(tempplace)
-            //free(tempplace);
-
-            psr = psr->next;
-        }
-    }
-}
-
+//ReadChunk * UninitializeStruct(struct ReadChunk * psr)
+//Ininitializes data stored in '*psr'
 struct ReadChunk * UninitializeStruct(struct ReadChunk * psr) {
     psr->accession = -1;
     psr->as = -1;
@@ -866,6 +783,9 @@ struct ReadChunk * GoThroughData(struct ReadChunk * psr) {
     return psr;
 }
 
+//MultiParser(void * voidA)
+//Parallel parsing of SAM reads
+//ugly, but works
 void * MultiParser(void * voidA) {
     struct ReadChunk * psr = (struct ReadChunk *) voidA;
 
@@ -928,12 +848,14 @@ void * MultiParser(void * voidA) {
     }
 }
 
+//InitializeNearestMulti(struct ReadChunk * psr)
+//calls parallel nearest neighbor identification
 void InitializeNearestMulti(struct ReadChunk * psr) {
     struct ReadChunk * tempStruct = psr;
     pthread_t thread_id[threads];
     int i = 0;
 
-    while (tempStruct != NULL) {
+    while (tempStruct != NULL) { //calls threads
         pthread_create(&thread_id[i], NULL, &ParallelNeighbor, tempStruct);
         tempStruct = tempStruct->node;
         i++;
@@ -942,19 +864,21 @@ void InitializeNearestMulti(struct ReadChunk * psr) {
     i = 0;
     tempStruct = psr;
 
-    while (tempStruct != NULL) {
+    while (tempStruct != NULL) { //joins threads
         pthread_join(thread_id[i], NULL);
         tempStruct = tempStruct->node;
         i++;
     }
 }
 
+//ParseDataMulti(void)
+//Calls multithreaded parsing
 void ParseDataMulti(void) {
     struct ReadChunk * tempStruct = RMaster;
     pthread_t thread_id[threads];
     int i = 0;
 
-    while (tempStruct != NULL) {
+    while (tempStruct != NULL) { //calls parser for each thread
         pthread_create(&thread_id[i], NULL, &MultiParser, tempStruct);
         tempStruct = tempStruct->node;
         i++;
@@ -963,15 +887,16 @@ void ParseDataMulti(void) {
     i = 0;
     tempStruct = RMaster;
 
-    while (tempStruct != NULL) {
+    while (tempStruct != NULL) {    //joins threads
         pthread_join(thread_id[i], NULL);
         tempStruct = tempStruct->node;
         i++;
     }
 }
 
+//ReadSam(char * infile, FILE * out)
+//Read SAM file specified by 'infile'
 void ReadSam(char * infile, FILE * out) {
-    //FILE * handler = fopen("res/alignments/few.sam", "r+");
     FILE * handler = fopen(infile, "r+");
     char line[BUFSIZ];
     int i = 0;
@@ -986,33 +911,33 @@ void ReadSam(char * infile, FILE * out) {
     while (fgets(line, sizeof (line), handler)) {
         if (line[0] != '@') {
             if (CheckIfAligned(line) == 0) {
-                currName = ReturnName(line, currName);
+                currName = ReturnName(line, currName); //get name of read
 
-                if (RMaster == NULL) {
+                if (RMaster == NULL) { //crate struct to store data
                     AddReadStructNode(line, EqName);
                 } else if (CompareStrings(currName, prevName) == 1) {
-                    AddReadElement(line, EqName);
+                    AddReadElement(line, EqName); //add elemnent to struct
                 } else {
                     EqName++;
 
-                    if (i >= chunkSize) {
+                    if (i >= chunkSize) { //if read count reaches chunckSize
                         i = 0;
-                        num++;
+                        num++; //add thread
 
-                        if (num == threads) {
+                        if (num == threads) { //if thread number equals to number of threads
                             i = 0;
                             num = 0;
                             EqName = 0;
 
-                            ParseDataMulti();
-                            InitializeNearestMulti(RMaster);
-                            FreeReadStruct(RMaster, out);
+                            ParseDataMulti(); //parse data
+                            InitializeNearestMulti(RMaster); //get neighbor
+                            FreeReadStruct(RMaster, out); //print results and free data
                             RMaster = NULL;
                         }
 
-                        AddReadStructNode(line, EqName);
+                        AddReadStructNode(line, EqName); //create new struct
                     } else if (RMaster == NULL)
-                        AddReadStructNode(line, EqName);
+                        AddReadStructNode(line, EqName); //add new therad struct
 
                     else
                         AddReadElement(line, EqName);
@@ -1073,6 +998,8 @@ void copyFile(char *source, char *dest) {
     }
 }
 
+//nearestNeighborMultithread(void)
+//Get nearest neighbor for all alignment files in 'dbe'
 void nearestNeighborMultithread(void) {
     char ** inFiles = (char **) calloc(dbe + 1, sizeof (char *));
     int i;
@@ -1081,7 +1008,7 @@ void nearestNeighborMultithread(void) {
     char command[BUFSIZ];
     FILE * neighborResults;
 
-    for (i = 0; i < dbe; i++) {
+    for (i = 0; i < dbe; i++) { //generate name array
         inFiles[i] = (char *) calloc(strlen(outaln) + strlen(dbElements[i]) + strlen(".sam") + 1, sizeof (char));
         strncpy(inFiles[i], outaln, strlen(outaln));
         strcat(inFiles[i], "/");
@@ -1106,7 +1033,7 @@ void nearestNeighborMultithread(void) {
         }
 
         else {
-            printf("Could not fine SAM file named: %s\nSkipping from neighbor\n", inFiles[i]);
+            printf("Could not find SAM file named: %s\nSkipping from neighbor\n", inFiles[i]);
 
             if(NoAlignment == 1)
             {
@@ -1131,12 +1058,6 @@ void nearestNeighborMultithread(void) {
         system(command);
     }
 
-    else {
-
-    }
-
-    //copyFile(name, finalname);
-    //unlink(name);
     if (name) free(name);
     FreeNames(inFiles);
     fclose(neighborResults);
@@ -1145,6 +1066,8 @@ void nearestNeighborMultithread(void) {
     //free(inFiles);
 }
 
+//MultiNeighborParser(void * voidA)
+//Multithreaded parsing of the final neighbor file (sorted_temp_neighbors.aln)
 void * MultiNeighborParser(void * voidA) {
     struct ReadChunk * psr = (struct ReadChunk *) voidA;
 
@@ -1193,30 +1116,8 @@ void * MultiNeighborParser(void * voidA) {
     }
 }
 
-/*void InitializeNearestMulti(struct ReadChunk * psr)
-{
-    struct ReadChunk * tempStruct = psr;
-    pthread_t thread_id[threads];
-    int i = 0;
-
-    while(tempStruct != NULL)
-    {
-        pthread_create(&thread_id[i], NULL, &ParallelNeighbor, tempStruct);
-        tempStruct = tempStruct->node;
-        i++;
-    }
-
-    i = 0;
-    tempStruct = psr;
-
-    while(tempStruct != NULL)
-    {
-        pthread_join(thread_id[i], NULL);
-        tempStruct = tempStruct->node;
-        i++;
-    }
-}*/
-
+//ParseMultiNeighbors(void)
+//Calls multithreaded functions
 void ParseMultiNeighbors(void) {
     struct ReadChunk * tempStruct = RMaster;
     pthread_t thread_id[threads];
@@ -1263,6 +1164,67 @@ void GetFinalFileNames(void) {
     //printf("%s - %s\n", InputName, OutputName);
 }
 
+//MeganFormat(void)
+//Converts final file 'Taxonomy.txt' to a megan compatible format
+//prints 'read_name\ttaxon_id" to file
+void MeganFormat(void)
+{
+    FILE * handle, * Mout;
+    char line[BUFSIZ];
+    int token = 0;
+    char * ptr;
+    char * meganin = (char *) calloc(strlen(outDir) + strlen("/Results/Taxonomy.txt") + 1, sizeof (char));
+    char * meganres = (char *) calloc(strlen(outDir) + strlen("/Results/megan.txt") + 1, sizeof (char));
+
+    if (outDir[strlen(outDir) - 1] == '/') {
+        strncpy(meganin, outDir, strlen(outDir) - 1);
+        strncpy(meganres, outDir, strlen(outDir) - 1);
+    } else {
+        strcpy(meganin, outDir);
+        strcpy(meganres, outDir);
+    }
+
+    strcat(meganin, "/Results/Taxonomy.txt");
+    strcat(meganres, "/Results/megan.txt");
+
+    if(CheckFile(meganin) == 0) {
+        printf("No %s found, can't convert result to megan format\n");
+        free(meganin);
+        free(meganres);
+        return;
+    }
+
+    handle = fopen(meganin, "r+");
+    Mout = fopen(meganres, "w+");
+
+    while(fgets(line, sizeof(line), handle))
+    {
+        token = 0;
+        ptr = strtok(line, "\t");
+
+        while(ptr != NULL)
+        {
+            if(token == 0)
+                fprintf(Mout, "%s\t", ptr);
+
+            if(token == 1)
+                fprintf(Mout, "%s", ptr);
+
+            token++;
+            ptr = strtok(NULL, "\t");
+        }
+
+        fprintf(Mout,"\n");
+    }
+
+    fclose(handle);
+    fclose(Mout);
+
+    free(meganin);
+    free(meganres);
+    return;
+}
+
 void CopyFileOneIndex(void)
 {
     InputName = (char *) calloc(strlen(outDir) + strlen("/alignments/unsorted_temp_neighbor.aln") + 1, sizeof (char));
@@ -1291,6 +1253,8 @@ void CopyFileOneIndex(void)
     copyFile(InputName, OutputName);
 }
 
+//FinalNearestNeighbor(void)
+//reads sorted file of taxonomies, copies data into memory, and calls parser + neighbor findwer
 void FinalNearestNeighbor(void) {
     FILE * handle, * testout;
     char line[BUFSIZ];
@@ -1386,6 +1350,9 @@ int main(int argc, char *argv[]) {
     else {
         CopyFileOneIndex();
     }
+
+    if(meganOut == 1)
+        MeganFormat();
 
     InputFree();
     //taxonomyFree();
