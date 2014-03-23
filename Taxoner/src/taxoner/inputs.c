@@ -19,6 +19,15 @@ int bowtieMaxHits = 10;
 int allHits = 0;
 float NSc = 0.99;
 
+int meganOut = 0;
+int inputfasta = 0;
+
+int minfrag = 0;
+int maxfrag = 500;
+char * pairedFile = NULL;
+
+int pairedend = 0;
+
 char * specifiedDb = NULL;
 
 int NoAlignment = 0;
@@ -316,6 +325,14 @@ void checkParams(void) {
         }
     }
 
+    if( pairedend == 1)
+    {
+        if(FileExists(pairedFile) == 0) {
+            bad++;
+            printf("No paired-end file named %s founf\n", pairedFile);
+        }
+    }
+
     if (bad > 0) {
         printf("Found %d problem(s) with input files\nExiting\n", bad);
         exit(EXIT_FAILURE);
@@ -351,7 +368,20 @@ void PrintInputParams(void) {
     }
 
     printf("Taxonomy file: %s\n", taxPath);
+
+    if( inputfasta == 0 )
+        printf("Read format: fastq format\n");
+
+    else
+        printf("Read format: fasta format\n");
+
     printf("Input reads: %s\n", reads);
+
+    if(pairedend == 1) {
+        printf("Paired-end reads: %s\n", pairedFile);
+        printf("Min insert size: %d\nmaximum insert size: %d\n", minfrag, maxfrag);
+    }
+
     printf("Threads for analysis: %d\n", threads);
     printf("--------------------------------------\n");
     fflush(NULL);
@@ -464,6 +494,23 @@ void CheckCommands(char * source[], int num) {
 
         if (IsEqual(source[i], "-neighbor-score") == 0)
             NSc = atof(source[i + 1]);
+
+        if (IsEqual(source[i], "-fasta") == 0)
+            inputfasta = 1;
+
+        if (IsEqual(source[i], "-megan") == 0)
+            meganOut = 1;
+
+        if (IsEqual(source[i], "-I") == 0)
+            minfrag = atoi(source[i + 1]);
+
+        if (IsEqual(source[i], "-X") == 0)
+            maxfrag = atoi(source[i + 1]);
+
+        if (IsEqual(source[i], "-paired") == 0) {
+            pairedFile = CopyString(source[i + 1], strlen(source[i + 1]));
+            pairedend = 1;
+        }
     }
 
     PrintInputParams();

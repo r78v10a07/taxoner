@@ -119,6 +119,15 @@ struct ReadChunk * RemoveVirus(struct ReadChunk * psr) {
     return psr;
 }
 
+int CheckFile(char * input)
+{
+    if( access( input, F_OK ) != -1 ) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 void createTaxons(int num, char * p) {
     struct Taxons *psr = (struct Taxons *) calloc(1, sizeof (struct Taxons));
 
@@ -264,33 +273,125 @@ int databaseAlignment(int num, char * infile) {
     char * partailfulldb;
     char * partialdb;
     char command[BUFSIZ];
+    char outf[BUFSIZ];
+    char Tempcat[BUFSIZ];
+
+    memset( outf, '\0', sizeof( outf ));
+    memset( command, '\0', sizeof( command ));
+
     partailfulldb = (char *) calloc(strlen(fulldb[num]), sizeof (char));
     strncpy(partailfulldb, fulldb[num], strlen(fulldb[num]) - 6);
 
     partialdb = (char *) calloc(strlen(dbElements[num]), sizeof (char));
     strncpy(partialdb, dbElements[num], strlen(dbElements[num]) - 6);
 
+    strcat(outf, outaln);
+    strcat(outf, "/");
+    strcat(outf, partialdb);
+    strcat(outf,".sam");
+
+    strcat(Tempcat, "bowtie2 ");
+
+    if(inputfasta == 1)
+        strcat(Tempcat, "-f ");
+
+    strcat(Tempcat, "-p");
+
     //printf("databaseAlignment: [%s] [%s] [%s]\n", infile, outaln, partialdb);
     if (allHits == 1) {
         if (filterHost == 1 && host != NULL) {
             //printf("1\n");
-            sprintf(command, "bowtie2 -p %d -a %s %s/%s > %s/%s.sam", threads, partailfulldb, outaln, infile, outaln, partialdb);
+            if(pairedend == 1) {
+                sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -a %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, partailfulldb, infile, pairedFile, outaln, partialdb);
+            }
+
+            else {
+                sprintf(command, "%s %d -a %s %s/%s > %s/%s.sam", Tempcat, threads, partailfulldb, outaln, infile, outaln, partialdb);
+            }
+
+            /*if(inputfasta == 0)
+                sprintf(command, "bowtie2 -p %d -a %s %s/%s > %s/%s.sam", threads, partailfulldb, outaln, infile, outaln, partialdb);
+
+            else if(inputfasta == 1)
+                sprintf(command, "bowtie2 -f -p %d -a %s %s/%s > %s/%s.sam", threads, partailfulldb, outaln, infile, outaln, partialdb);
+
+            else {
+                printf("Could not align reads, unknown format?\n");
+                exit(EXIT_FAILURE);
+            }*/
         } else {
             //printf("2\n");
-            sprintf(command, "bowtie2 -p %d -a %s %s > %s/%s.sam", threads, partailfulldb, infile, outaln, partialdb);
+            if(pairedend == 1) {
+                sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -a %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, partailfulldb, infile, pairedFile, outaln, partialdb);
+            }
+
+            else {
+                sprintf(command, "%s %d -a %s %s > %s/%s.sam", Tempcat, threads, partailfulldb, outaln, infile, outaln, partialdb);
+            }
+            /*if(inputfasta == 0)
+                sprintf(command, "bowtie2 -p %d -a %s %s > %s/%s.sam", threads, partailfulldb, infile, outaln, partialdb);
+
+            else if(inputfasta == 1)
+                sprintf(command, "bowtie2 -f -p %d -a %s %s > %s/%s.sam", threads, partailfulldb, infile, outaln, partialdb);
+
+            else {
+                printf("Could not align reads, unknown format?\n");
+                exit(EXIT_FAILURE);
+            }*/
         }
     } else {
         if (filterHost == 1 && host != NULL) {
             //printf("3\n");
-            sprintf(command, "bowtie2 -p %d -k %d %s %s > %s/%s.sam", threads, bowtieMaxHits, partailfulldb, outaln, infile, outaln, partialdb);
+
+            if(pairedend == 1) {
+                sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -k %d %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, bowtieMaxHits, partailfulldb, infile, pairedFile, outaln, partialdb);
+            }
+
+            else {
+                sprintf(command, "%s %d -k %d %s %s > %s/%s.sam", Tempcat, threads, bowtieMaxHits, partailfulldb, outaln, infile, outaln, partialdb);
+            }
+
+            /*if(pairedend == 1) {
+                sprintf(command, "%s %d -I %d -X %d -k %d %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, bowtieMaxHits, partailfulldb, infile, pairedFile, outaln, partialdb);
+            }
+
+            if(inputfasta == 0)
+                sprintf(command, "bowtie2 -p %d -k %d %s %s > %s/%s.sam", threads, bowtieMaxHits, partailfulldb, outaln, infile, outaln, partialdb);
+
+            else if(inputfasta == 1)
+                sprintf(command, "bowtie2 -f -p %d -k %d %s %s > %s/%s.sam", threads, bowtieMaxHits, partailfulldb, outaln, infile, outaln, partialdb);
+
+            else {
+                printf("Could not align reads, unknown format?\n");
+                exit(EXIT_FAILURE);
+            }*/
         } else {
             //printf("4\n");
-            sprintf(command, "bowtie2 -p %d -k %d %s %s > %s/%s.sam", threads, bowtieMaxHits, partailfulldb, infile, outaln, partialdb);
+            if(pairedend == 1) {
+                sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -k %d %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, bowtieMaxHits, partailfulldb, infile, pairedFile, outaln, partialdb);
+            }
+
+            else {
+                sprintf(command, "%s %d -k %d %s %s > %s/%s.sam", Tempcat, threads, bowtieMaxHits, partailfulldb, infile, outaln, partialdb);
+            }
+
+            //else if(inputfasta == 0)
+              //  sprintf(command, "bowtie2 -p %d -k %d %s %s > %s/%s.sam", threads, bowtieMaxHits, partailfulldb, infile, outaln, partialdb);
+
+            //else if(inputfasta == 1)
+              //  sprintf(command, "bowtie2 -f -p %d -k %d %s %s > %s/%s.sam", threads, bowtieMaxHits, partailfulldb, infile, outaln, partialdb);
+
+            //else {
+              //  printf("Could not align reads, unknown format?\n");
+               // exit(EXIT_FAILURE);
+            //}
         }
     }
 
 
     printf("Command: %s\n", command);
+
+    //exit(EXIT_FAILURE);
     fflush(NULL);
     //system(command);
     printf("Index: %s\nReads: %s\nStart time: %s\n", partialdb, infile, times);
@@ -298,8 +399,12 @@ int databaseAlignment(int num, char * infile) {
     //printf("Aligning %s to database no. %d (%s)\n", infile, num, dbElements[num]);
     printf("Bowtie2 output:\n");
     fflush(NULL);
-    system(command);
+    //system(command);
 
+    if(CheckFile(outf) == 0) {
+        printf("Could not find alignment file: %s\nWas the correct format specified for reads? (fstq or fasta?)\n", outf);
+        exit(EXIT_FAILURE);
+    }
 
     printf("Getting nearest neighbors from %s database alignment\n", partailfulldb);
     fflush(NULL);
@@ -321,8 +426,13 @@ int hostAlignment(void) {
     printf("--------------------------------------\n");
     printf("Index: %s\nReads: %s\n", host, reads);
     fflush(NULL);
-    
-    sprintf(command, "bowtie2 -p %d --un %s/%s %s %s > %s/host.sam", threads, outaln, nohost, host, reads, outaln);
+
+    if(inputfasta == 0)
+        sprintf(command, "bowtie2 -p %d --un %s/%s %s %s > %s/host.sam", threads, outaln, nohost, host, reads, outaln);
+
+    else
+        sprintf(command, "bowtie2 -f -p %d --un %s/%s %s %s > %s/host.sam", threads, outaln, nohost, host, reads, outaln);
+
     printf("Command: %s\n\n", command);
     printf("Bowtie2 output:\n");
     system(command);
@@ -989,9 +1099,22 @@ void nearestNeighborMultithread(void) {
 
     for (i = 0; i < dbe; i++) {
         retrieveTime();
-        printf("Getting nearest neighbors of file: %s [ %s ]\n", inFiles[i], times);
-        fflush(NULL);
-        ReadSam(inFiles[i], neighborResults);
+        if(CheckFile(inFiles[i]) == 1) {
+            printf("Getting nearest neighbors of file: %s [ %s ]\n", inFiles[i], times);
+            fflush(NULL);
+            ReadSam(inFiles[i], neighborResults);
+        }
+
+        else {
+            printf("Could not fine SAM file named: %s\nSkipping from neighbor\n", inFiles[i]);
+
+            if(NoAlignment == 1)
+            {
+                printf("Try realigning the reads to the database\n");
+            }
+
+            exit(EXIT_FAILURE);
+        }
     }
 
     sortedFile = (char *) calloc(strlen("/sorted_temp_neighbors.aln") + strlen(outaln) + 1, sizeof (char));
@@ -1006,6 +1129,10 @@ void nearestNeighborMultithread(void) {
         printf("%s\n", command);
         fflush(NULL);
         system(command);
+    }
+
+    else {
+
     }
 
     //copyFile(name, finalname);
@@ -1136,6 +1263,34 @@ void GetFinalFileNames(void) {
     //printf("%s - %s\n", InputName, OutputName);
 }
 
+void CopyFileOneIndex(void)
+{
+    InputName = (char *) calloc(strlen(outDir) + strlen("/alignments/unsorted_temp_neighbor.aln") + 1, sizeof (char));
+    OutputName = (char *) calloc(strlen(outDir) + strlen("/Results/Taxonomy.txt") + 1, sizeof (char));
+
+    if (outDir[strlen(outDir) - 1] == '/') {
+        strncpy(InputName, outDir, strlen(outDir) - 1);
+        strncpy(OutputName, outDir, strlen(outDir) - 1);
+    } else {
+        strcpy(InputName, outDir);
+        strcpy(OutputName, outDir);
+    }
+
+    strcat(InputName, "/alignments/unsorted_temp_neighbor.aln");
+    strcat(OutputName, "/Results/Taxonomy.txt");
+
+    //printf("%s\n", InputName);
+
+    if( access( InputName, F_OK ) != -1 ) {
+        copyFile(InputName, OutputName);
+    } else {
+        printf("No nearest nighbor file found\nCould not copy results\nExiting\n");
+        exit(EXIT_FAILURE);
+    }
+
+    copyFile(InputName, OutputName);
+}
+
 void FinalNearestNeighbor(void) {
     FILE * handle, * testout;
     char line[BUFSIZ];
@@ -1151,6 +1306,13 @@ void FinalNearestNeighbor(void) {
     fflush(NULL);
 
     GetFinalFileNames();
+
+    if( access( InputName, F_OK ) != -1 ) {
+    // file exists
+    } else {
+        printf("Could not locate '%d'\nNearest neighbor can not be done\nExiting\n");
+        exit(EXIT_FAILURE);
+    }
 
     handle = fopen(InputName, "r+");
     //handle = fopen("sorted.aln", "r+");
@@ -1216,7 +1378,15 @@ int main(int argc, char *argv[]) {
         Alignments();
 
     nearestNeighborMultithread();
-    FinalNearestNeighbor();
+
+    if(dbe > 1) {
+        FinalNearestNeighbor();
+    }
+
+    else {
+        CopyFileOneIndex();
+    }
+
     InputFree();
     //taxonomyFree();
     if (NeighborName) {
