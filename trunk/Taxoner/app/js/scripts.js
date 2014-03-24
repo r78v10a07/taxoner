@@ -48,8 +48,8 @@ function getFormData(strURL, formName) {
         var onlyneighbor = document.getElementById("onlyneighbor").checked;
         var p = document.getElementById("p").value;
         var paired = document.getElementById("paired").value;
-        var l = document.getElementById("l").value;
-        var x = document.getElementById("x").value;
+        var I = document.getElementById("I").value;
+        var X = document.getElementById("X").value;
 
         if (typeof (seq) == "undefined" || seq == null || seq == "") {
             alert("Set the input file (reads), please");
@@ -144,12 +144,12 @@ function getFormData(strURL, formName) {
             result[0] = result[0] + "%20-paired%20" + paired;
         }
 
-        if (typeof (l) != "undefined" && l != null && l != "") {
-            result[0] = result[0] + "%20-l%20" + l;
+        if (typeof (I) != "undefined" && I != null && I != "") {
+            result[0] = result[0] + "%20-l%20" + I;
         }
 
-        if (typeof (x) != "undefined" && x != null && x != "") {
-            result[0] = result[0] + "%20-x%20" + x;
+        if (typeof (X) != "undefined" && X != null && X != "") {
+            result[0] = result[0] + "%20-x%20" + X;
         }
 
         result[0] = result[0]
