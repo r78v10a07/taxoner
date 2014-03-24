@@ -89,9 +89,11 @@ http.createServer(function(req, res) {
                             + "<link rel='stylesheet' type='text/css' href='" + htmlURL + "/css/colors.css' />"
                             + "</head>"
                             + "<body><script>var a = window.setTimeout('window.location.reload();', 2000);</script>"
+                            + "<div align='center'>"
                             + "<h1 class='title' id='page-title'>Log viewer</h1>"
-                            + "<a href='file://" + filename.replace('stdout.log', '') + "' target='_blank'/>"
-                            + filename.replace('stdout.log', '') + "</a><br><br>";
+                            + "<a href='" + cmdURL + "/?cmd=xdg-open%20" + filename.replace('stdout.log', '') + "' target='_blank'/>Click to go to your output dir</a>"
+                            + "</div>"
+                            + "<br><br>";
 
                     if (typeof (stdout) == "undefined" || stdout == null || stdout == "") {
                         result = result + "Wait .... ";
