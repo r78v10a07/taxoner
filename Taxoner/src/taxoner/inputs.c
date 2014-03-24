@@ -82,6 +82,10 @@ void InputFree(void) {
         }
         if (fulldb) free(fulldb);
     }
+    
+    if (bowtieFolder){
+        free(bowtieFolder);
+    }
 }
 
 int isInit(char * source) {
