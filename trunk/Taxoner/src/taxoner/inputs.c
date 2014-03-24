@@ -82,8 +82,8 @@ void InputFree(void) {
         }
         if (fulldb) free(fulldb);
     }
-    
-    if (bowtieFolder){
+
+    if (bowtieFolder) {
         free(bowtieFolder);
     }
 }
@@ -334,27 +334,29 @@ void checkParams(void) {
         }
     }
 
-    if( pairedend == 1)
-    {
-        if(FileExists(pairedFile) == 0) {
+    if (pairedend == 1) {
+        if (FileExists(pairedFile) == 0) {
             bad++;
             printf("No paired-end file named %s founf\n", pairedFile);
         }
     }
 
-    strcpy(tempBuffer, bowtieFolder);
+    if (bowtieFolder != NULL) {
+        strcpy(tempBuffer, bowtieFolder);
 
-    if(bowtieFolder[strlen(bowtieFolder) - 1] != '/')
-        strcat(tempBuffer, "/");
+        if (bowtieFolder[strlen(bowtieFolder) - 1] != '/')
+            strcat(tempBuffer, "/");
 
-    strcat(tempBuffer, "./bowtie2");
+        strcat(tempBuffer, "./bowtie2");
 
-    if(CheckFile(tempBuffer) == 0)
-        {
+        if (CheckFile(tempBuffer) == 0) {
             printf("No executable found named: %s\n", tempBuffer);
             printf("Exiting\n");
             exit(EXIT_FAILURE);
         }
+    }else{
+        strcat(tempBuffer, "bowtie2");
+    }
 
     if (bad > 0) {
         printf("Found %d problem(s) with input files\nExiting\n", bad);
@@ -392,7 +394,7 @@ void PrintInputParams(void) {
 
     printf("Taxonomy file: %s\n", taxPath);
 
-    if( inputfasta == 0 )
+    if (inputfasta == 0)
         printf("Read format: fastq format\n");
 
     else
@@ -400,7 +402,7 @@ void PrintInputParams(void) {
 
     printf("Input reads: %s\n", reads);
 
-    if(pairedend == 1) {
+    if (pairedend == 1) {
         printf("Paired-end reads: %s\n", pairedFile);
         printf("Min insert size: %d\nmaximum insert size: %d\n", minfrag, maxfrag);
     }
