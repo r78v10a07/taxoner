@@ -246,8 +246,7 @@ int databaseAlignment(int num, char * infile) {
             //printf("1\n");
             if (pairedend == 1) { //if reads are paired-end
                 sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -a %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, partailfulldb, infile, pairedFile, outaln, partialdb);
-            }
-            else {
+            } else {
                 sprintf(command, "%s %d -a %s %s/%s > %s/%s.sam", Tempcat, threads, partailfulldb, outaln, infile, outaln, partialdb);
             }
 
@@ -265,8 +264,7 @@ int databaseAlignment(int num, char * infile) {
             //printf("2\n");
             if (pairedend == 1) {
                 sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -a %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, partailfulldb, infile, pairedFile, outaln, partialdb);
-            }
-            else {
+            } else {
                 sprintf(command, "%s %d -a %s %s > %s/%s.sam", Tempcat, threads, partailfulldb, outaln, infile, outaln, partialdb);
             }
             /*if(inputfasta == 0)
@@ -286,8 +284,7 @@ int databaseAlignment(int num, char * infile) {
 
             if (pairedend == 1) {
                 sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -k %d %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, bowtieMaxHits, partailfulldb, infile, pairedFile, outaln, partialdb);
-            }
-            else {
+            } else {
                 sprintf(command, "%s %d -k %d %s %s > %s/%s.sam", Tempcat, threads, bowtieMaxHits, partailfulldb, outaln, infile, outaln, partialdb);
             }
 
@@ -309,8 +306,7 @@ int databaseAlignment(int num, char * infile) {
             //printf("4\n");
             if (pairedend == 1) {
                 sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -k %d %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, bowtieMaxHits, partailfulldb, infile, pairedFile, outaln, partialdb);
-            }
-            else {
+            } else {
                 sprintf(command, "%s %d -k %d %s %s > %s/%s.sam", Tempcat, threads, bowtieMaxHits, partailfulldb, infile, outaln, partialdb);
             }
 
@@ -915,7 +911,7 @@ void ParseDataMulti(void) {
 //Read SAM file specified by 'infile'
 
 void ReadSam(char * infile, FILE * out) {
-    FILE * handler = fopen(infile, "r+");
+    FILE * handler = fopen(infile, "r");
     char line[BUFSIZ];
     int i = 0;
     int j = 0;
@@ -995,7 +991,7 @@ void copyFile(char *source, char *dest) {
     pid = fork();
 
     if (pid == 0) { /* child */
-        execl("/bin/cp", "/bin/cp", source, dest, (char *) 0);
+        execl("/bin/cp", "/bin/cp", "-r", "-f", source, dest, (char *) 0);
     } else if (pid < 0) {
         /* error - couldn't start process - you decide how to handle */
     } else {
@@ -1041,7 +1037,7 @@ void nearestNeighborMultithread(void) {
     name = (char *) calloc(strlen("/unsorted_temp_neighbor.aln") + strlen(outaln) + 1, sizeof (char));
     strncpy(name, outaln, strlen(outaln));
     strcat(name, "/unsorted_temp_neighbor.aln");
-    neighborResults = fopen(name, "w+");
+    neighborResults = fopen(name, "w");
 
     for (i = 0; i < dbe; i++) {
         retrieveTime();
@@ -1049,8 +1045,7 @@ void nearestNeighborMultithread(void) {
             printf("Getting nearest neighbors of file: %s [ %s ]\n", inFiles[i], times);
             fflush(NULL);
             ReadSam(inFiles[i], neighborResults);
-        }
-        else {
+        } else {
             printf("Could not find SAM file named: %s\nSkipping from neighbor\n", inFiles[i]);
 
             if (NoAlignment == 1) {
@@ -1188,6 +1183,7 @@ void GetFinalFileNames(void) {
 //prints 'read_name\ttaxon_id" to file
 
 void MeganFormat(void) {
+    int i = 0;
     FILE * handle, * Mout;
     char line[BUFSIZ];
     int token = 0;
@@ -1206,15 +1202,19 @@ void MeganFormat(void) {
     strcat(meganin, "/Results/Taxonomy.txt");
     strcat(meganres, "/Results/megan.txt");
 
-    if (CheckFile(meganin) == 0) {
-        printf("No %s found, can't convert result to megan format\n");
-        free(meganin);
-        free(meganres);
-        return;
+    while (CheckFile(meganin) == 0) {
+        sleep(5);
+        if (i == 5) {
+            printf("No %s found, can't convert result to megan format\n", meganin);
+            free(meganin);
+            free(meganres);
+            return;
+        }
+        i++;
     }
 
-    handle = fopen(meganin, "r+");
-    Mout = fopen(meganres, "w+");
+    handle = fopen(meganin, "r");
+    Mout = fopen(meganres, "w");
 
     while (fgets(line, sizeof (line), handle)) {
         token = 0;
@@ -1295,9 +1295,9 @@ void FinalNearestNeighbor(void) {
         exit(EXIT_FAILURE);
     }
 
-    handle = fopen(InputName, "r+");
+    handle = fopen(InputName, "r");
     //handle = fopen("sorted.aln", "r+");
-    testout = fopen(OutputName, "w+");
+    testout = fopen(OutputName, "w");
 
     while (fgets(line, sizeof (line), handle)) {
         currName = ReturnName(line, currName);
@@ -1362,13 +1362,13 @@ int main(int argc, char *argv[]) {
 
     if (dbe > 1) {
         FinalNearestNeighbor();
-    }
-    else {
+    } else {
         CopyFileOneIndex();
     }
 
-    if (meganOut == 1)
+    if (meganOut == 1) {
         MeganFormat();
+    }
 
     InputFree();
     //taxonomyFree();

@@ -3,9 +3,18 @@
         <fieldset title='Input section' style="padding-left: 5px">    
             <legend>Input</legend>
             <br>
-            Full path to input file (reads):<br>
-            <input id='seq' size="80"/><br>
-            Full path to output directory:<br>
+            Full path to input file (reads):
+            <font title="Check for fasta input">
+            &nbsp;&nbsp;&nbsp;&nbsp; Is the input fasta?</font>
+            <input id='fasta' type="checkbox" title="Check for fasta input"/>
+            <br>
+            <input id='seq' size="80"/>        
+            <br>
+            Full path to output directory:
+            <font title="Check for megan output">
+            &nbsp;&nbsp;&nbsp;&nbsp; Check for megan output </font>
+            <input id='megan' type="checkbox" title="Check for megan output"/>
+            <br>
             <input id='o' size="80"/><br>
             <table>
                 <tr style="background: none;">
@@ -48,7 +57,18 @@
                 <input id='onlyneighbor' type="checkbox" title="Redo nearest neighbor search for alignment files in the specified output folder"/>&nbsp;&nbsp;&nbsp;&nbsp;
                 <font title="1 thread per 8GB of RAM">Number of threads:</font> 
                 <input id='p' size="2" value="1" title="1 thread per 8GB of RAM"/>
-            </div>
+            </div>            
+            <font title="If the reads are sequenced in paired-end mode, you can specify the second pair file">
+            Full path to second pair file:
+            </font>
+            <input id='paired' size="80"/>
+            <br>
+            <font title="Minimum insert size for paired-end (default 0)">Minimum insert size for paired-end:</font>   
+            <input id='l' size="3" value="0" title="Minimum insert size for paired-end (default 0)"/>&nbsp;&nbsp;&nbsp;&nbsp;
+            <font title="Maximum insert size for paired-end (default 500)">Maximum insert size for paired-end:</font>   
+            <input id='x' size="3" value="500" title="Maximum insert size for paired-end (default 500)"/>
+            <br>
+            <b>Note:</b> If paired-end mode is chosen, host filtering is disabled, and bowtie2 is used with --no-mixed and --no-discordant (reads have to be concordant, and both read pairs have to align).
         </fieldset>  
         <div class='required' id='submit' >
             <input  type="button" value="Run!" onclick='JavaScript:xmlhttpUpload("http://127.0.0.1:8083/?cmd=./bin/taxoner", "taxForm", "0")'>
