@@ -34,6 +34,8 @@ function getFormData(strURL, formName) {
     var result = new Array();
     if (formName == "taxForm") {
         var seq = document.getElementById("seq").value;
+        var fasta = document.getElementById("fasta").checked;
+        var megan = document.getElementById("megan").checked;
         var o = document.getElementById("o").value;
         var dbPath = document.getElementById("dbPath");
         var taxpath = document.getElementById("taxpath").value;
@@ -45,6 +47,9 @@ function getFormData(strURL, formName) {
         var bt2allhits = document.getElementById("bt2allhits").checked;
         var onlyneighbor = document.getElementById("onlyneighbor").checked;
         var p = document.getElementById("p").value;
+        var paired = document.getElementById("paired").value;
+        var l = document.getElementById("l").value;
+        var x = document.getElementById("x").value;
 
         if (typeof (seq) == "undefined" || seq == null || seq == "") {
             alert("Set the input file (reads), please");
@@ -70,6 +75,14 @@ function getFormData(strURL, formName) {
         result[0] = strURL + "%20-seq%20" + seq
                 + "%20-o%20" + o
                 + "%20-taxpath%20" + taxpath;
+
+        if (fasta == true) {
+            result[0] = result[0] + "%20-fasta";
+        }
+
+        if (megan == true) {
+            result[0] = result[0] + "%20-megan";
+        }
 
         if (dbList == 0) {
             /* Align with all DB */
@@ -125,6 +138,18 @@ function getFormData(strURL, formName) {
 
         if (typeof (p) != "undefined" && p != null && p != "") {
             result[0] = result[0] + "%20-p%20" + p;
+        }
+
+        if (typeof (paired) != "undefined" && paired != null && paired != "") {
+            result[0] = result[0] + "%20-paired%20" + paired;
+        }
+
+        if (typeof (l) != "undefined" && l != null && l != "") {
+            result[0] = result[0] + "%20-l%20" + l;
+        }
+
+        if (typeof (x) != "undefined" && x != null && x != "") {
+            result[0] = result[0] + "%20-x%20" + x;
         }
 
         result[0] = result[0]
