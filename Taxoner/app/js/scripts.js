@@ -153,7 +153,7 @@ function getFormData(strURL, formName) {
         }
 
         result[0] = result[0]
-                + ">" + o + "/stdout.log"
+                + "%20>%20" + o + "/stdout.log"
                 + "&async=true";
 
         result[1] = o + "/stdout";
