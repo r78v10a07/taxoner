@@ -90,7 +90,8 @@ http.createServer(function(req, res) {
                             + "</head>"
                             + "<body><script>var a = window.setTimeout('window.location.reload();', 2000);</script>"
                             + "<h1 class='title' id='page-title'>Log viewer</h1>"
-                            + "<a href='" + filename + "' target='_blank'/>" + filename + "</a><br><br>";
+                            + "<a href='file://" + filename.replace('stdout.log', '') + "' target='_blank'/>"
+                            + filename.replace('stdout.log', '') + "</a><br><br>";
 
                     if (typeof (stdout) == "undefined" || stdout == null || stdout == "") {
                         result = result + "Wait .... ";
