@@ -145,11 +145,11 @@ function getFormData(strURL, formName) {
         }
 
         if (typeof (I) != "undefined" && I != null && I != "") {
-            result[0] = result[0] + "%20-l%20" + I;
+            result[0] = result[0] + "%20-I%20" + I;
         }
 
         if (typeof (X) != "undefined" && X != null && X != "") {
-            result[0] = result[0] + "%20-x%20" + X;
+            result[0] = result[0] + "%20-X%20" + X;
         }
 
         result[0] = result[0]
