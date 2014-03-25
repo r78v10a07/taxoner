@@ -17,7 +17,7 @@ extern "C" {
         off_t offset;
     } giOffset_t;
 
-    extern void createBTreeIndex(char *text, char *bin, char *index, char *output);
+    extern void createBTreeIndex(char *text, char *bin, char *index, char *output, int verbose);
     extern int64_t timespecDiff(struct timespec *timeA_p, struct timespec *timeB_p);
 
 

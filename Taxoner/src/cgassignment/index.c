@@ -105,6 +105,7 @@ node *readIndexBtree(char *index) {
     fclose(fi);
     clock_gettime(CLOCK_MONOTONIC, &stop);
     printf("\n\tThere are %d GIs into the B+Tree. Elapsed time: %lu sec\n\n", count, timespecDiff(&stop, &start) / 1000000000);
+    fflush(NULL);
     return root;
 }
 
@@ -113,7 +114,7 @@ int64_t timespecDiff(struct timespec *timeA_p, struct timespec *timeB_p) {
             ((timeB_p->tv_sec * 1000000000) + timeB_p->tv_nsec);
 }
 
-void createBTreeIndex(char *text, char *bin, char *index, char *output) {
+void createBTreeIndex(char *text, char *bin, char *index, char *output, int verbose) {
     int i, j, k;
     struct timespec start, stop;
     node *root;
@@ -127,7 +128,7 @@ void createBTreeIndex(char *text, char *bin, char *index, char *output) {
     char *line = NULL;
     size_t len = 0;
     ssize_t read;
-    off_t oTotal, oCurr;    
+    off_t oTotal, oCurr;
     int taxId;
     int gi;
     float score;
@@ -152,9 +153,9 @@ void createBTreeIndex(char *text, char *bin, char *index, char *output) {
         fprintf(stdout, "Unable to open file %s\n", output);
         exit(-1);
     }
-    
+
     root = readIndexBtree(index);
-    
+
     fseeko(ft, 0, SEEK_END);
     oTotal = ftello(ft);
     fseeko(ft, 0, SEEK_SET);
@@ -166,26 +167,26 @@ void createBTreeIndex(char *text, char *bin, char *index, char *output) {
         if ((i = sscanf(line, "%*s\t%d\t%d\t%f\t%d\t%d", &taxId, &gi, &score, &pFrom, &pTo)) == 5) {
             clock_gettime(CLOCK_MONOTONIC, &stop);
             j = timespecDiff(&stop, &start) / 1000000000;
-            printf("\tLines reads %d. Reads without genes %d. GIs with genes %d. Elapsed time %lu sec. Estimated time %lu sec.\r",k++,noGene,count,j,(j * oTotal/oCurr));
+            if (verbose) {
+                printf("\tLines reads %d. Reads without genes %d. GIs with genes %d. Elapsed time %lu sec. Estimated time %lu sec.\r", k, noGene, count, j, (j * oTotal / oCurr));
+            }
             rec = find(root, gi, false);
-            if (rec != NULL) {                
-                if (!assignGenes(&assign, &g, &count, fb, *((off_t *) rec->value), pFrom, pTo)){ 
-                    noGene++;/*
-                    printf("\n%s\n",line);
-                    if (noGene == 10){
-                        break;
-                    }*/
+            if (rec != NULL) {
+                if (!assignGenes(&assign, &g, &count, fb, *((off_t *) rec->value), pFrom, pTo)) {
+                    noGene++;
                 }
-            }else{
+            } else {
                 noGene++;
             }
+            k++''
         } else {
             printf("Can't parse the line: %d\t", i);
             printf("[[%s]]\n", line);
             exit(-1);
         }
     }
-    printf("\tLines reads %d. Reads without genes %d. GIs with genes %d. Elapsed time %lu sec. Estimated time %lu sec.\n",k++, noGene,count,j,(j * oTotal/oCurr));
+    printf("\tLines reads %d. Reads without genes %d. GIs with genes %d. Elapsed time %lu sec. Estimated time %lu sec.\n", k++, noGene, count, j, (j * oTotal / oCurr));
+    fflush(NULL);
     if (line) free(line);
     line = malloc(sizeof (char) * 1);
     len = 1;
