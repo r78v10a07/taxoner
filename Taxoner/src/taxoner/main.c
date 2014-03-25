@@ -324,11 +324,10 @@ int databaseAlignment(int num, char * infile) {
     }
 
     printf("Command: %s\n", command);
-    fflush(NULL);
     printf("Index: %s\nReads: %s\nStart time: %s\n", partialdb, infile, times);
+    printf("Running Bowtie2 alignment ... This may take a lot ... \n");
     fflush(NULL);
     printf("Bowtie2 output:\n");
-    fflush(NULL);
     system(command); //run command
 
     if (CheckFile(outf) == 0) {
@@ -337,7 +336,6 @@ int databaseAlignment(int num, char * infile) {
     }
 
     printf("Getting nearest neighbors from %s database alignment\n", partailfulldb);
-    fflush(NULL);
     retrieveTime();
     printf("Finished at: %s\n\n", times);
     fflush(NULL);
@@ -368,6 +366,8 @@ int hostAlignment(void) {
         sprintf(command, "bowtie2 -f -p %d --un %s/%s %s %s > %s/host.sam", threads, outaln, nohost, host, reads, outaln);
 
     printf("Command: %s\n\n", command);
+    printf("Running Bowtie2 alignment ... This may take a lot ... \n");
+    fflush(NULL);
     printf("Bowtie2 output:\n");
     system(command);
     printf("--------------------------------------\n\n");
