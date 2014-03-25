@@ -161,6 +161,8 @@ void createBTreeIndex(char *text, char *bin, char *index, char *output, int verb
     fseeko(ft, 0, SEEK_SET);
 
     k = 1;
+    printf("Performing the gene assignment ... \n");
+    fflush(NULL);
     clock_gettime(CLOCK_MONOTONIC, &start);
     while ((read = getline(&line, &len, ft)) != -1) {
         oCurr = ftello(ft);
