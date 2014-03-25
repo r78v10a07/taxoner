@@ -72,7 +72,7 @@ function getFormData(strURL, formName) {
             return null;
         }
 
-        result[0] = strURL + "%20-seq%20" + seq
+        result[0] = strURL + "%20-v%20%20-seq%20" + seq
                 + "%20-o%20" + o
                 + "%20-taxpath%20" + taxpath;
 

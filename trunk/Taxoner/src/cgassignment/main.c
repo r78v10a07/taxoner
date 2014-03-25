@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
             fprintf(stdout, "Set the output file\n");
             print_usage(stdout, 1);
         }
-        createBTreeIndex(text, bin, index, output);
+        createBTreeIndex(text, bin, index, output, verbose);
     }
     if (text) free(text);
     if (bin) free(bin);
