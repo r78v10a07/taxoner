@@ -178,7 +178,7 @@ void createBTreeIndex(char *text, char *bin, char *index, char *output, int verb
             } else {
                 noGene++;
             }
-            k++''
+            k++;
         } else {
             printf("Can't parse the line: %d\t", i);
             printf("[[%s]]\n", line);
