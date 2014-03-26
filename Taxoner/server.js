@@ -8,7 +8,9 @@ var express = require('express'),
         exec = require('child_process').exec,
         libpath = require('path'),
         fs = require('fs'),
-        mime = require('mime');
+        mime = require('mime'),
+        readline = require('readline'),
+        stream = require('stream');
 /*
  * Server Config
  */
@@ -16,9 +18,25 @@ var host = "127.0.0.1",
         htmlPort = "8081",
         filePort = "8082",
         cmdPort = "8083",
+        statusPort = "8084",
         cmdURL = "http://" + host + ":" + cmdPort,
         htmlURL = "http://" + host + ":" + htmlPort,
-        fileURL = "http://" + host + ":" + filePort;
+        fileURL = "http://" + host + ":" + filePort,
+        statusURL = "http://" + host + ":" + statusPort;
+
+var nodesMap = {};
+
+var header = "<!doctype html>"
+        + "<html lang='en'>"
+        + "<head>"
+        + "<meta charset='utf-8'>"
+        + "<link rel='stylesheet' type='text/css' href='" + htmlURL + "/css/layout.css' /> "
+        + "<link rel='stylesheet' type='text/css' href='" + htmlURL + "/css/style.css' />"
+        + "<link rel='stylesheet' type='text/css' href='" + htmlURL + "/css/colors.css' />"
+        + "</head>"
+        + "<body>";
+
+var end = "</body></html>";
 /*
  * Server to run commands over http
  */
@@ -36,7 +54,7 @@ http.createServer(function(req, res) {
         var result = '{"stdout":"' + '' + '","stderr":"' + 'cmd is mandatory' + '","cmd":"' + cmd + '"}';
         res.end(result + '\n');
     }
-    if (async == "true") {
+    if (async === "true") {
         var result = '{"stdout":"async request' + '' + '","stderr":"' + '' + '","cmd":"' + cmd + '"}';
         res.end(result + '\n');
     }
@@ -53,7 +71,7 @@ http.createServer(function(req, res) {
     var n = parsedUrl.query['n'];
     var h;
 
-    if (!n || n == 2) {
+    if (!n || n === 2) {
         n = 2;
         h = 1;
     } else {
@@ -80,30 +98,22 @@ http.createServer(function(req, res) {
                     cmd = cmd + " | sed 's/\\r/\\n/g' | tail -n " + n + " | head -n " + h;
                 }
                 var child = exec(cmd, function(error, stdout, stderr) {
-                    var result = "<!doctype html>"
-                            + "<html lang='en'>"
-                            + "<head>"
-                            + "<meta charset='utf-8'>"
-                            + "<link rel='stylesheet' type='text/css' href='" + htmlURL + "/css/layout.css' /> "
-                            + "<link rel='stylesheet' type='text/css' href='" + htmlURL + "/css/style.css' />"
-                            + "<link rel='stylesheet' type='text/css' href='" + htmlURL + "/css/colors.css' />"
-                            + "</head>"
-                            + "<body><script>var a = window.setTimeout('window.location.reload();', 2000);</script>"
+                    var result = header
+                            + "<script>var a = window.setTimeout('window.location.reload();', 2000);</script>"
                             + "<div align='center'>"
                             + "<h1 class='title' id='page-title'>Log viewer</h1>"
-                            + "<a href='" + cmdURL + "/?cmd=xdg-open%20" + filename.replace('stdout.log', '') + "' target='_blank'/>Click to go to your output dir</a>"
+                            + "<a href='" + cmdURL + "/?cmd=xdg-open%20" + filename.replace('stdout.log', '') + "' target='_blank'/>Click to go to your output dir</a><br>"
                             + "</div>"
                             + "<br><br>";
 
-                    if (typeof (stdout) == "undefined" || stdout == null || stdout == "") {
+                    if (typeof (stdout) === "undefined" || stdout === null || stdout === "") {
                         result = result + "Wait .... ";
                     } else {
                         result = result + "<pre>" + stdout + "</pre>";
                     }
 
                     result = result
-                            + "</body>"
-                            + "</html>";
+                            + end;
 
                     res.end(result);
                 });
@@ -117,6 +127,20 @@ http.createServer(function(req, res) {
     }
 }).listen(filePort, host);
 console.log('File server running at ' + fileURL);
+
+/*
+ * Server to show status
+ */
+http.createServer(function(req, res) {
+    var parsedUrl = url.parse(req.url, true);
+    var filename = parsedUrl.query['file'];
+    res.writeHead(200, {'Content-Type': 'text/html'});
+
+    setNodesRank(setNodesNames, filename, res);
+
+}).listen(statusPort, host);
+console.log('CMD server running at ' + statusURL);
+
 /*
  * Server for the http site
  */
@@ -128,3 +152,265 @@ app.configure(function() {
 });
 app.listen(htmlPort);
 console.log('HTML server running at ' + htmlURL);
+
+/**
+ * This function create the server who parse the results files for Taxoner and 
+ * GeneAssignment to create the summary tables
+ * 
+ * @param {type} filename the file to be parsed
+ * @param {type} res the html response
+ */
+function server(filename, res) {
+    if (typeof String.prototype.endsWith !== 'function') {
+        String.prototype.endsWith = function(suffix) {
+            return this.indexOf(suffix, this.length - suffix.length) !== -1;
+        };
+    }
+    if (filename) {
+        fs.exists(filename, function(exists) {
+            if (!exists) {
+                var result = header
+                        + "<script>var a = window.setTimeout('window.location.reload();', 2000);</script>"
+                        + "<h1 class='title' id='page - title'>Summary</h1>"
+                        + end;
+                res.end(result);
+                return;
+            } else {
+                if (fs.statSync(filename).isFile) {
+                    if (filename.endsWith("Taxonomy.txt")) {
+                        var instream = fs.createReadStream(filename);
+                        var outstream = new stream;
+                        outstream.readable = true;
+                        outstream.writable = true;
+
+                        var result = header;
+                        var taxs = {};
+
+                        var rl = readline.createInterface({
+                            input: instream,
+                            output: outstream,
+                            terminal: false
+                        });
+
+                        rl.on('line', function(line) {
+                            fields = line.split("\t");
+                            if (fields.length > 1) {
+                                if (typeof (taxs[fields[1]]) === "undefined") {
+                                    taxs[fields[1]] = {};
+                                    taxs[fields[1]]['taxId'] = fields[1];
+                                    taxs[fields[1]]['total'] = 1;
+                                    taxs[fields[1]]['gi'] = {};
+                                    taxs[fields[1]]['gi'][fields[2]] = 1;
+                                } else {
+                                    if (typeof (taxs[fields[1]]['gi'][fields[2]]) === "undefined") {
+                                        taxs[fields[1]]['gi'][fields[2]] = 1;
+                                    } else {
+                                        taxs[fields[1]]['gi'][fields[2]] = taxs[fields[1]]['gi'][fields[2]] + 1;
+                                    }
+                                    taxs[fields[1]]['total'] = taxs[fields[1]]['total'] + 1;
+                                }
+                            }
+                        }).on('close', function() {
+                            var sortable = [];
+                            for (var key in taxs) {
+                                sortable.push([key, taxs[key]['total']]);
+                            }
+                            sortable.sort(function(a, b) {
+                                return b[1] - a[1]
+                            });
+                            result = result
+                                    + "<h1 class='title' id='page - title'>Summary</h1>"
+                                    + "<table>"
+                                    + "<tr><th>Taxonomy</th>"
+                                    + "<th>Rank</th>"
+                                    + "<th>No. of Reads</th></tr>";
+                            for (var i = 0; i < sortable.length; i++) {
+                                var key = sortable[i][0];
+                                var taxId = taxs[key]['taxId'];
+                                result = result
+                                        + "<tr><td>"
+                                        + "<a href='https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id="
+                                        + taxId
+                                        + "' target='_blank'>"
+                                        + nodesMap[taxId]['name']
+                                        + " ("
+                                        + taxId
+                                        + ")"
+                                        + "</a>"
+                                        + "</td><td>"
+                                        + nodesMap[taxId]['rank']
+                                        + "</td><td>"
+                                        + taxs[taxId]['total']
+                                        + "</td></tr>";
+                            }
+                            result = result
+                                    + "</table>";
+                            res.end(result);
+                        });
+                    } else if (filename.endsWith("genes.txt")) {
+                        var instream = fs.createReadStream(filename);
+                        var outstream = new stream;
+                        outstream.readable = true;
+                        outstream.writable = true;
+
+                        var result = header;
+                        var taxs = {};
+
+                        var rl = readline.createInterface({
+                            input: instream,
+                            output: outstream,
+                            terminal: false
+                        });
+
+                        rl.on('line', function(line) {
+                            fields = line.split("\t");
+                            if (fields.length > 1) {
+                                if (typeof (taxs[fields[1]]) === "undefined") {
+                                    taxs[fields[1]] = {};
+                                    taxs[fields[1]]['taxId'] = fields[1];
+                                    taxs[fields[1]]['total'] = parseInt(fields[4]);
+                                    taxs[fields[1]]['prot'] = 1;
+                                    taxs[fields[1]]['gi'] = {};
+                                    taxs[fields[1]]['gi'][fields[2]] = parseInt(fields[4]);
+                                } else {
+                                    if (typeof (taxs[fields[1]]['gi'][fields[2]]) === "undefined") {
+                                        taxs[fields[1]]['gi'][fields[2]] = parseInt(fields[4]);
+                                    } else {
+                                        taxs[fields[1]]['gi'][fields[2]] = taxs[fields[1]]['gi'][fields[2]] + parseInt(fields[4]);
+                                    }
+                                    taxs[fields[1]]['total'] = taxs[fields[1]]['total'] + parseInt(fields[4]);
+                                    taxs[fields[1]]['prot'] = taxs[fields[1]]['prot'] + 1;
+                                }
+                            }
+                        }).on('close', function() {
+                            var sortable = [];
+                            for (var key in taxs) {
+                                sortable.push([key, taxs[key]['total']]);
+                            }
+                            sortable.sort(function(a, b) {
+                                return b[1] - a[1]
+                            });
+                            result = result
+                                    + "<h1 class='title' id='page - title'>Summary</h1>"
+                                    + "<table>"
+                                    + "<tr><th>Taxonomy</th>"
+                                    + "<th>Rank</th>"
+                                    + "<th>No. of Genes</th>"
+                                    + "<th>No. of Hits</th></tr>";
+                            for (var i = 0; i < sortable.length; i++) {
+                                var key = sortable[i][0];
+                                var taxId = taxs[key]['taxId'];
+                                result = result
+                                        + "<tr><td>"
+                                        + "<a href='https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id="
+                                        + taxId
+                                        + "' target='_blank'>"
+                                        + nodesMap[taxId]['name']
+                                        + " ("
+                                        + taxId
+                                        + ")"
+                                        + "</a>"
+                                        + "</td><td>"
+                                        + nodesMap[taxId]['rank']
+                                        + "</td><td>"
+                                        + taxs[taxId]['prot']
+                                        +"</td><td>"
+                                        + taxs[taxId]['total']
+                                        + "</td></tr>";
+                            }
+                            result = result
+                                    + "</table>";
+                            res.end(result);
+                        });
+                    } else {
+                        var result = header
+                                + "The server only parse Taxonomy.txt or genes.txt files<br>"
+                                + end;
+                        res.end(result);
+                        return;
+                    }
+                }
+
+            }
+        });
+    } else {
+        var result = header
+                + "<script>var a = window.setTimeout('window.location.reload();', 2000);</script>"
+                + "This server analyze the result files<br>"
+                + "The useage:<br>"
+                + statusURL + "/?file=filename.txt"
+                + end;
+        res.end(result);
+    }
+}
+
+/**
+ * This function parse the nodes.dmp file and creates a nodesMap object to 
+ * storage the data
+ * 
+ * @param {type} callback The clallback function to execute after parse the file
+ * @param {type} filename the result file to be parsed
+ * @param {type} res 
+ * @returns {undefined}
+ */
+function setNodesRank(callback, filename, res) {
+    if (typeof (nodesMap[2]) === "undefined") {
+        console.log("Reading the nodes file from databases/nodes.dmp");
+        var instream = fs.createReadStream("databases/nodes.dmp");
+        var outstream = new stream;
+        outstream.readable = true;
+        outstream.writable = true;
+
+        var rl = readline.createInterface({
+            input: instream,
+            output: outstream,
+            terminal: false
+        });
+
+        rl.on('line', function(line) {
+            fields = line.split("|");
+            if (fields.length > 1) {
+                nodesMap[fields[0].trim()] = {};
+                nodesMap[fields[0].trim()]['rank'] = fields[2].trim();
+            }
+        }).on('close', function() {
+            console.log("Calling the setNodesNames function after read the nodes file");
+            callback(server, filename, res);
+        });
+    } else {
+        console.log("Calling the setNodesNames function");
+        callback(server, filename, res);
+    }
+}
+
+function setNodesNames(callback, filename, res) {
+    if (typeof (nodesMap[2]['name']) === "undefined") {
+        console.log("Reading the name file from databases/names");
+        var instream = fs.createReadStream("databases/names");
+        var outstream = new stream;
+        outstream.readable = true;
+        outstream.writable = true;
+
+        var rl = readline.createInterface({
+            input: instream,
+            output: outstream,
+            terminal: false
+        });
+
+        rl.on('line', function(line) {
+            fields = line.split("\t");
+            if (fields.length > 1) {
+                if (typeof (nodesMap[fields[0].trim()]['rank']) !== "undefined") {
+                    nodesMap[fields[0].trim()]['name'] = fields[1].trim();
+                }
+            }
+        }).on('close', function() {
+            console.log("Calling the callback function after read the names file");
+            callback(filename, res);
+        });
+    } else {
+        console.log("Calling the server function");
+        callback(filename, res);
+    }
+}
+

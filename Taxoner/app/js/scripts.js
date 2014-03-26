@@ -16,7 +16,16 @@ function xmlhttpUpload(strURL, formName, logLines) {
     xmlreq.open('POST', result[0], true);
     xmlreq.onreadystatechange = function() {
         if (xmlreq.readyState == 4) {
-            updateElementById("result", '<iframe id="extFrame" width="100%" seamless="seamless" height="340px" scrolling="yes" frameborder="0" src="http://127.0.0.1:8082/?file=' + result[1] + '.log&n=' + logLines + '"></iframe>');
+            var html =
+                    '<iframe id="extFrame" width="100%" seamless="seamless" '
+                    + 'height="340px" scrolling="yes" frameborder="0" src="http://127.0.0.1:8084/?file='
+                    + result[2]
+                    + '"></iframe><br>'
+                    + '<iframe id="extFrame" width="100%" seamless="seamless" '
+                    + 'height="340px" scrolling="yes" frameborder="0" src="http://127.0.0.1:8082/?file='
+                    + result[1] + '.log&n=' + logLines
+                    + '"></iframe><br>';
+            updateElementById("result", html);
         }
     };
     xmlreq.send(result[0]);
@@ -90,7 +99,8 @@ function getFormData(strURL, formName) {
         } else if (dbList == 1) {
             /* Align with Bacteria */
             result[0] = result[0] + "%20-dbPath%20databases/bowtie2"
-                    + "%20-dbNames%20bact.0.fasta,bact.1.fasta,bact.2.fasta,bact.3.fasta";
+                    //+ "%20-dbNames%20bact.0.fasta,bact.1.fasta,bact.2.fasta,bact.3.fasta";
+                    + "%20-dbNames%20bact.0.fasta";
         } else if (dbList == 2) {
             /* Align with Archaea */
             result[0] = result[0] + "%20-dbPath%20databases/bowtie2"
@@ -157,6 +167,7 @@ function getFormData(strURL, formName) {
                 + "&async=true";
 
         result[1] = o + "/stdout";
+        result[2] = o + "/Results/Taxonomy.txt";
         console.log("URL: ", result[0]);
         console.log("Log" + result[1]);
     } else if (formName == "geneForm") {
@@ -192,6 +203,7 @@ function getFormData(strURL, formName) {
                 + ">" + outDir + ".log"
                 + "&async=true";
         result[1] = outDir;
+        result[2] = outDir + "/genes.txt";
     }
     return result;
 }
