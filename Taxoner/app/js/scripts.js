@@ -17,7 +17,7 @@ function xmlhttpUpload(strURL, formName, logLines) {
     xmlreq.onreadystatechange = function() {
         if (xmlreq.readyState == 4) {
             var html =
-                    '<iframe id="extFrame" width="100%" seamless="seamless" '
+                    '<iframe id="sumFrame" width="100%" seamless="seamless" '
                     + 'height="340px" scrolling="yes" frameborder="0" src="http://127.0.0.1:8084/?file='
                     + result[2]
                     + '"></iframe><br>'
