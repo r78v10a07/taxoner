@@ -100,7 +100,7 @@ function getFormData(strURL, formName) {
             /* Align with Bacteria */
             result[0] = result[0] + "%20-dbPath%20databases/bowtie2"
                     + "%20-dbNames%20bact.0.fasta,bact.1.fasta,bact.2.fasta,bact.3.fasta";
-                    //+ "%20-dbNames%20bact.0.fasta";
+            //+ "%20-dbNames%20bact.0.fasta";
         } else if (dbList == 2) {
             /* Align with Archaea */
             result[0] = result[0] + "%20-dbPath%20databases/bowtie2"
@@ -202,7 +202,7 @@ function getFormData(strURL, formName) {
                 + "%20-i%20" + indDB
                 + ">" + outDir + "/genes.log"
                 + "&async=true";
-        result[1] = outDir;
+        result[1] = outDir + "/genes";
         result[2] = outDir + "/genes.txt";
     }
     return result;
