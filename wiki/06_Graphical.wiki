@@ -3,7 +3,7 @@
 
 The Graphical interface is javascript based web site developed using [http://angularjs.org/ AngularJS] and running over a [http://nodejs.org/ Nodes.JS] server.
 
-This graphical interface is designed to be used just *locally*. <font color=red>It is not designed to be used as a server.</font> The *path* inputs in the interface are local paths following the normal Unix way. 
+This graphical interface is designed to be used just *locally*. <font color=red>It is not designed to be used as a public server on Internet.</font> The *path* inputs in the interface are local paths following the normal Unix way. 
 
 
 == Taxoner == 
