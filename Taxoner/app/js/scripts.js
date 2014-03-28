@@ -196,8 +196,8 @@ function getFormData(strURL, formName) {
             return null;
         }
 
-        result[0] = strURL + "%20-t%20" + inFile
-                + "%20-o%20" + outDir
+        result[0] = strURL + "%20-v%20%20-t%20" + inFile
+                + "%20-o%20" + outDir + "/genes.txt"
                 + "%20-b%20" + binDB
                 + "%20-i%20" + indDB
                 + ">" + outDir + ".log"
