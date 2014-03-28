@@ -10,11 +10,14 @@ This graphical interface is designed to be used just *locally*. <font color=red>
 
 http://taxoner.googlecode.com/svn/wiki/image/code1.jpg
 
-The reasult with a summary page
-
+The result with a summary page
 
 http://taxoner.googlecode.com/svn/wiki/image/code3.jpg
 
 == Gene Assignment ==
 
 http://taxoner.googlecode.com/svn/wiki/image/code2.jpg
+
+The result with a summary page
+
+http://taxoner.googlecode.com/svn/wiki/image/code4.jpg
