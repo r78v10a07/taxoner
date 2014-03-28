@@ -172,7 +172,8 @@ function server(filename, res) {
                 var result = header
                         + "<script>var a = window.setTimeout('window.location.reload();', 2000);</script>"
                         + "<h1 class='title' id='page - title'>Summary</h1>"
-                        + end;
+                        + "Waiting for the result file";
+                +end;
                 res.end(result);
                 return;
             } else {
@@ -314,7 +315,7 @@ function server(filename, res) {
                                         + nodesMap[taxId]['rank']
                                         + "</td><td>"
                                         + taxs[taxId]['prot']
-                                        +"</td><td>"
+                                        + "</td><td>"
                                         + taxs[taxId]['total']
                                         + "</td></tr>";
                             }
@@ -374,11 +375,9 @@ function setNodesRank(callback, filename, res) {
                 nodesMap[fields[0].trim()]['rank'] = fields[2].trim();
             }
         }).on('close', function() {
-            console.log("Calling the setNodesNames function after read the nodes file");
             callback(server, filename, res);
         });
     } else {
-        console.log("Calling the setNodesNames function");
         callback(server, filename, res);
     }
 }
@@ -405,11 +404,9 @@ function setNodesNames(callback, filename, res) {
                 }
             }
         }).on('close', function() {
-            console.log("Calling the callback function after read the names file");
             callback(filename, res);
         });
     } else {
-        console.log("Calling the server function");
         callback(filename, res);
     }
 }

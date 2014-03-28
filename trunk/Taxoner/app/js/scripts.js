@@ -99,8 +99,8 @@ function getFormData(strURL, formName) {
         } else if (dbList == 1) {
             /* Align with Bacteria */
             result[0] = result[0] + "%20-dbPath%20databases/bowtie2"
-                    //+ "%20-dbNames%20bact.0.fasta,bact.1.fasta,bact.2.fasta,bact.3.fasta";
-                    + "%20-dbNames%20bact.0.fasta";
+                    + "%20-dbNames%20bact.0.fasta,bact.1.fasta,bact.2.fasta,bact.3.fasta";
+                    //+ "%20-dbNames%20bact.0.fasta";
         } else if (dbList == 2) {
             /* Align with Archaea */
             result[0] = result[0] + "%20-dbPath%20databases/bowtie2"
