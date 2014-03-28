@@ -171,7 +171,7 @@ function server(filename, res) {
             if (!exists) {
                 var result = header
                         + "<script>var a = window.setTimeout('window.location.reload();', 2000);</script>"
-                        + "<h1 class='title' id='page - title'>Summary</h1>"
+                        + "<h1 class='title' id='page-title'>Summary</h1>"
                         + "Waiting for the result file";
                 +end;
                 res.end(result);
@@ -182,7 +182,7 @@ function server(filename, res) {
                     if (file["size"] === 0) {
                         var result = header
                                 + "<script>var a = window.setTimeout('window.location.reload();', 2000);</script>"
-                                + "<h1 class='title' id='page - title'>Summary</h1>"
+                                + "<h1 class='title' id='page-title'>Summary</h1>"
                                 + "Waiting for the result file";
                         +end;
                         res.end(result);
@@ -227,10 +227,10 @@ function server(filename, res) {
                                     sortable.push([key, taxs[key]['total']]);
                                 }
                                 sortable.sort(function(a, b) {
-                                    return b[1] - a[1]
+                                    return b[1] - a[1];
                                 });
                                 result = result
-                                        + "<h1 class='title' id='page - title'>Summary</h1>"
+                                        + "<h1 class='title' id='page-title'>Summary</h1>"
                                         + "<table>"
                                         + "<tr><th>Taxonomy</th>"
                                         + "<th>Rank</th>"
@@ -299,10 +299,10 @@ function server(filename, res) {
                                     sortable.push([key, taxs[key]['total']]);
                                 }
                                 sortable.sort(function(a, b) {
-                                    return b[1] - a[1]
+                                    return b[1] - a[1];
                                 });
                                 result = result
-                                        + "<h1 class='title' id='page - title'>Summary</h1>"
+                                        + "<h1 class='title' id='page-title'>Summary</h1>"
                                         + "<table>"
                                         + "<tr><th>Taxonomy</th>"
                                         + "<th>Rank</th>"
