@@ -139,7 +139,7 @@ http.createServer(function(req, res) {
     setNodesRank(setNodesNames, filename, res);
 
 }).listen(statusPort, host);
-console.log('CMD server running at ' + statusURL);
+console.log('Summary server running at ' + statusURL);
 
 /*
  * Server for the http site
@@ -177,158 +177,169 @@ function server(filename, res) {
                 res.end(result);
                 return;
             } else {
-                if (fs.statSync(filename).isFile) {
-                    if (filename.endsWith("Taxonomy.txt")) {
-                        var instream = fs.createReadStream(filename);
-                        var outstream = new stream;
-                        outstream.readable = true;
-                        outstream.writable = true;
-
-                        var result = header;
-                        var taxs = {};
-
-                        var rl = readline.createInterface({
-                            input: instream,
-                            output: outstream,
-                            terminal: false
-                        });
-
-                        rl.on('line', function(line) {
-                            fields = line.split("\t");
-                            if (fields.length > 1) {
-                                if (typeof (taxs[fields[1]]) === "undefined") {
-                                    taxs[fields[1]] = {};
-                                    taxs[fields[1]]['taxId'] = fields[1];
-                                    taxs[fields[1]]['total'] = 1;
-                                    taxs[fields[1]]['gi'] = {};
-                                    taxs[fields[1]]['gi'][fields[2]] = 1;
-                                } else {
-                                    if (typeof (taxs[fields[1]]['gi'][fields[2]]) === "undefined") {
-                                        taxs[fields[1]]['gi'][fields[2]] = 1;
-                                    } else {
-                                        taxs[fields[1]]['gi'][fields[2]] = taxs[fields[1]]['gi'][fields[2]] + 1;
-                                    }
-                                    taxs[fields[1]]['total'] = taxs[fields[1]]['total'] + 1;
-                                }
-                            }
-                        }).on('close', function() {
-                            var sortable = [];
-                            for (var key in taxs) {
-                                sortable.push([key, taxs[key]['total']]);
-                            }
-                            sortable.sort(function(a, b) {
-                                return b[1] - a[1]
-                            });
-                            result = result
-                                    + "<h1 class='title' id='page - title'>Summary</h1>"
-                                    + "<table>"
-                                    + "<tr><th>Taxonomy</th>"
-                                    + "<th>Rank</th>"
-                                    + "<th>No. of Reads</th></tr>";
-                            for (var i = 0; i < sortable.length; i++) {
-                                var key = sortable[i][0];
-                                var taxId = taxs[key]['taxId'];
-                                result = result
-                                        + "<tr><td>"
-                                        + "<a href='https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id="
-                                        + taxId
-                                        + "' target='_blank'>"
-                                        + nodesMap[taxId]['name']
-                                        + " ("
-                                        + taxId
-                                        + ")"
-                                        + "</a>"
-                                        + "</td><td>"
-                                        + nodesMap[taxId]['rank']
-                                        + "</td><td>"
-                                        + taxs[taxId]['total']
-                                        + "</td></tr>";
-                            }
-                            result = result
-                                    + "</table>";
-                            res.end(result);
-                        });
-                    } else if (filename.endsWith("genes.txt")) {
-                        var instream = fs.createReadStream(filename);
-                        var outstream = new stream;
-                        outstream.readable = true;
-                        outstream.writable = true;
-
-                        var result = header;
-                        var taxs = {};
-
-                        var rl = readline.createInterface({
-                            input: instream,
-                            output: outstream,
-                            terminal: false
-                        });
-
-                        rl.on('line', function(line) {
-                            fields = line.split("\t");
-                            if (fields.length > 1) {
-                                if (typeof (taxs[fields[1]]) === "undefined") {
-                                    taxs[fields[1]] = {};
-                                    taxs[fields[1]]['taxId'] = fields[1];
-                                    taxs[fields[1]]['total'] = parseInt(fields[4]);
-                                    taxs[fields[1]]['prot'] = 1;
-                                    taxs[fields[1]]['gi'] = {};
-                                    taxs[fields[1]]['gi'][fields[2]] = parseInt(fields[4]);
-                                } else {
-                                    if (typeof (taxs[fields[1]]['gi'][fields[2]]) === "undefined") {
-                                        taxs[fields[1]]['gi'][fields[2]] = parseInt(fields[4]);
-                                    } else {
-                                        taxs[fields[1]]['gi'][fields[2]] = taxs[fields[1]]['gi'][fields[2]] + parseInt(fields[4]);
-                                    }
-                                    taxs[fields[1]]['total'] = taxs[fields[1]]['total'] + parseInt(fields[4]);
-                                    taxs[fields[1]]['prot'] = taxs[fields[1]]['prot'] + 1;
-                                }
-                            }
-                        }).on('close', function() {
-                            var sortable = [];
-                            for (var key in taxs) {
-                                sortable.push([key, taxs[key]['total']]);
-                            }
-                            sortable.sort(function(a, b) {
-                                return b[1] - a[1]
-                            });
-                            result = result
-                                    + "<h1 class='title' id='page - title'>Summary</h1>"
-                                    + "<table>"
-                                    + "<tr><th>Taxonomy</th>"
-                                    + "<th>Rank</th>"
-                                    + "<th>No. of Genes</th>"
-                                    + "<th>No. of Hits</th></tr>";
-                            for (var i = 0; i < sortable.length; i++) {
-                                var key = sortable[i][0];
-                                var taxId = taxs[key]['taxId'];
-                                result = result
-                                        + "<tr><td>"
-                                        + "<a href='https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id="
-                                        + taxId
-                                        + "' target='_blank'>"
-                                        + nodesMap[taxId]['name']
-                                        + " ("
-                                        + taxId
-                                        + ")"
-                                        + "</a>"
-                                        + "</td><td>"
-                                        + nodesMap[taxId]['rank']
-                                        + "</td><td>"
-                                        + taxs[taxId]['prot']
-                                        + "</td><td>"
-                                        + taxs[taxId]['total']
-                                        + "</td></tr>";
-                            }
-                            result = result
-                                    + "</table>";
-                            res.end(result);
-                        });
-                    } else {
+                var file = fs.statSync(filename);
+                if (file.isFile) {
+                    if (file["size"] === 0) {
                         var result = header
-                                + "The server only parse Taxonomy.txt or genes.txt files<br>"
-                                + end;
+                                + "<script>var a = window.setTimeout('window.location.reload();', 2000);</script>"
+                                + "<h1 class='title' id='page - title'>Summary</h1>"
+                                + "Waiting for the result file";
+                        +end;
                         res.end(result);
                         return;
+                    } else {
+                        if (filename.endsWith("Taxonomy.txt")) {
+                            var instream = fs.createReadStream(filename);
+                            var outstream = new stream;
+                            outstream.readable = true;
+                            outstream.writable = true;
+
+                            var result = header;
+                            var taxs = {};
+
+                            var rl = readline.createInterface({
+                                input: instream,
+                                output: outstream,
+                                terminal: false
+                            });
+
+                            rl.on('line', function(line) {
+                                fields = line.split("\t");
+                                if (fields.length > 1) {
+                                    if (typeof (taxs[fields[1]]) === "undefined") {
+                                        taxs[fields[1]] = {};
+                                        taxs[fields[1]]['taxId'] = fields[1];
+                                        taxs[fields[1]]['total'] = 1;
+                                        taxs[fields[1]]['gi'] = {};
+                                        taxs[fields[1]]['gi'][fields[2]] = 1;
+                                    } else {
+                                        if (typeof (taxs[fields[1]]['gi'][fields[2]]) === "undefined") {
+                                            taxs[fields[1]]['gi'][fields[2]] = 1;
+                                        } else {
+                                            taxs[fields[1]]['gi'][fields[2]] = taxs[fields[1]]['gi'][fields[2]] + 1;
+                                        }
+                                        taxs[fields[1]]['total'] = taxs[fields[1]]['total'] + 1;
+                                    }
+                                }
+                            }).on('close', function() {
+                                var sortable = [];
+                                for (var key in taxs) {
+                                    sortable.push([key, taxs[key]['total']]);
+                                }
+                                sortable.sort(function(a, b) {
+                                    return b[1] - a[1]
+                                });
+                                result = result
+                                        + "<h1 class='title' id='page - title'>Summary</h1>"
+                                        + "<table>"
+                                        + "<tr><th>Taxonomy</th>"
+                                        + "<th>Rank</th>"
+                                        + "<th>No. of Reads</th></tr>";
+                                for (var i = 0; i < sortable.length; i++) {
+                                    var key = sortable[i][0];
+                                    var taxId = taxs[key]['taxId'];
+                                    result = result
+                                            + "<tr><td>"
+                                            + "<a href='https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id="
+                                            + taxId
+                                            + "' target='_blank'>"
+                                            + nodesMap[taxId]['name']
+                                            + " ("
+                                            + taxId
+                                            + ")"
+                                            + "</a>"
+                                            + "</td><td>"
+                                            + nodesMap[taxId]['rank']
+                                            + "</td><td>"
+                                            + taxs[taxId]['total']
+                                            + "</td></tr>";
+                                }
+                                result = result
+                                        + "</table>";
+                                res.end(result);
+                            });
+                        } else if (filename.endsWith("genes.txt")) {
+                            var instream = fs.createReadStream(filename);
+                            var outstream = new stream;
+                            outstream.readable = true;
+                            outstream.writable = true;
+
+                            var result = header;
+                            var taxs = {};
+
+                            var rl = readline.createInterface({
+                                input: instream,
+                                output: outstream,
+                                terminal: false
+                            });
+
+                            rl.on('line', function(line) {
+                                fields = line.split("\t");
+                                if (fields.length > 1) {
+                                    if (typeof (taxs[fields[1]]) === "undefined") {
+                                        taxs[fields[1]] = {};
+                                        taxs[fields[1]]['taxId'] = fields[1];
+                                        taxs[fields[1]]['total'] = parseInt(fields[4]);
+                                        taxs[fields[1]]['prot'] = 1;
+                                        taxs[fields[1]]['gi'] = {};
+                                        taxs[fields[1]]['gi'][fields[2]] = parseInt(fields[4]);
+                                    } else {
+                                        if (typeof (taxs[fields[1]]['gi'][fields[2]]) === "undefined") {
+                                            taxs[fields[1]]['gi'][fields[2]] = parseInt(fields[4]);
+                                        } else {
+                                            taxs[fields[1]]['gi'][fields[2]] = taxs[fields[1]]['gi'][fields[2]] + parseInt(fields[4]);
+                                        }
+                                        taxs[fields[1]]['total'] = taxs[fields[1]]['total'] + parseInt(fields[4]);
+                                        taxs[fields[1]]['prot'] = taxs[fields[1]]['prot'] + 1;
+                                    }
+                                }
+                            }).on('close', function() {
+                                var sortable = [];
+                                for (var key in taxs) {
+                                    sortable.push([key, taxs[key]['total']]);
+                                }
+                                sortable.sort(function(a, b) {
+                                    return b[1] - a[1]
+                                });
+                                result = result
+                                        + "<h1 class='title' id='page - title'>Summary</h1>"
+                                        + "<table>"
+                                        + "<tr><th>Taxonomy</th>"
+                                        + "<th>Rank</th>"
+                                        + "<th>No. of Genes</th>"
+                                        + "<th>No. of Reads</th></tr>";
+                                for (var i = 0; i < sortable.length; i++) {
+                                    var key = sortable[i][0];
+                                    var taxId = taxs[key]['taxId'];
+                                    result = result
+                                            + "<tr><td>"
+                                            + "<a href='https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id="
+                                            + taxId
+                                            + "' target='_blank'>"
+                                            + nodesMap[taxId]['name']
+                                            + " ("
+                                            + taxId
+                                            + ")"
+                                            + "</a>"
+                                            + "</td><td>"
+                                            + nodesMap[taxId]['rank']
+                                            + "</td><td>"
+                                            + taxs[taxId]['prot']
+                                            + "</td><td>"
+                                            + taxs[taxId]['total']
+                                            + "</td></tr>";
+                                }
+                                result = result
+                                        + "</table>";
+                                res.end(result);
+                            });
+                        } else {
+                            var result = header
+                                    + "The server only parse Taxonomy.txt or genes.txt files<br>"
+                                    + end;
+                            res.end(result);
+                            return;
+                        }
                     }
                 }
 
