@@ -19,12 +19,39 @@ function xmlhttpUpload(strURL, formName, logLines) {
             var html =
                     '<iframe id="sumFrame" width="100%" seamless="seamless" '
                     + 'height="340px" scrolling="yes" frameborder="0" src="http://127.0.0.1:8084/?file='
-                    + result[2]
+                    + result[2] + result[3]
                     + '"></iframe><br>'
                     + '<iframe id="extFrame" width="100%" seamless="seamless" '
                     + 'height="340px" scrolling="yes" frameborder="0" src="http://127.0.0.1:8082/?file='
                     + result[1] + '.log&n=' + logLines
                     + '"></iframe><br>';
+            updateElementById("result", html);
+        }
+    };
+    xmlreq.send(result[0]);
+}
+
+/**
+ * Function to upload the html page to start the command
+ * 
+ * @param {type} strURL the URL to be load
+ * @param {type} formName the Form name
+ */
+function xmlhttpUpload3(strURL, formName) {
+    var xmlreq = new XMLHttpRequest();
+    var result = getFormData(strURL, formName);
+    if (result == null) {
+        return null;
+    }
+    console.log('url:', result[0]);
+    xmlreq.open('POST', result[0], true);
+    xmlreq.onreadystatechange = function() {
+        if (xmlreq.readyState === 4) {
+            var html =
+                    '<iframe id="sumFrame" width="100%" seamless="seamless" '
+                    + 'height="640px" scrolling="yes" frameborder="0" src="'
+                    + result[0]
+                    + '"></iframe;';
             updateElementById("result", html);
         }
     };
@@ -168,8 +195,7 @@ function getFormData(strURL, formName) {
 
         result[1] = o + "/stdout";
         result[2] = o + "/Results/Taxonomy.txt";
-        console.log("URL: ", result[0]);
-        console.log("Log" + result[1]);
+        result[3] = "&tax=true";
     } else if (formName == "geneForm") {
         var inFile = document.getElementById("inFile").value;
         var outDir = document.getElementById("outDir").value;
@@ -204,6 +230,18 @@ function getFormData(strURL, formName) {
                 + "&async=true";
         result[1] = outDir + "/genes";
         result[2] = outDir + "/genes.txt";
+        result[3] = "&tax=false";
+    } else if (formName == "sumForm") {
+        var filename = document.getElementById("filename").value;
+        var tax = document.getElementById("tax").checked;
+
+        result[0] = strURL + "/?file=" +filename;
+
+        if (tax == true) {
+            result[0] = result[0] + "&tax=true";
+        } else {
+            result[0] = result[0] + "&tax=false";
+        }
     }
     return result;
 }
@@ -257,4 +295,25 @@ function verifyDBList(formName) {
             document.getElementById("otherDB").innerHTML = "";
         }
     }
-} 
+}
+
+/**
+ * Check the checkbox on the summary form
+ * 
+ * @param {type} id the element id
+ */
+function verifySummaryCheck(id) {
+    if (id === "tax") {
+        if (document.getElementById("tax").checked) {
+            document.getElementById("gen").checked = false;
+        } else {
+            document.getElementById("gen").checked = true;
+        }
+    } else if (id === "gen") {
+        if (document.getElementById("gen").checked) {
+            document.getElementById("tax").checked = false;
+        } else {
+            document.getElementById("tax").checked = true;
+        }
+    }
+}

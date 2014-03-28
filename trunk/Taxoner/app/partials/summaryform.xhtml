@@ -1,0 +1,22 @@
+<div id="result" >
+    <form id="sumForm" name="sumForm" style="padding-left: 5px" method="POST">  
+        <fieldset title='Input section' style="padding-left: 5px">    
+            <legend>Input</legend>
+            <br>
+            Input file (Taxoner or gene assigned output files, files with less than 50 MB):<br>
+            <input id='filename' name="filename" size="80"/>
+            <font title="Check for Taxoner ouput">
+            &nbsp;&nbsp;&nbsp;&nbsp;Taxoner: </font>
+            <input id='tax' name='tax' type="checkbox" checked="checked" title="Check for Taxoner output"
+                   onclick="verifySummaryCheck('tax')"/>
+            <font title="Check for Gene Assignment ouput">
+            &nbsp;&nbsp;&nbsp;&nbsp;Gene Assignment: </font>
+            <input id='gen' name='gen' type="checkbox" title="Check for Gene Assignment output"
+                   onclick="verifySummaryCheck('gen')"/>
+        </fieldset>
+        <div class='required' id='submit' >
+            <input  type="button" value="Run!" onclick='JavaScript:xmlhttpUpload3("http://127.0.0.1:8084", "sumForm")'>
+            <input type='reset' />
+        </div>
+    </form>
+</div>

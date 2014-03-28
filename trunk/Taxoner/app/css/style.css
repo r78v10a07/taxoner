@@ -10,6 +10,8 @@ body {
     border: 0;
     outline: 0;
     font-family: Georgia,"Times New Roman",Times,serif;
+    overflow-x:hidden;
+    height:100%;
 }
 a:link,
 a:visited {
@@ -114,7 +116,7 @@ pre {
 }
 
 #main-title hgroup { 
-   // background: url(../images/logo.png) no-repeat 4px 10px; 
+    // background: url(../images/logo.png) no-repeat 4px 10px; 
 }
 
 #main-title hgroup { 

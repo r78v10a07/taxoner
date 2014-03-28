@@ -33,6 +33,7 @@ var header = "<!doctype html>"
         + "<link rel='stylesheet' type='text/css' href='" + htmlURL + "/css/layout.css' /> "
         + "<link rel='stylesheet' type='text/css' href='" + htmlURL + "/css/style.css' />"
         + "<link rel='stylesheet' type='text/css' href='" + htmlURL + "/css/colors.css' />"
+        + "</style>"
         + "</head>"
         + "<body>";
 
@@ -134,9 +135,10 @@ console.log('File server running at ' + fileURL);
 http.createServer(function(req, res) {
     var parsedUrl = url.parse(req.url, true);
     var filename = parsedUrl.query['file'];
+    var tax = parsedUrl.query['tax'];
     res.writeHead(200, {'Content-Type': 'text/html'});
 
-    setNodesRank(setNodesNames, filename, res);
+    setNodesRank(setNodesNames, filename, tax, res);
 
 }).listen(statusPort, host);
 console.log('Summary server running at ' + statusURL);
@@ -160,7 +162,7 @@ console.log('HTML server running at ' + htmlURL);
  * @param {type} filename the file to be parsed
  * @param {type} res the html response
  */
-function server(filename, res) {
+function server(filename, tax, res) {
     if (typeof String.prototype.endsWith !== 'function') {
         String.prototype.endsWith = function(suffix) {
             return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -188,7 +190,7 @@ function server(filename, res) {
                         res.end(result);
                         return;
                     } else {
-                        if (filename.endsWith("Taxonomy.txt")) {
+                        if (tax === 'true') {
                             var instream = fs.createReadStream(filename);
                             var outstream = new stream;
                             outstream.readable = true;
@@ -258,7 +260,7 @@ function server(filename, res) {
                                         + "</table>";
                                 res.end(result);
                             });
-                        } else if (filename.endsWith("genes.txt")) {
+                        } else {
                             var instream = fs.createReadStream(filename);
                             var outstream = new stream;
                             outstream.readable = true;
@@ -333,12 +335,6 @@ function server(filename, res) {
                                         + "</table>";
                                 res.end(result);
                             });
-                        } else {
-                            var result = header
-                                    + "The server only parse Taxonomy.txt or genes.txt files<br>"
-                                    + end;
-                            res.end(result);
-                            return;
                         }
                     }
                 }
@@ -365,7 +361,7 @@ function server(filename, res) {
  * @param {type} res 
  * @returns {undefined}
  */
-function setNodesRank(callback, filename, res) {
+function setNodesRank(callback, filename, tax, res) {
     if (typeof (nodesMap[2]) === "undefined") {
         console.log("Reading the nodes file from databases/nodes.dmp");
         var instream = fs.createReadStream("databases/nodes.dmp");
@@ -386,14 +382,14 @@ function setNodesRank(callback, filename, res) {
                 nodesMap[fields[0].trim()]['rank'] = fields[2].trim();
             }
         }).on('close', function() {
-            callback(server, filename, res);
+            callback(server, filename, tax, res);
         });
     } else {
-        callback(server, filename, res);
+        callback(server, filename, tax, res);
     }
 }
 
-function setNodesNames(callback, filename, res) {
+function setNodesNames(callback, filename, tax, res) {
     if (typeof (nodesMap[2]['name']) === "undefined") {
         console.log("Reading the name file from databases/names");
         var instream = fs.createReadStream("databases/names");
@@ -415,10 +411,10 @@ function setNodesNames(callback, filename, res) {
                 }
             }
         }).on('close', function() {
-            callback(filename, res);
+            callback(filename, tax, res);
         });
     } else {
-        callback(filename, res);
+        callback(filename, tax, res);
     }
 }
 
