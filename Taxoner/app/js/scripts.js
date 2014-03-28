@@ -200,7 +200,7 @@ function getFormData(strURL, formName) {
                 + "%20-o%20" + outDir + "/genes.txt"
                 + "%20-b%20" + binDB
                 + "%20-i%20" + indDB
-                + ">" + outDir + ".log"
+                + ">" + outDir + "/genes.log"
                 + "&async=true";
         result[1] = outDir;
         result[2] = outDir + "/genes.txt";
