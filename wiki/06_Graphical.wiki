@@ -21,3 +21,11 @@ http://taxoner.googlecode.com/svn/wiki/image/code2.jpg
 The result with a summary page
 
 http://taxoner.googlecode.com/svn/wiki/image/code4.jpg
+
+== Summary ==
+
+http://taxoner.googlecode.com/svn/wiki/image/code5.jpg
+
+The result
+
+http://taxoner.googlecode.com/svn/wiki/image/code6.jpg
