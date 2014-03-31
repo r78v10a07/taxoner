@@ -224,7 +224,7 @@ int databaseAlignment(int num, char * infile) {
     strcat(outf, ".sam");
 
     if (bowtieFolder == NULL)
-        strcat(Tempcat, "bowtie2 ");
+        strcpy(Tempcat, "bowtie2 ");
 
     else {
         sprintf(Tempcat, "%s", bowtieFolder);
