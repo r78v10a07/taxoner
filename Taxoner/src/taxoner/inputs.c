@@ -235,7 +235,7 @@ void CreateSpecifiedDb(void) {
 
 }
 
-int CheckDbDirectory(char * inputTest)
+int CheckDbDirectory(DIR * inputTest)
 {
     if (inputTest) {
         closedir(inputTest);
@@ -472,22 +472,55 @@ void HelpMessage(void) {
     printf("\tAlign NGS reads to large databases like NCBI nr/nt/complete genomes...\n");
     printf("\n\tPlease index database with other program first\n");
     printf("\nUsage: ./taxoner -dbPath <folder_path> -taxpath <taxonomy _file> -seq <NGS_reads or #1 mate reads> -o <output directory>\n");
-    printf("\nOther Commands:\n");
-    printf("\t-p\t\tnumber of threads\n");
-    printf("\t-dbNames\tNames of databases (indexes) to include instead of all\n");
-    printf("\t-host\t\tindex of host genome\n");
-    printf("\t-bt2-maxhits\tNumber of alignments reported by bowtie2 (def: 10)\n");
-    printf("\t-bt2-allhits\tTells bowtie2 to report all alignments (very slowww)\n");
+    printf("\nOther Commands:\n\n");
+    printf(" Input read options\n");
+    printf("\t-seq\t\tInput file with NGS reads or #1 mate pair for paired-end\n");
+    printf("\t-paired\t\tFile with #2 mate reads [file name]\n");
+    printf("\t-fasta\t\tInput reads are in fasta format (not fastq)\n\n");
+
+    printf(" Input database options\n");
+    printf("\t-dbPath\t\tFolder path where bowtie2 indexes can be found [folder path]\n");
+    printf("\t-dbNames\tNames of databases (indexes) to include instead of all [eg. bact.0.fasta,bact.1.fasta]\n\n");
+
+    printf(" Host filtering options\n");
+    printf("\t-host\t\tindex of host genome [index path and name]\n");
+    printf("\t-no-host-filter\tDo not filter host genome\n\n");
+
+    printf(" Alignment options\n");
+    printf("\t-bt2-maxhits\tNumber of alignments reported by bowtie2 [def: 10]\n");
+    printf("\t-bt2-allhits\tTells bowtie2 to report all alignments (very slowww)\n\n");
+
+    printf(" Paired-end alignment options\n");
+    printf("\t-I\t\tMinimum fragment length for mates [def: 0]\n");
+    printf("\t-D\t\tMaximum fragment length for mates [def: 500]\n\n");
+
+    printf(" Nearest neighbor options\n");
     printf("\t-only-neighbor\tTells Taxoner to look for neighbors in the specified output folder. Only if there was a prior alignment\n");
-    printf("\t-neighbor-score\tAlignment score for neighbor lookup between alignments (def: 0.99)\n");
-    printf("\t-fasta\t\tInput reads are in fasta format (not fastq)\n");
-    printf("\t-megan\t\tCreates a Megan compatible output\n");
-    printf("\t-paired\t\tFile with #2 mate reads\n");
-    printf("\t-I\t\tMinimum fragment length for mates (def: 0)\n");
-    printf("\t-D\t\tMaximum fragment length for mates (def: 500)\n");
-    printf("\t-bowtie2\tIf bowtie2 is not installed in the OS, bowtie2 can be specified in command line\n");
-    printf("\t-no-host-filter\tDo not filter host genome\n");
-    printf("\t-o\t\tOutput folder\n\n");
+    printf("\t-neighbor-score\tAlignment score for neighbor lookup between alignments [def: 0.99]\n\n");
+
+    printf(" Output options\n");
+    printf("\t-o\t\tOutput folder\n");
+    printf("\t-megan\t\tCreates a Megan compatible output\n\n");
+
+    printf(" Bowtie2 path option (if no bowtie2 installed on system)\n");
+    printf("\t-bowtie2\tIf bowtie2 is not installed in the OS, bowtie2 can be specified in command line [path with executable]\n\n");
+
+    printf(" Performance options\n");
+    printf("\t-p\t\tnumber of threads [def: 1]\n\n");
+    //printf("\t-dbNames\tNames of databases (indexes) to include instead of all\n");
+    //printf("\t-host\t\tindex of host genome\n");
+    //printf("\t-bt2-maxhits\tNumber of alignments reported by bowtie2 (def: 10)\n");
+    //printf("\t-bt2-allhits\tTells bowtie2 to report all alignments (very slowww)\n");
+    //printf("\t-only-neighbor\tTells Taxoner to look for neighbors in the specified output folder. Only if there was a prior alignment\n");
+    //printf("\t-neighbor-score\tAlignment score for neighbor lookup between alignments (def: 0.99)\n");
+    //printf("\t-fasta\t\tInput reads are in fasta format (not fastq)\n");
+    //printf("\t-megan\t\tCreates a Megan compatible output\n");
+    //printf("\t-paired\t\tFile with #2 mate reads\n");
+    //printf("\t-I\t\tMinimum fragment length for mates (def: 0)\n");
+    //printf("\t-D\t\tMaximum fragment length for mates (def: 500)\n");
+    //printf("\t-bowtie2\tIf bowtie2 is not installed in the OS, bowtie2 can be specified in command line\n");
+    //printf("\t-no-host-filter\tDo not filter host genome\n");
+    //printf("\t-o\t\tOutput folder\n\n");
 
     exit(EXIT_SUCCESS);
 }
