@@ -235,6 +235,22 @@ void CreateSpecifiedDb(void) {
 
 }
 
+int CheckDbDirectory(char * inputTest)
+{
+    if (inputTest) {
+        closedir(inputTest);
+        return 1;
+
+    } else {
+        printf("No such database directory: %s\n", dbPath);
+        InputFree();
+        exit(EXIT_FAILURE);
+    }
+
+    return 0;
+}
+
+
 void checkParams(void) {
     DIR * dir = opendir(dbPath);
     int bad = 0;
@@ -244,13 +260,9 @@ void checkParams(void) {
     InitializedData();
     CreateDbElements();
 
-    if (dir) {
-        closedir(dir);
+    if(CheckDbDirectory(dir) == 1) {
         if (dbElements == NULL)
             ReadFolder();
-    } else {
-        printf("No such database directory: %s\n", dbPath);
-        exit(EXIT_FAILURE);
     }
 
     dir = opendir(outDir);
@@ -459,15 +471,28 @@ void HelpMessage(void) {
     printf("Taxoner version 2.0\n");
     printf("\tAlign NGS reads to large databases like NCBI nr/nt/complete genomes...\n");
     printf("\n\tPlease index database with other program first\n");
-    printf("\nUsage: ./taxoner -dbPath <folder_path> -taxpath <taxonomy _file> -seq <NGS_reads>\n");
-    printf("\nOther Commands:\n\t-p number of threads\n");
-    printf("\t-dbNames Names of databases (indexes) to include instead of all\n");
-    printf("\t-host index of host genome\n");
-    printf("\t-no-host-filter Do not filter host genome\n");
-    printf("\t-o Output folder\n\n");
+    printf("\nUsage: ./taxoner -dbPath <folder_path> -taxpath <taxonomy _file> -seq <NGS_reads or #1 mate reads> -o <output directory>\n");
+    printf("\nOther Commands:\n");
+    printf("\t-p\t\tnumber of threads\n");
+    printf("\t-dbNames\tNames of databases (indexes) to include instead of all\n");
+    printf("\t-host\t\tindex of host genome\n");
+    printf("\t-bt2-maxhits\tNumber of alignments reported by bowtie2 (def: 10)\n");
+    printf("\t-bt2-allhits\tTells bowtie2 to report all alignments (very slowww)\n");
+    printf("\t-only-neighbor\tTells Taxoner to look for neighbors in the specified output folder. Only if there was a prior alignment\n");
+    printf("\t-neighbor-score\tAlignment score for neighbor lookup between alignments (def: 0.99)\n");
+    printf("\t-fasta\t\tInput reads are in fasta format (not fastq)\n");
+    printf("\t-megan\t\tCreates a Megan compatible output\n");
+    printf("\t-paired\t\tFile with #2 mate reads\n");
+    printf("\t-I\t\tMinimum fragment length for mates (def: 0)\n");
+    printf("\t-D\t\tMaximum fragment length for mates (def: 500)\n");
+    printf("\t-bowtie2\tIf bowtie2 is not installed in the OS, bowtie2 can be specified in command line\n");
+    printf("\t-no-host-filter\tDo not filter host genome\n");
+    printf("\t-o\t\tOutput folder\n\n");
 
     exit(EXIT_SUCCESS);
 }
+
+
 
 void CheckCommands(char * source[], int num) {
     int i;
@@ -478,71 +503,79 @@ void CheckCommands(char * source[], int num) {
         if (IsEqual(source[i], "-host") == 0 && (i + 1) < num)
             host = CopyString(source[i + 1], strlen(source[i + 1]));
 
-        if (IsEqual(source[i], "-dbPath") == 0 && (i + 1) < num)
+        else if (IsEqual(source[i], "-dbPath") == 0 && (i + 1) < num)
             dbPath = CopyString(source[i + 1], strlen(source[i + 1]));
 
-        if (IsEqual(source[i], "-p") == 0 && (i + 1) < num)
+        else if (IsEqual(source[i], "-p") == 0 && (i + 1) < num)
             threads = atoi(source[i + 1]);
 
-        if (IsEqual(source[i], "-dbNames") == 0 && (i + 1) < num)
+        else if (IsEqual(source[i], "-dbNames") == 0 && (i + 1) < num)
             ParseDbNames(source[i + 1]);
 
-        if (IsEqual(source[i], "-taxpath") == 0 && (i + 1) < num)
+        else if (IsEqual(source[i], "-taxpath") == 0 && (i + 1) < num)
             taxPath = CopyString(source[i + 1], strlen(source[i + 1]));
 
-        if (IsEqual(source[i], "-no-host-filter") == 0)
+        else if (IsEqual(source[i], "-no-host-filter") == 0)
             filterHost = 0;
 
-        if (IsEqual(source[i], "-seq") == 0 && (i + 1) < num)
+        else if (IsEqual(source[i], "-seq") == 0 && (i + 1) < num)
             reads = CopyString(source[i + 1], strlen(source[i + 1]));
 
-        if (IsEqual(source[i], "-h") == 0)
+        else if (IsEqual(source[i], "-h") == 0)
             HelpMessage();
 
-        if (IsEqual(source[i], "-help") == 0)
+        else if (IsEqual(source[i], "-help") == 0)
             HelpMessage();
 
-        if (IsEqual(source[i], "-o") == 0 && (i + 1) < num)
+        else if (IsEqual(source[i], "-o") == 0 && (i + 1) < num)
             outDir = CopyString(source[i + 1], strlen(source[i + 1]));
 
-        if (IsEqual(source[i], "-bt2-maxhits") == 0 && (i + 1) < num)
+        else if (IsEqual(source[i], "-bt2-maxhits") == 0 && (i + 1) < num)
             bowtieMaxHits = atoi(source[i + 1]);
 
-        if (IsEqual(source[i], "-bt2-allhits") == 0)
+        else if (IsEqual(source[i], "-bt2-allhits") == 0)
             allHits = 1;
 
-        if (IsEqual(source[i], "-only-neighbor") == 0)
+        else if (IsEqual(source[i], "-only-neighbor") == 0)
             NoAlignment = 1;
 
-        if (IsEqual(source[i], "-bowtie2-indexes") == 0)
+        else if (IsEqual(source[i], "-bowtie2-indexes") == 0)
             specifiedDb = CopyString(source[i + 1], strlen(source[i + 1])); //printf("%s\n", source[i + 1]);
 
-        if (IsEqual(source[i], "-neighbor-score") == 0)
+        else if (IsEqual(source[i], "-neighbor-score") == 0)
             NSc = atof(source[i + 1]);
 
-        if (IsEqual(source[i], "-fasta") == 0)
+        else if (IsEqual(source[i], "-fasta") == 0)
             inputfasta = 1;
 
-        if (IsEqual(source[i], "-megan") == 0)
+        else if (IsEqual(source[i], "-megan") == 0)
             meganOut = 1;
 
-        if (IsEqual(source[i], "-I") == 0)
+        else if (IsEqual(source[i], "-I") == 0)
             minfrag = atoi(source[i + 1]);
 
-        if (IsEqual(source[i], "-X") == 0)
+        else if (IsEqual(source[i], "-X") == 0)
             maxfrag = atoi(source[i + 1]);
 
-        if (IsEqual(source[i], "-paired") == 0) {
+        else if (IsEqual(source[i], "-paired") == 0) {
             pairedFile = CopyString(source[i + 1], strlen(source[i + 1]));
             pairedend = 1;
         }
 
-        if (IsEqual(source[i], "-bowtie2") == 0)
+        else if (IsEqual(source[i], "-bowtie2") == 0)
             bowtieFolder = CopyString(source[i + 1], strlen(source[i + 1]));
+
+        else {
+            if(strncmp(source[i], "-", 1) == 0) {
+                printf("Unknown command: \"%s\"\n", source[i]);
+                InputFree();
+                HelpMessage();
+            }
+        }
 
     }
 
     PrintInputParams();
 
-
+    //exit(EXIT_SUCCESS);
 }

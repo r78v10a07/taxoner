@@ -1291,7 +1291,7 @@ void FinalNearestNeighbor(void) {
     if (access(InputName, F_OK) != -1) {
         // file exists
     } else {
-        printf("Could not locate '%d'\nNearest neighbor can not be done\nExiting\n");
+        printf("Could not locate '%s'\nNearest neighbor can not be done\nExiting\n", InputName);
         exit(EXIT_FAILURE);
     }
 
