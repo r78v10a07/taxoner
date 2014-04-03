@@ -328,8 +328,8 @@ int databaseAlignment(int num, char * infile) {
     printf("Running Bowtie2 alignment ... This may take a lot ... \n");
     fflush(NULL);
     printf("Bowtie2 output:\n");
-    //system(command); //run command
-    exit(EXIT_FAILURE);
+    system(command); //run command
+    //exit(EXIT_FAILURE);
     if (CheckFile(outf) == 0) {
         printf("Could not find alignment file: %s\nWas the correct format specified for reads? (fstq or fasta?)\n", outf);
         exit(EXIT_FAILURE);
