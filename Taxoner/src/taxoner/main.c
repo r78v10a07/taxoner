@@ -265,7 +265,7 @@ int databaseAlignment(int num, char * infile) {
             if (pairedend == 1) {
                 sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -a %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, partailfulldb, infile, pairedFile, outaln, partialdb);
             } else {
-                sprintf(command, "%s %d -a %s %s > %s/%s.sam", Tempcat, threads, partailfulldb, outaln, infile, outaln, partialdb);
+                sprintf(command, "%s %d -a %s %s > %s/%s.sam", Tempcat, threads, partailfulldb,  infile, outaln, partialdb);
             }
             /*if(inputfasta == 0)
                 sprintf(command, "bowtie2 -p %d -a %s %s > %s/%s.sam", threads, partailfulldb, infile, outaln, partialdb);
@@ -328,8 +328,8 @@ int databaseAlignment(int num, char * infile) {
     printf("Running Bowtie2 alignment ... This may take a lot ... \n");
     fflush(NULL);
     printf("Bowtie2 output:\n");
-    system(command); //run command
-
+    //system(command); //run command
+    exit(EXIT_FAILURE);
     if (CheckFile(outf) == 0) {
         printf("Could not find alignment file: %s\nWas the correct format specified for reads? (fstq or fasta?)\n", outf);
         exit(EXIT_FAILURE);
