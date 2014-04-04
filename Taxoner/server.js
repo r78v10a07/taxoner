@@ -315,6 +315,21 @@ function server(filename, tax, res) {
                                     var taxId = taxs[key]['taxId'];
                                     if (typeof (nodesMap[taxId]) === "undefined") {
                                         console.log("TaxId: ", taxId);
+                                        result = result
+                                                + "<tr><td>"
+                                                + "<a href='https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id="
+                                                + taxId
+                                                + "' target='_blank'>"
+                                                + " ("
+                                                + taxId
+                                                + ")"
+                                                + "</a>"
+                                                + "</td><td>"
+                                                + "</td><td>"
+                                                + taxs[taxId]['prot']
+                                                + "</td><td>"
+                                                + taxs[taxId]['total']
+                                                + "</td></tr>";
                                     } else {
                                         result = result
                                                 + "<tr><td>"
