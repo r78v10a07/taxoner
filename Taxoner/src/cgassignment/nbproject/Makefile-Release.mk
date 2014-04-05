@@ -64,7 +64,7 @@ LDLIBSOPTIONS=
 
 ../../bin/cgassignment: ${OBJECTFILES}
 	${MKDIR} -p ../../bin
-	${LINK.c} -o ../../bin/cgassignment ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.c} -o ../../bin/cgassignment ${OBJECTFILES} ${LDLIBSOPTIONS} -lrt
 
 ${OBJECTDIR}/btree.o: btree.c 
 	${MKDIR} -p ${OBJECTDIR}

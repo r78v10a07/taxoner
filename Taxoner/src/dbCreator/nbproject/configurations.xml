@@ -59,6 +59,7 @@
         </asmTool>
         <linkerTool>
           <output>../../bin/dbcreator</output>
+          <commandLine>-lrt</commandLine>
         </linkerTool>
       </compileType>
       <item path="btree.c" ex="false" tool="0" flavor2="0">
