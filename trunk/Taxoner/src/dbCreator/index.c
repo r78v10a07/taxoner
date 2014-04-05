@@ -47,11 +47,11 @@ node *createGiIndex(char * filename) {
         root = insert(root, gi, taxid);
         pos = ftello(fb);
         percent = (pos * 100) / fileLen;
-        //if (count % 1000 == 0) {
-        clock_gettime(CLOCK_MONOTONIC, &stop);
-        estimated = (fileLen * (timespecDiff(&stop, &start) / 1000000000)) / pos;
-        printf("Reading GIs: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
-        //}
+        if (count % 1000 == 0) {
+            clock_gettime(CLOCK_MONOTONIC, &stop);
+            estimated = (fileLen * (timespecDiff(&stop, &start) / 1000000000)) / pos;
+            printf("Reading GIs: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
+        }
         count++;
     }
 
@@ -96,11 +96,11 @@ node *createTaxIndex(char * filename) {
         root = insert(root, *taxid, taxid);
         pos = ftello(fb);
         percent = (pos * 100) / fileLen;
-        //if (count % 10000 == 0) {
-        clock_gettime(CLOCK_MONOTONIC, &stop);
-        estimated = (fileLen * (timespecDiff(&stop, &start) / 1000000000)) / pos;
-        printf("Reading TaxIds: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
-        //}
+        if (count % 10000 == 0) {
+            clock_gettime(CLOCK_MONOTONIC, &stop);
+            estimated = (fileLen * (timespecDiff(&stop, &start) / 1000000000)) / pos;
+            printf("Reading TaxIds: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
+        }
         count++;
     }
 
