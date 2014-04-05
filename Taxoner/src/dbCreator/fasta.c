@@ -218,13 +218,13 @@ void ReadFasta(char * filename, node *giIndex, node *includeIndex, node *skipInd
         //if (count % 1000 == 0) {
             clock_gettime(CLOCK_MONOTONIC, &stop);
             estimated = (fileLen * (timespecDiff(&stop, &start) / 1000000000)) / pos;
-            printf("Reading Fasta entries: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, stop,estimated);
+            printf("Reading Fasta entries: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000),estimated);
         //}
     }
 
     if (line) free(line);
     fclose(fb);
     clock_gettime(CLOCK_MONOTONIC, &stop);
-    printf("Reading  Fasta entries: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, stop, estimated);
+    printf("Reading  Fasta entries: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
     fflush(NULL);
 }
