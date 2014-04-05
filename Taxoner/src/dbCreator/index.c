@@ -47,10 +47,10 @@ node *createGiIndex(char * filename) {
         root = insert(root, gi, taxid);
         pos = ftello(fb);
         percent = (pos * 100) / fileLen;
-        if (count % 1000 == 0) {
+        if (count % 100000 == 0) {
             clock_gettime(CLOCK_MONOTONIC, &stop);
             estimated = (fileLen * (timespecDiff(&stop, &start) / 1000000000)) / pos;
-            printf("Reading GIs: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
+            printf("Reading GIs: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f \t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
         }
         count++;
     }
@@ -58,7 +58,7 @@ node *createGiIndex(char * filename) {
     if (line) free(line);
     fclose(fb);
     clock_gettime(CLOCK_MONOTONIC, &stop);
-    printf("Reading GIs: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
+    printf("Reading GIs: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f \t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
     printf("\n\tThere are %d GIs into the B+Tree. Elapsed time: %lu sec\n\n", count, timespecDiff(&stop, &start) / 1000000000);
     fflush(NULL);
     return root;
@@ -96,10 +96,10 @@ node *createTaxIndex(char * filename) {
         root = insert(root, *taxid, taxid);
         pos = ftello(fb);
         percent = (pos * 100) / fileLen;
-        if (count % 10000 == 0) {
+        if (count % 100000 == 0) {
             clock_gettime(CLOCK_MONOTONIC, &stop);
             estimated = (fileLen * (timespecDiff(&stop, &start) / 1000000000)) / pos;
-            printf("Reading TaxIds: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
+            printf("Reading TaxIds: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f \t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
         }
         count++;
     }
@@ -107,7 +107,7 @@ node *createTaxIndex(char * filename) {
     if (line) free(line);
     fclose(fb);
     clock_gettime(CLOCK_MONOTONIC, &stop);
-    printf("Reading TaxIds: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
+    printf("Reading TaxIds: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f \t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
     printf("\n\tThere are %d TaxIds into the B+Tree. Elapsed time: %lu sec\n\n", count, timespecDiff(&stop, &start) / 1000000000);
     fflush(NULL);
     return root;
