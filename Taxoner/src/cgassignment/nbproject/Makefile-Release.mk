@@ -56,14 +56,14 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lrt
+LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cgassignment
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ../../bin/cgassignment
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cgassignment: ${OBJECTFILES}
-	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
+../../bin/cgassignment: ${OBJECTFILES}
+	${MKDIR} -p ../../bin
 	${LINK.c} -o ../../bin/cgassignment ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/btree.o: btree.c 
@@ -97,7 +97,7 @@ ${OBJECTDIR}/writer.o: writer.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cgassignment
+	${RM} ../../bin/cgassignment
 
 # Subprojects
 .clean-subprojects:

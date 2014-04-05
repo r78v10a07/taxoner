@@ -23,7 +23,7 @@ AS=as
 # Macros
 CND_PLATFORM=GNU-Linux-x86
 CND_DLIB_EXT=so
-CND_CONF=Debug
+CND_CONF=Release
 CND_DISTDIR=dist
 CND_BUILDDIR=build
 
@@ -36,10 +36,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/btree.o \
-	${OBJECTDIR}/genbank.o \
+	${OBJECTDIR}/fasta.o \
+	${OBJECTDIR}/files.o \
 	${OBJECTDIR}/index.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/writer.o
+	${OBJECTDIR}/utils.o
 
 
 # C Compiler Flags
@@ -60,36 +61,41 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cgassignment
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ../../bin/dbcreator
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cgassignment: ${OBJECTFILES}
-	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cgassignment ${OBJECTFILES} ${LDLIBSOPTIONS}
+../../bin/dbcreator: ${OBJECTFILES}
+	${MKDIR} -p ../../bin
+	${LINK.c} -o ../../bin/dbcreator ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/btree.o: btree.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/btree.o btree.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/btree.o btree.c
 
-${OBJECTDIR}/genbank.o: genbank.c 
+${OBJECTDIR}/fasta.o: fasta.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/genbank.o genbank.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/fasta.o fasta.c
+
+${OBJECTDIR}/files.o: files.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/files.o files.c
 
 ${OBJECTDIR}/index.o: index.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/index.o index.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/index.o index.c
 
 ${OBJECTDIR}/main.o: main.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
 
-${OBJECTDIR}/writer.o: writer.c 
+${OBJECTDIR}/utils.o: utils.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/writer.o writer.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utils.o utils.c
 
 # Subprojects
 .build-subprojects:
@@ -97,7 +103,7 @@ ${OBJECTDIR}/writer.o: writer.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cgassignment
+	${RM} ../../bin/dbcreator
 
 # Subprojects
 .clean-subprojects:

@@ -58,17 +58,10 @@
       <runprofile version="9">
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" </runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" result.txt</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -i result.txt -o result.dat -x result.ind</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -t result.txt -b result.dat -i result.ind -g </runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -t result.txt -b result.dat -i result.ind -g 371560498</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -b taxoner_DB.bin -i taxoner_DB.ind -t few.txt</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -b taxoner_DB.bin -i taxoner_DB.ind -t few.txt</runcommand>
-        <rundir>/home/roberto/work/geneassign</rundir>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir></rundir>
         <buildfirst>true</buildfirst>
-        <console-type>2</console-type>
         <terminal-type>0</terminal-type>
         <remove-instrumentation>0</remove-instrumentation>
         <environment>

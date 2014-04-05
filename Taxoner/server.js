@@ -240,21 +240,37 @@ function server(filename, tax, res) {
                                 for (var i = 0; i < sortable.length; i++) {
                                     var key = sortable[i][0];
                                     var taxId = taxs[key]['taxId'];
-                                    result = result
-                                            + "<tr><td>"
-                                            + "<a href='https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id="
-                                            + taxId
-                                            + "' target='_blank'>"
-                                            + nodesMap[taxId]['name']
-                                            + " ("
-                                            + taxId
-                                            + ")"
-                                            + "</a>"
-                                            + "</td><td>"
-                                            + nodesMap[taxId]['rank']
-                                            + "</td><td>"
-                                            + taxs[taxId]['total']
-                                            + "</td></tr>";
+                                    if (typeof (nodesMap[taxId]) === "undefined") {
+                                        result = result
+                                                + "<tr><td>"
+                                                + "<a href='https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id="
+                                                + taxId
+                                                + "' target='_blank'>"
+                                                + " ("
+                                                + taxId
+                                                + ")"
+                                                + "</a>"
+                                                + "</td><td>"
+                                                + "</td><td>"
+                                                + taxs[taxId]['total']
+                                                + "</td></tr>";
+                                    } else {
+                                        result = result
+                                                + "<tr><td>"
+                                                + "<a href='https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id="
+                                                + taxId
+                                                + "' target='_blank'>"
+                                                + nodesMap[taxId]['name']
+                                                + " ("
+                                                + taxId
+                                                + ")"
+                                                + "</a>"
+                                                + "</td><td>"
+                                                + nodesMap[taxId]['rank']
+                                                + "</td><td>"
+                                                + taxs[taxId]['total']
+                                                + "</td></tr>";
+                                    }
                                 }
                                 result = result
                                         + "</table>";
