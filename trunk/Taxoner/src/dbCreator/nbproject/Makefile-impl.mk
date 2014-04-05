@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=cgassignment
+PROJECTNAME=dbCreator
 
 # Active Configuration
 DEFAULTCONF=Release
