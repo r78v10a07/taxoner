@@ -65,7 +65,7 @@ LDLIBSOPTIONS=
 
 ../../bin/dbcreator: ${OBJECTFILES}
 	${MKDIR} -p ../../bin
-	${LINK.c} -o ../../bin/dbcreator ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.c} -o ../../bin/dbcreator ${OBJECTFILES} ${LDLIBSOPTIONS} -lrt
 
 ${OBJECTDIR}/btree.o: btree.c 
 	${MKDIR} -p ${OBJECTDIR}
