@@ -50,7 +50,7 @@ node *createGiIndex(char * filename) {
         if (count % 1000 == 0) {
             clock_gettime(CLOCK_MONOTONIC, &stop);
             estimated = (fileLen * (timespecDiff(&stop, &start) / 1000000000)) / pos;
-            printf("Reading GIs: Total: %10d\t\tPercent: %6.2f%%\t\tEstimated time: %10.1f h   \r", count, percent, estimated);
+            printf("Reading GIs: Total: %10d\t\tPercent: %6.2f%%\t\tEstimated time: %10.1f s   \r", count, percent, estimated);
         }
         count++;
     }
@@ -99,7 +99,7 @@ node *createTaxIndex(char * filename) {
         if (count % 10000 == 0) {
             clock_gettime(CLOCK_MONOTONIC, &stop);
             estimated = (fileLen * (timespecDiff(&stop, &start) / 1000000000)) / pos;
-            printf("Reading TaxIds: Total: %10d\t\tPercent: %6.2f%%\t\tEstimated time: %10.1f h   \r", count, percent,estimated);
+            printf("Reading TaxIds: Total: %10d\t\tPercent: %6.2f%%\t\tEstimated time: %10.1f s   \r", count, percent,estimated);
         }
         count++;
     }
