@@ -215,7 +215,7 @@ void ReadFasta(char * filename, node *giIndex, node *includeIndex, node *skipInd
         }
         pos = ftello(fb);
         percent = (pos * 100) / fileLen;
-        if (count % 100000 == 0) {
+        if (count % 1000 == 0) {
             clock_gettime(CLOCK_MONOTONIC, &stop);
             estimated = (fileLen * (timespecDiff(&stop, &start) / 1000000000)) / pos;
             printf("Reading Fasta entries: Total: %10d\t\tPercent: %6.2f%%\t\tEstimated time: %10.1f h   \r", count, percent, (estimated/3600));
