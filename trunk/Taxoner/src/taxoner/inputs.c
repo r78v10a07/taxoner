@@ -176,7 +176,7 @@ void CreateDbElements(void) {
                 k++;
             }
         }
-        //printf("CreateDbElements: [%d] [%s]\n", i, fulldb[i]);
+        printf("CreateDbElements: [%d] [%s]\n", i, fulldb[i]);
     }
 }
 
@@ -340,7 +340,7 @@ void checkParams(void) {
     }
 
     for (i = 0; i < dbe; i++) {
-        if (FileExists(fulldb[i]) == 0) {
+        if (FileExists(fulldb[i]) == 0 && NoAlignment == 0) {
             bad++;
             printf("No bowtie index found: %s\n", fulldb[i]);
         }
