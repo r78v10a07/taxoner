@@ -176,7 +176,7 @@ void CreateDbElements(void) {
                 k++;
             }
         }
-        printf("CreateDbElements: [%d] [%s]\n", i, fulldb[i]);
+        //printf("CreateDbElements: [%d] [%s]\n", i, fulldb[i]);
     }
 }
 
