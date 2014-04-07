@@ -8,6 +8,9 @@
 #include <time.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 /*
 Authors: Lorinc Pongor, Roberto Vera, Balazs Ligeti
