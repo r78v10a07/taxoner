@@ -1027,7 +1027,7 @@ void nearestNeighborMultithread(void) {
     FILE * neighborResults;
 
     for (i = 0; i < dbe; i++) { //generate name array
-        inFiles[i] = (char *) calloc(strlen(outaln) + strlen(dbElements[i]) + strlen(".sam") + 1, sizeof (char));
+        inFiles[i] = (char *) calloc(strlen(outaln) + strlen(dbElements[i]) + strlen(".sam") + 2, sizeof (char));
         strncpy(inFiles[i], outaln, strlen(outaln));
         strcat(inFiles[i], "/");
         strncat(inFiles[i], dbElements[i], strlen(dbElements[i]) - 6);
@@ -1077,7 +1077,7 @@ void nearestNeighborMultithread(void) {
     FreeNames(inFiles);
     fclose(neighborResults);
     if (sortedFile) free(sortedFile); // by Roberto
-
+    
     //free(inFiles);
 }
 
