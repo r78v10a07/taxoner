@@ -7,7 +7,7 @@ The identifiers of the genes are stored either in a relational database, prepare
 
 If a read is mapped to one single genome, and the hit overlaps with one or more genes, each of the concerned genes will receive one hit. 
 
-After evaluating all hits in this manner, a potentially large number of genes will have hits assigned. The utility can limply list the genes with the number of hits, or, can combine the genes into functional categories, using the [http://www.ncbi.nlm.nih.gov/COG/ COG]-[http://eggnog.embl.de EGGnog] scheme. As result, the hits collected by single genes will be added up to higher categories, and graphics statistics can be made.
+After evaluating all hits in this manner, a potentially large number of genes will have hits assigned. The utility can simply list the genes with the number of hits, or, can combine the genes into functional categories, using the [http://www.ncbi.nlm.nih.gov/COG/ COG]-[http://eggnog.embl.de EGGnog] scheme. As result, the hits collected by single genes will be added up to higher categories, and graphics statistics can be made.
 
 == Command line program ==
 
