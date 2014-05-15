@@ -6,15 +6,7 @@
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/home/roberto/Dropbox/Developer/NetBeansProjects/jbiowh-framework/cgassignment/index.c</file>
-            <file>file:/home/roberto/Dropbox/Developer/NetBeansProjects/jbiowh-framework/cgassignment/main.c</file>
-            <file>file:/home/roberto/Dropbox/Developer/NetBeansProjects/jbiowh-framework/cgassignment/btree.c</file>
-            <file>file:/home/roberto/Dropbox/Developer/NetBeansProjects/jbiowh-framework/cgassignment/btree.h</file>
-            <file>file:/home/roberto/Dropbox/Developer/NetBeansProjects/jbiowh-framework/cgassignment/writer.c</file>
-            <file>file:/home/roberto/Dropbox/Developer/NetBeansProjects/jbiowh-framework/cgassignment/index.h</file>
-            <file>file:/home/roberto/Dropbox/Developer/NetBeansProjects/jbiowh-framework/cgassignment/genbank.c</file>
-        </group>
         <group name="JBioWH"/>
+        <group/>
     </open-files>
 </project-private>
