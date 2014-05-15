@@ -6,11 +6,11 @@
   # Viruses (virus.0.fasta)
   # Fungi (fungi.0.fasta)
 
-The database is available from [http://pongor.itk.ppke.hu/~roberto/taxoner/bowtie2/ here]
+The database is available from [http://pongor.itk.ppke.hu/taxoner/databases/bowtie2/ here]
 
 Get the full directory contents and put it in the <i>databases/bowtie2/</i> folder on the Taxoner folder.
 
 {{{
     cd databases
-    wget -r --reject "index.html*" -e robots=off -np -nH --cut-dirs=2 http://pongor.itk.ppke.hu/~roberto/taxoner/bowtie2/
+    wget -r --reject "index.html*" -e robots=off -np -nH --cut-dirs=2 http://pongor.itk.ppke.hu/taxoner/databases/bowtie2/
 }}}
