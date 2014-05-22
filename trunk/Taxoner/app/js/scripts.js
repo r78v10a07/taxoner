@@ -197,8 +197,8 @@ function getFormData(strURL, formName) {
         result[2] = o + "/Results/Taxonomy.txt";
         result[3] = "&tax=true";
     } else if (formName == "geneForm") {
-        var inFile = document.getElementById("inFile").value;
-        var outDir = document.getElementById("outDir").value;
+        var inFile = document.getElementById("inFile").value + 'Results/Taxonomy.txt';
+        var outDir = document.getElementById("inFile").value + 'Results';
         var binDB = document.getElementById("binDB").value;
         var indDB = document.getElementById("indDB").value;
 
