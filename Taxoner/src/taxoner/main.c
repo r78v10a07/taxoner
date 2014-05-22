@@ -36,6 +36,7 @@ struct ReadChunk {
     char * data; //SAM line
     int datalength; //SAM length
     int accession; //accession id fom ncbi
+    int dbstart; // For marker DB header in the format of >gi-from;taxid
     int seqstart; //starting position of read
     int seqlen; //length of read
     float as; //alignment score
@@ -268,7 +269,7 @@ int databaseAlignment(int num, char * infile) {
             if (pairedend == 1) {
                 sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -a %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, partailfulldb, infile, pairedFile, outaln, partialdb);
             } else {
-                sprintf(command, "%s %d -a %s %s > %s/%s.sam", Tempcat, threads, partailfulldb,  infile, outaln, partialdb);
+                sprintf(command, "%s %d -a %s %s > %s/%s.sam", Tempcat, threads, partailfulldb, infile, outaln, partialdb);
             }
             /*if(inputfasta == 0)
                 sprintf(command, "bowtie2 -p %d -a %s %s > %s/%s.sam", threads, partailfulldb, infile, outaln, partialdb);
@@ -462,10 +463,11 @@ void FreeReadStruct(struct ReadChunk * abc, FILE * output) {
             Direct = Direct->next;
             tempOut = ReturnName(temp->data, tempOut);
 
-            if (temp->as > 0) //check if alignment score is ok
+            if (temp->as > 0) { //check if alignment score is ok
+                if (temp->dbstart) temp->seqstart += temp->dbstart;
                 fprintf(output, "%s\t%d\t%d\t%.3f\t%d\t%d\n", tempOut, temp->taxon, temp->accession, temp->as, temp->seqstart, (temp->seqlen + temp->seqstart));
-            //printf( "%s\t%d\t%d\t%.3f\t%d\t%d\n", tempOut, temp->taxon, temp->accession, temp->as, temp->seqstart, temp->seqlen);
-
+                //printf( "%s\t%d\t%d\t%.3f\t%d\t%d\n", tempOut, temp->taxon, temp->accession, temp->as, temp->seqstart, temp->seqlen);
+            }
             if (temp->data != NULL)
                 free(temp->data);
 
@@ -802,6 +804,7 @@ struct ReadChunk * GoThroughData(struct ReadChunk * psr) {
 
 void * MultiParser(void * voidA) {
     struct ReadChunk * psr = (struct ReadChunk *) voidA;
+    int pos;
 
     while (psr != NULL) {
         psr->pos = 0;
@@ -813,6 +816,17 @@ void * MultiParser(void * voidA) {
             if (psr->iter == 2) {
                 psr->data += psr->pos;
                 psr->accession = atoi(psr->data);
+                pos = GetToken(psr->data, ';', psr->datalength, psr->pos);
+                if (pos > 0) {
+                    pos = GetToken(psr->data, '-', psr->pos + pos, psr->pos);
+                    if (pos > 0) {
+                        psr->dbstart = atoi(psr->data + pos);
+                    } else {
+                        psr->dbstart = -1;
+                    }
+                } else {
+                    psr->dbstart = -1;
+                }
                 psr->data -= psr->pos;
 
                 psr->pos = GetToken(psr->data, ';', psr->datalength, psr->pos);
@@ -1077,7 +1091,7 @@ void nearestNeighborMultithread(void) {
     FreeNames(inFiles);
     fclose(neighborResults);
     if (sortedFile) free(sortedFile); // by Roberto
-    
+
     //free(inFiles);
 }
 
