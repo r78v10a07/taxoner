@@ -49,7 +49,7 @@ function xmlhttpUpload3(strURL, formName) {
         if (xmlreq.readyState === 4) {
             var html =
                     '<iframe id="sumFrame" width="100%" seamless="seamless" '
-                    + 'height="640px" scrolling="yes" frameborder="0" src="'
+                    + 'height="1000px" scrolling="yes" frameborder="0" src="'
                     + result[0]
                     + '"></iframe;';
             updateElementById("result", html);
