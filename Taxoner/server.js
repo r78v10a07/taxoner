@@ -25,6 +25,9 @@ var host = "127.0.0.1",
         statusURL = "http://" + host + ":" + statusPort;
 
 var nodesMap = {};
+var COG = {};
+var COGFun = {};
+var COGMembers = {};
 
 var header = "<!doctype html>"
         + "<html lang='en'>"
@@ -284,6 +287,7 @@ function server(filename, tax, res) {
 
                             var result = header;
                             var taxs = {};
+                            var COGData = {};
 
                             var rl = readline.createInterface({
                                 input: instream,
@@ -310,8 +314,74 @@ function server(filename, tax, res) {
                                         taxs[fields[1]]['total'] = taxs[fields[1]]['total'] + parseInt(fields[4]);
                                         taxs[fields[1]]['prot'] = taxs[fields[1]]['prot'] + 1;
                                     }
+
+                                    if (fields[5] != '-') {
+                                        f = fields[5].split(",");
+                                        for (var i = 0; i < f.length; i++) {
+                                            for (var j = 0; j < COGMembers[f[i].trim()]['count']; j++) {
+                                                if (typeof (COGData[COGMembers[f[i]]['letter'][j]]) === "undefined") {
+                                                    COGData[COGMembers[f[i]]['letter'][j]] = 1;
+                                                } else {
+                                                    COGData[COGMembers[f[i]]['letter'][j]] = COGData[COGMembers[f[i]]['letter'][j]] + 1;
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }).on('close', function() {
+                                var COGFunSum = {};
+
+                                result = result
+                                        + "<h1 class='title' id='page-title'>Summary</h1><br>"
+                                        + "<h1 class='title'>COG Top Classes</h1>"
+                                        + "<table>"
+                                        + "<tr>"
+                                        + "<th>Top Classes</th>"
+                                        + "<th>Total</th>"
+                                        + "</tr>";
+
+                                for (var prop in COGFun) {
+                                    if (COGFun.hasOwnProperty(prop)) {
+                                        var sum = 0;
+                                        for (var i = 0; i < COGFun[prop]['count']; i++) {
+                                            if (typeof (COGData[COGFun[prop]['letter'][i]]) != "undefined") {
+                                                sum = sum + COGData[COGFun[prop]['letter'][i]];
+                                            }
+                                        }
+                                        COGFunSum[prop] = sum;
+                                        result = result + "<tr><td>"
+                                                + prop + "</td><td>"
+                                                + COGFunSum[prop] + "</td></tr>";
+                                    }
+                                }
+
+                                result = result
+                                        + "</table><br><br>";
+                                result = result
+                                        + "<h1 class='title'>COG Functional Classification</h1>"
+                                        + "<table>"
+                                        + "<tr>"
+                                        + "<th>Functional Classes</th>"
+                                        + "<th>One Letter</th>"
+                                        + "<th>Total</th>"
+                                        + "</tr>";
+
+                                for (var prop in COG) {
+                                    if (COG.hasOwnProperty(prop)) {
+                                        result = result
+                                                + "<tr><td>" + COG[prop]['name'] + "</td>"
+                                                + "<td>" + prop + "</td><td>";
+                                        if (typeof (COGData[prop]) !== "undefined") {
+                                            result = result + COGData[prop];
+                                        } else {
+                                            result = result + "0";
+                                        }
+                                        result = result + "</td></tr>"
+                                    }
+                                }
+                                result = result
+                                        + "</table><br><br>";
+
                                 var sortable = [];
                                 for (var key in taxs) {
                                     sortable.push([key, taxs[key]['total']]);
@@ -320,7 +390,7 @@ function server(filename, tax, res) {
                                     return b[1] - a[1];
                                 });
                                 result = result
-                                        + "<h1 class='title' id='page-title'>Summary</h1>"
+                                        + "<h1 class='title'>Taxonomies</h1>"
                                         + "<table>"
                                         + "<tr><th>Taxonomy</th>"
                                         + "<th>Rank</th>"
@@ -330,7 +400,6 @@ function server(filename, tax, res) {
                                     var key = sortable[i][0];
                                     var taxId = taxs[key]['taxId'];
                                     if (typeof (nodesMap[taxId]) === "undefined") {
-                                        console.log("TaxId: ", taxId);
                                         result = result
                                                 + "<tr><td>"
                                                 + "<a href='https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id="
@@ -387,6 +456,76 @@ function server(filename, tax, res) {
     }
 }
 
+function setCOGMembers(filename, tax, res) {
+    if (typeof (COGMembers["COG0001"]) === "undefined") {
+        console.log("Reading the nodes file from databases/eggNOG/NOG.funccat.txt");
+        var instream = fs.createReadStream("databases/eggNOG/NOG.funccat.txt");
+        var outstream = new stream;
+        outstream.readable = true;
+        outstream.writable = true;
+
+        var rl = readline.createInterface({
+            input: instream,
+            output: outstream,
+            terminal: false
+        });
+
+        rl.on('line', function(line) {
+            fields = line.split("\t");
+            if (fields.length > 1) {
+                COGMembers[fields[0].trim()] = {};
+                COGMembers[fields[0].trim()]['letter'] = {};
+                for (var i = 0; i < fields[1].trim().length; i++) {
+                    COGMembers[fields[0].trim()]['letter'][i] = fields[1].trim()[i];
+                }
+                COGMembers[fields[0].trim()]['count'] = i;
+            }
+        }).on('close', function() {
+            server(filename, tax, res);
+        });
+    } else {
+        server(filename, tax, res);
+    }
+}
+
+function setCOG(callback, filename, tax, res) {
+    if (typeof (COG['A']) === "undefined") {
+        console.log("Reading the nodes file from databases/eggNOG/COG_funtional_group.tsv");
+        var instream = fs.createReadStream("databases/eggNOG/COG_funtional_group.tsv");
+        var outstream = new stream;
+        outstream.readable = true;
+        outstream.writable = true;
+
+        var rl = readline.createInterface({
+            input: instream,
+            output: outstream,
+            terminal: false
+        });
+
+        rl.on('line', function(line) {
+            fields = line.split("\t");
+            if (fields.length > 1) {
+                COG[fields[2].trim()] = {};
+                COG[fields[2].trim()]['name'] = fields[1].trim();
+                if (typeof (COGFun[fields[0].trim()]) === "undefined") {
+                    COGFun[fields[0].trim()] = {};
+                    COGFun[fields[0].trim()]['letter'] = {};
+                    COGFun[fields[0].trim()]['letter'][0] = fields[2].trim();
+                    COGFun[fields[0].trim()]['count'] = 1;
+                } else {
+                    var count = COGFun[fields[0].trim()]['count'];
+                    COGFun[fields[0].trim()]['letter'][count] = fields[2].trim();
+                    COGFun[fields[0].trim()]['count'] = count + 1;
+                }
+            }
+        }).on('close', function() {
+            callback(filename, tax, res);
+        });
+    } else {
+        callback(filename, tax, res);
+    }
+}
+
 /**
  * This function parse the nodes.dmp file and creates a nodesMap object to 
  * storage the data
@@ -417,10 +556,10 @@ function setNodesRank(callback, filename, tax, res) {
                 nodesMap[fields[0].trim()]['rank'] = fields[2].trim();
             }
         }).on('close', function() {
-            callback(server, filename, tax, res);
+            callback(setCOG, filename, tax, res);
         });
     } else {
-        callback(server, filename, tax, res);
+        callback(setCOG, filename, tax, res);
     }
 }
 
@@ -446,10 +585,10 @@ function setNodesNames(callback, filename, tax, res) {
                 }
             }
         }).on('close', function() {
-            callback(filename, tax, res);
+            callback(setCOGMembers, filename, tax, res);
         });
     } else {
-        callback(filename, tax, res);
+        callback(setCOGMembers, filename, tax, res);
     }
 }
 
