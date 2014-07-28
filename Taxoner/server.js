@@ -333,7 +333,7 @@ function server(filename, tax, res) {
 
                                 result = result
                                         + "<h1 class='title' id='page-title'>Summary</h1><br>"
-                                        + "<h1 class='title'>COG Top Classes</h1>"
+                                        + "<h1 class='title'>COG/eggNOG Top Classes</h1>"
                                         + "<table>"
                                         + "<tr>"
                                         + "<th>Top Classes</th>"
@@ -358,7 +358,7 @@ function server(filename, tax, res) {
                                 result = result
                                         + "</table><br><br>";
                                 result = result
-                                        + "<h1 class='title'>COG Functional Classification</h1>"
+                                        + "<h1 class='title'>COG/eggNOG Functional Classification</h1>"
                                         + "<table>"
                                         + "<tr>"
                                         + "<th>Functional Classes</th>"
