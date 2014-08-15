@@ -35,7 +35,13 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/IncludeExclude.o \
+	${OBJECTDIR}/files.o \
+	${OBJECTDIR}/importGI.o \
+	${OBJECTDIR}/importNodes.o \
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/parsefasta.o \
+	${OBJECTDIR}/utils.o
 
 
 # C Compiler Flags
@@ -62,10 +68,40 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbcreatorv0.1: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbcreatorv0.1 ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/IncludeExclude.o: IncludeExclude.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IncludeExclude.o IncludeExclude.c
+
+${OBJECTDIR}/files.o: files.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/files.o files.c
+
+${OBJECTDIR}/importGI.o: importGI.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/importGI.o importGI.c
+
+${OBJECTDIR}/importNodes.o: importNodes.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/importNodes.o importNodes.c
+
 ${OBJECTDIR}/main.o: main.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
+
+${OBJECTDIR}/parsefasta.o: parsefasta.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/parsefasta.o parsefasta.c
+
+${OBJECTDIR}/utils.o: utils.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utils.o utils.c
 
 # Subprojects
 .build-subprojects:
