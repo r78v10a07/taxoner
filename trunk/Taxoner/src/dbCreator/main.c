@@ -21,7 +21,7 @@
 #include "fasta.h"
 
 char *program_name;
-
+//I added a commen (lorinc))
 /*
  *  Main function
  */
