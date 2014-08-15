@@ -4,6 +4,12 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>IncludeExclude.h</itemPath>
+      <itemPath>files.h</itemPath>
+      <itemPath>importGI.h</itemPath>
+      <itemPath>importNodes.h</itemPath>
+      <itemPath>parsefasta.h</itemPath>
+      <itemPath>utils.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -12,7 +18,13 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>IncludeExclude.c</itemPath>
+      <itemPath>files.c</itemPath>
+      <itemPath>importGI.c</itemPath>
+      <itemPath>importNodes.c</itemPath>
       <itemPath>main.c</itemPath>
+      <itemPath>parsefasta.c</itemPath>
+      <itemPath>utils.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -36,7 +48,31 @@
       </toolsSet>
       <compileType>
       </compileType>
+      <item path="IncludeExclude.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="IncludeExclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="files.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="files.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="importGI.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="importGI.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="importNodes.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="importNodes.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parsefasta.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parsefasta.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="utils.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="utils.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -59,7 +95,31 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="IncludeExclude.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="IncludeExclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="files.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="files.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="importGI.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="importGI.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="importNodes.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="importNodes.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parsefasta.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="parsefasta.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="utils.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="utils.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
