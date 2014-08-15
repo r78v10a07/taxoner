@@ -20,7 +20,8 @@ void print_usage(FILE *stream, int exit_code) {
     fprintf(stream, "\t-o,\t--nodes\t\tnodes.dmp file (from NCBI)\n\n");
     fprintf(stream, " Optional:\n");
     fprintf(stream, "\t-s,\t--skip\t\tFile containing a list of taxons to skip\n");
-    fprintf(stream, "\t-i,\t--include\tFile containing a list of taxons to include\n\n");
+    fprintf(stream, "\t-i,\t--include\tFile containing a list of taxons to include\n");
+    fprintf(stream, "\t-b,\t--dbSize\t\tSize of the database (in Gb)\n\n");
     fprintf(stream, "********************************************************************************\n");
     fprintf(stream, "\n            Roberto Vera Alvarez (e-mail: r78v10a07@gmail.com)\n\n");
     fprintf(stream, "\n            Lorinc Pongor (e-mail: pongorlorinc@gmail.com)\n\n");
