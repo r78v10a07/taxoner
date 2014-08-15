@@ -1,3 +1,10 @@
+/* 
+ * File:   main.c
+ * Author: roberto and lorinc
+ *
+ * Created on August 15, 2014, 11:27 AM
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
