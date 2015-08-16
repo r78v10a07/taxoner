@@ -17,7 +17,7 @@ Authors: Lorinc Pongor, Roberto Vera, Balazs Ligeti
 email: pongorlorinc@gmail.com
 date: march 23, 2014
 
-Purpose: Fast microbila classification of NGS reads
+Purpose: Fast microbial classification of NGS reads
 Language: C
  */
 
@@ -249,9 +249,9 @@ int databaseAlignment(int num, char * infile) {
         if (filterHost == 1 && host != NULL) {
             //printf("1\n");
             if (pairedend == 1) { //if reads are paired-end
-                sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -a %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, partailfulldb, infile, pairedFile, outaln, partialdb);
+                sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -a -x %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, partailfulldb, infile, pairedFile, outaln, partialdb);
             } else {
-                sprintf(command, "%s %d -a %s %s/%s > %s/%s.sam", Tempcat, threads, partailfulldb, outaln, infile, outaln, partialdb);
+                sprintf(command, "%s %d -a -x %s -U %s/%s > %s/%s.sam", Tempcat, threads, partailfulldb, outaln, infile, outaln, partialdb);
             }
 
             /*if(inputfasta == 0)
@@ -267,9 +267,9 @@ int databaseAlignment(int num, char * infile) {
         } else {
             //printf("2\n");
             if (pairedend == 1) {
-                sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -a %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, partailfulldb, infile, pairedFile, outaln, partialdb);
+                sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -a -x %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, partailfulldb, infile, pairedFile, outaln, partialdb);
             } else {
-                sprintf(command, "%s %d -a %s %s > %s/%s.sam", Tempcat, threads, partailfulldb, infile, outaln, partialdb);
+                sprintf(command, "%s %d -a -x %s -U %s > %s/%s.sam", Tempcat, threads, partailfulldb, infile, outaln, partialdb);
             }
             /*if(inputfasta == 0)
                 sprintf(command, "bowtie2 -p %d -a %s %s > %s/%s.sam", threads, partailfulldb, infile, outaln, partialdb);
@@ -287,9 +287,9 @@ int databaseAlignment(int num, char * infile) {
             //printf("3\n");
 
             if (pairedend == 1) {
-                sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -k %d %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, bowtieMaxHits, partailfulldb, infile, pairedFile, outaln, partialdb);
+                sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -k %d -x %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, bowtieMaxHits, partailfulldb, infile, pairedFile, outaln, partialdb);
             } else {
-                sprintf(command, "%s %d -k %d %s %s > %s/%s.sam", Tempcat, threads, bowtieMaxHits, partailfulldb, outaln, infile, outaln, partialdb);
+                sprintf(command, "%s %d -k %d -x %s -U %s > %s/%s.sam", Tempcat, threads, bowtieMaxHits, partailfulldb, outaln, infile, outaln, partialdb);
             }
 
             /*if(pairedend == 1) {
@@ -309,9 +309,9 @@ int databaseAlignment(int num, char * infile) {
         } else {
             //printf("4\n");
             if (pairedend == 1) {
-                sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -k %d %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, bowtieMaxHits, partailfulldb, infile, pairedFile, outaln, partialdb);
+                sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -k %d -x %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, bowtieMaxHits, partailfulldb, infile, pairedFile, outaln, partialdb);
             } else {
-                sprintf(command, "%s %d -k %d %s %s > %s/%s.sam", Tempcat, threads, bowtieMaxHits, partailfulldb, infile, outaln, partialdb);
+                sprintf(command, "%s %d -k %d -x %s -U %s > %s/%s.sam", Tempcat, threads, bowtieMaxHits, partailfulldb, infile, outaln, partialdb);
             }
 
             //else if(inputfasta == 0)
@@ -329,7 +329,7 @@ int databaseAlignment(int num, char * infile) {
 
     printf("Command: %s\n", command);
     printf("Index: %s\nReads: %s\nStart time: %s\n", partialdb, infile, times);
-    printf("Running Bowtie2 alignment ... This may take a lot ... \n");
+    printf("Running Bowtie2 alignment ... This may take a while ... \n");
     fflush(NULL);
     printf("Bowtie2 output:\n");
     system(command); //run command
