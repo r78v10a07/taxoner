@@ -21,6 +21,7 @@ float NSc = 0.99;
 
 int meganOut = 0;
 int inputfasta = 0;
+int noUnaligned = 0;
 
 int minfrag = 0;
 int maxfrag = 500;
@@ -405,7 +406,12 @@ void PrintInputParams(void) {
     }
 
     printf("Taxonomy file: %s\n", taxPath);
-
+    
+    if (noUnaligned == 0)
+        printf("Keeping unaligned sequences from final output");
+    else
+        printf("Discarding unaligned sequences from final output");
+    
     if (inputfasta == 0)
         printf("Read format: fastq format\n");
 
@@ -471,7 +477,7 @@ void HelpMessage(void) {
     printf("Taxoner version 2.0\n");
     printf("\tAlign NGS reads to large databases like NCBI nr/nt/complete genomes...\n");
     printf("\n\tPlease index database with other program first\n");
-    printf("\nUsage: ./taxoner -dbPath <folder_path> -taxpath <taxonomy _file> -seq <NGS_reads or #1 mate reads> -o <output directory>\n");
+    printf("\nUsage: ./taxoner -dbPath <folder_path> -taxpath <taxonomy_file> -seq <NGS_reads or #1 mate reads> -o <output directory>\n");
     printf("\nOther Commands:\n\n");
     printf(" Input read options\n");
     printf("\t-seq\t\tInput file with NGS reads or #1 mate pair for paired-end\n");
@@ -488,7 +494,8 @@ void HelpMessage(void) {
 
     printf(" Alignment options\n");
     printf("\t-bt2-maxhits\tNumber of alignments reported by bowtie2 [def: 10]\n");
-    printf("\t-bt2-allhits\tTells bowtie2 to report all alignments (very slowww)\n\n");
+    printf("\t-bt2-allhits\tTells bowtie2 to report all alignments (very slowww)\n");
+    printf("\t-no-unal\tTell bowtie2 to discard all unaligned reads\n\n")
 
     printf(" Paired-end alignment options\n");
     printf("\t-I\t\tMinimum fragment length for mates [def: 0]\n");
@@ -580,6 +587,9 @@ void CheckCommands(char * source[], int num) {
 
         else if (IsEqual(source[i], "-fasta") == 0)
             inputfasta = 1;
+        
+        else if (IsEqual(source[i], "-no-unal") == 0)
+            noUnaligned = 1;
 
         else if (IsEqual(source[i], "-megan") == 0)
             meganOut = 1;

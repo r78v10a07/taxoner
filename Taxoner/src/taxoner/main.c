@@ -242,6 +242,9 @@ int databaseAlignment(int num, char * infile) {
 
     if (inputfasta == 1) //if reads are in fasta format
         strcat(Tempcat, "-f ");
+    
+    if (noUnaligned == 1) //if we don't want to keep unaligned reads
+        strcat(Tempcat, "--no-unal");
 
     strcat(Tempcat, "-p"); //number of threads
 
@@ -370,7 +373,7 @@ int hostAlignment(void) {
         sprintf(command, "bowtie2 -f -p %d --un %s/%s %s %s > %s/host.sam", threads, outaln, nohost, host, reads, outaln);
 
     printf("Command: %s\n\n", command);
-    printf("Running Bowtie2 alignment ... This may take a lot ... \n");
+    printf("Running Bowtie2 alignment ... This may take a while ... \n");
     fflush(NULL);
     printf("Bowtie2 output:\n");
     system(command);
