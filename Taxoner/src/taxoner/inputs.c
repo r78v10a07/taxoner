@@ -486,6 +486,7 @@ void HelpMessage(void) {
 
     printf(" Input database options\n");
     printf("\t-dbPath\t\tFolder path where bowtie2 indexes can be found [folder path]\n");
+    printf("\t-taxpath\t\tNodes.dmp file from NCBI database\n");
     printf("\t-dbNames\tNames of databases (indexes) to include instead of all [eg. bact.0.fasta,bact.1.fasta]\n\n");
 
     printf(" Host filtering options\n");
