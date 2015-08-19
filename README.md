@@ -10,7 +10,7 @@ The program can accept reads of all major platforms (Illumina, Ion Torrent, 454,
 
 The speed and accuracy of the method compares favorably to other programs and it can run on ordinary desktop or laptop computers without significant loss in speed.  
 
-A demo server for testing porpoises is available in <a href="http://pongor.itk.ppke.hu/taxoner/">here</a> 
+A demo server for testing purposes is available in <a href="http://pongor.itk.ppke.hu/taxoner/">here</a> 
 
 <img src="https://raw.githubusercontent.com/r78v10a07/taxoner-googlecode-wiki/master/image/code3.jpg"/>
 
