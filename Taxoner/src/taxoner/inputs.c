@@ -496,7 +496,7 @@ void HelpMessage(void) {
     printf(" Alignment options\n");
     printf("\t-bt2-maxhits\tNumber of alignments reported by bowtie2 [def: 10]\n");
     printf("\t-bt2-allhits\tTells bowtie2 to report all alignments (very slowww)\n");
-    printf("\t-no-unal\tTell bowtie2 to discard all unaligned reads\n\n")
+    printf("\t-no-unal\tTell bowtie2 to discard all unaligned reads\n\n");
 
     printf(" Paired-end alignment options\n");
     printf("\t-I\t\tMinimum fragment length for mates [def: 0]\n");
