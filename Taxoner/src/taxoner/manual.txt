@@ -19,6 +19,7 @@ Options
 	-taxpath	Nodes.dmp file from NCBI database
 
 Optional:
+    -no-unal    Discard unaligned reads
 
 	-host		Align reads against host, and remove host reads
 
