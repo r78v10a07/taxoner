@@ -244,7 +244,7 @@ int databaseAlignment(int num, char * infile) {
         strcat(Tempcat, "-f ");
     
     if (noUnaligned == 1) //if we don't want to keep unaligned reads
-        strcat(Tempcat, "--no-unal");
+        strcat(Tempcat, "--no-unal ");
 
     strcat(Tempcat, "-p"); //number of threads
 

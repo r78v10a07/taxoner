@@ -408,9 +408,9 @@ void PrintInputParams(void) {
     printf("Taxonomy file: %s\n", taxPath);
     
     if (noUnaligned == 0)
-        printf("Keeping unaligned sequences from final output");
+        printf("Keeping unaligned sequences from final output\n");
     else
-        printf("Discarding unaligned sequences from final output");
+        printf("Discarding unaligned sequences from final output\n");
     
     if (inputfasta == 0)
         printf("Read format: fastq format\n");
