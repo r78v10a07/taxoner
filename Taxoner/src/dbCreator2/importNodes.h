@@ -6,6 +6,7 @@ extern "C" {
 #endif
     extern void GetMaxNodeslDmp(char * infile);
     extern void ImportNodeslDmp(char * infile);
+    extern void FreeTaxons(void);
 #ifdef	__cplusplus
 }
 #endif

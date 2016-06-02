@@ -5,6 +5,9 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "parsefasta.h"
+#include "IncludeExclude.h"
+
 extern int max_gi;
 extern int *gi_id;
 

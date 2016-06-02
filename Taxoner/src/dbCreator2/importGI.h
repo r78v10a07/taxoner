@@ -7,6 +7,7 @@ extern "C" {
     extern void GetMaxGiNuclDmp(char * infile);
     extern void ParseGiNuclLine(char * input);
     extern void ImportGiNuclDmp(char * infile);
+    extern void FreeGiId(void);
 #ifdef	__cplusplus
 }
 #endif

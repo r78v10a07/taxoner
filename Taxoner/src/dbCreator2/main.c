@@ -25,7 +25,6 @@ extern int MaxGb;
  */
 int main(int argc, char** argv)
 {
-    struct timespec start, stop;
     int next_option, verbose, write;
     const char* const short_options = "hvn:g:o:s:i:";
 
@@ -33,7 +32,6 @@ int main(int argc, char** argv)
     char *includeIndex = NULL;
     char *skipIndex = NULL;
 
-    clock_gettime(CLOCK_MONOTONIC, &start);
     program_name = argv[0];
 
     const struct option long_options[] = {
@@ -134,8 +132,6 @@ int main(int argc, char** argv)
     FreeIncludeExclude();
     FreeGiId();
     FreeTaxons();
-    clock_gettime(CLOCK_MONOTONIC, &stop);
-    printf("\n\tThe total time was %lu sec\n\n", timespecDiff(&stop, &start) / 1000000000);
 
     return 0;
 }

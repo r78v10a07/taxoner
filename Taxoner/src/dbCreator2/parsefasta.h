@@ -10,6 +10,7 @@ extern "C" {
     extern int compareStrings(char * a, char * b);
     extern void ParseFastaTitle(char * input);
     extern void ReadFasta(char * inFile);
+    extern int CheckInclude(int source, int status);
 #ifdef	__cplusplus
 }
 #endif

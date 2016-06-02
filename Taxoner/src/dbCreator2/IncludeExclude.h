@@ -8,6 +8,8 @@ extern "C" {
     extern int CheckExclude(int source, int status);
     extern void ImportInclude(char * infile);
     extern void ImportExclude(char * infile);
+    extern void FreeIncludeExclude(void) ;
+    
 #ifdef	__cplusplus
 }
 #endif
