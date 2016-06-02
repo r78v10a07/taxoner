@@ -15,7 +15,7 @@ void print_usage(FILE *stream, int exit_code) {
     fprintf(stream, "\nUsage: %s \n", program_name);
     fprintf(stream, "\n\n%s options:\n\n", program_name);
     fprintf(stream, "\t-h,\t--help\t\tDisplay this usage information.\n");
-    fprintf(stream, "\t-n,\t--nt\t\tNT database fasta file (from NCBI)\n");
+    fprintf(stream, "\t-n,\t--nt\t\tNT database fasta file (from NCBI), use - as file name for reading from stdin\n");
     fprintf(stream, "\t-g,\t--gi\t\tgi_taxid_nucl.dmp file (from NCBI)\n");
     fprintf(stream, "\t-o,\t--nodes\t\tnodes.dmp file (from NCBI)\n\n");
     fprintf(stream, " Optional:\n");
@@ -37,10 +37,10 @@ void print_parameters(void) {
     printf("GI file: %s\n", gi);
     printf("Nodes file: %s\n", nodes);
 
-    if(include)
+    if (include)
         printf("Include file: %s\n", include);
 
-    if(skip)
+    if (skip)
         printf("Exclude file: %s\n", skip);
 
     printf("\nGenome index sizes: %d\n", MaxGb);
@@ -50,7 +50,9 @@ void print_parameters(void) {
 
 void InputCheck(char *ntfile, char *gifile, char *nodesfile, char *skipfile, char *includefile) {
     if (ntfile) {
-        CheckFiles(ntfile);
+        if (strcmp(ntfile, "-") != 0) {
+            CheckFiles(ntfile);
+        }
     } else {
         printf("No input NT database specified\n");
         print_usage(stderr, -1);
@@ -76,7 +78,7 @@ void InputCheck(char *ntfile, char *gifile, char *nodesfile, char *skipfile, cha
     if (includefile)
         CheckFiles(includefile);
 
-    if(MaxGb < 1)
+    if (MaxGb < 1)
         print_usage(stderr, -1);
 }
 

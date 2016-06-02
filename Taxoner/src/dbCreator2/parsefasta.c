@@ -34,11 +34,10 @@ int printData = 0; //check to print fasta file
 /*
  *  Open new fasta file to print results from NT file
  */
-void OpenFastaFile(void)
-{
+void OpenFastaFile(void) {
     char buffer[50];
 
-    if(OutFasta != NULL)
+    if (OutFasta != NULL)
         fclose(OutFasta);
 
     sprintf(buffer, "%d.fasta", FastaNum);
@@ -51,28 +50,22 @@ void OpenFastaFile(void)
 /*
  *  Count the current amaount of chars printed to last fasta file
  */
-void CountData(int a)
-{
+void CountData(int a) {
     int i;
 
-    if(tempChars >= MbSize)
-    {
-        while(tempChars > MbSize)
-        {
+    if (tempChars >= MbSize) {
+        while (tempChars > MbSize) {
             tempChars -= MbSize;
             tempMb++;
         }
 
-        if(tempMb >= GbSize)
-        {
-            while(tempMb >= GbSize)
-            {
+        if (tempMb >= GbSize) {
+            while (tempMb >= GbSize) {
                 tempGb++;
                 tempMb -= GbSize;
             }
 
-            if(tempGb >= MaxGb)
-            {
+            if (tempGb >= MaxGb) {
                 OpenFastaFile();
                 tempGb = 0;
                 tempMb = 0;
@@ -86,7 +79,7 @@ void CountData(int a)
  *  Get taxon id from GI id
  */
 int FindTaxonWithGi(int gids) {
-    if(gids > max_gi || gids <= 0) {
+    if (gids > max_gi || gids <= 0) {
         return -1;
     }
 
@@ -97,8 +90,8 @@ int FindTaxonWithGi(int gids) {
  *  Compare strings by length and chars
  */
 int compareStrings(char * a, char * b) {
-    if(strlen(a) == strlen(b)) {
-        if(strncmp(a, b, strlen(a)) == 0) {
+    if (strlen(a) == strlen(b)) {
+        if (strncmp(a, b, strlen(a)) == 0) {
             return 1;
         }
     }
@@ -115,11 +108,11 @@ void ParseFastaTitle(char * input) {
     int taxa = -1;
     char buffer[BUFSIZ];
 
-    while(ptr != NULL) {
-        if(token == 1) {
+    while (ptr != NULL) {
+        if (token == 1) {
             token++;
             taxa = FindTaxonWithGi(atoi(ptr));
-            if(taxa != -1 && taxa > 0 && taxa < max_gi && CheckInclude(taxa, -1) == 1 && CheckExclude(taxa, 1) == 1) {
+            if (taxa != -1 && taxa > 0 && taxa < max_gi && CheckInclude(taxa, -1) == 1 && CheckExclude(taxa, 1) == 1) {
                 sprintf(buffer, ">%d;%d\n", atoi(ptr), taxa);
                 printData = 1;
                 CountData(strlen(buffer));
@@ -127,10 +120,10 @@ void ParseFastaTitle(char * input) {
             }
         }
 
-        if(compareStrings("gi", ptr) == 1 || compareStrings(">gi", ptr) == 1)
+        if (compareStrings("gi", ptr) == 1 || compareStrings(">gi", ptr) == 1)
             token++;
 
-        ptr =strtok(NULL, "|");
+        ptr = strtok(NULL, "|");
     }
 }
 
@@ -138,24 +131,31 @@ void ParseFastaTitle(char * input) {
  *  Read NT fasta file
  */
 void ReadFasta(char * inFile) {
-    FILE * handle = fopen(inFile, "r+");
+    FILE * handle;
+
+    if (strcmp(inFile, "-") != 0) {
+        handle = fopen(inFile, "r+");
+    } else {
+        handle = stdin;
+    }
+
     char line[1000000]; //large buffer for very long fasta names
 
     OpenFastaFile();
 
-    while(fgets(line,sizeof(line), handle)) {
-        if(line[0] == '>') {
+    while (fgets(line, sizeof (line), handle)) {
+        if (line[0] == '>') {
             printData = 0;
             ParseFastaTitle(line);
-        }
-
-        else {
-            if(printData == 1) {
+        } else {
+            if (printData == 1) {
                 tempChars += strlen(line);
                 fprintf(OutFasta, "%s", line);
             }
         }
     }
 
-    fclose(handle);
+    if (strcmp(inFile, "-") != 0) {
+        fclose(handle);
+    }
 }
