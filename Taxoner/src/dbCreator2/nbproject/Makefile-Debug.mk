@@ -62,11 +62,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbcreator2
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ../../bin/dbcreator2
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbcreator2: ${OBJECTFILES}
-	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbcreator2 ${OBJECTFILES} ${LDLIBSOPTIONS}
+../../bin/dbcreator2: ${OBJECTFILES}
+	${MKDIR} -p ../../bin
+	${LINK.c} -o ../../bin/dbcreator2 ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/IncludeExclude.o: IncludeExclude.c 
 	${MKDIR} -p ${OBJECTDIR}
@@ -109,7 +109,7 @@ ${OBJECTDIR}/utils.o: utils.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbcreator2
+	${RM} ../../bin/dbcreator2
 
 # Subprojects
 .clean-subprojects:

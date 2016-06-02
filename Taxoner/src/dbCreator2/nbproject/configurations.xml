@@ -52,6 +52,9 @@
             <pElem>.</pElem>
           </incDir>
         </cTool>
+        <linkerTool>
+          <output>../../bin/dbcreator2</output>
+        </linkerTool>
       </compileType>
       <item path="IncludeExclude.c" ex="false" tool="0" flavor2="0">
       </item>

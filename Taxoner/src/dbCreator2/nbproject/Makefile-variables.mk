@@ -8,9 +8,9 @@ CND_BUILDDIR=build
 CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-MacOSX
-CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-MacOSX
+CND_ARTIFACT_DIR_Debug=../../bin
 CND_ARTIFACT_NAME_Debug=dbcreator2
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-MacOSX/dbcreator2
+CND_ARTIFACT_PATH_Debug=../../bin/dbcreator2
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-MacOSX/package
 CND_PACKAGE_NAME_Debug=dbcreator2.tar
 CND_PACKAGE_PATH_Debug=dist/Debug/GNU-MacOSX/package/dbcreator2.tar

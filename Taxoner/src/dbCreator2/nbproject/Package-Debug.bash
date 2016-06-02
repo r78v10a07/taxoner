@@ -13,7 +13,7 @@ CND_BUILDDIR=build
 CND_DLIB_EXT=dylib
 NBTMPDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dbcreator2
+OUTPUT_PATH=../../bin/dbcreator2
 OUTPUT_BASENAME=dbcreator2
 PACKAGE_TOP_DIR=dbcreator2/
 
