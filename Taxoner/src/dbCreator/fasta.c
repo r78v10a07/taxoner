@@ -177,7 +177,6 @@ int FormatFastaTitle(char * title, node *giIndex, node *includeIndex, node *skip
 }
 
 void ReadFasta(char * filename, node *giIndex, node *includeIndex, node *skipIndex) {
-    struct timespec start, stop;
     FILE *fb;
     off_t fileLen;
     off_t pos;
@@ -189,7 +188,6 @@ void ReadFasta(char * filename, node *giIndex, node *includeIndex, node *skipInd
     float estimated;
     int SeqPrint = 0;
 
-    clock_gettime(CLOCK_MONOTONIC, &start);
     fb = fopen(filename, "r");
     if (!fb) {
         fprintf(stdout, "Unable to open file %s\n", filename);
@@ -216,15 +214,12 @@ void ReadFasta(char * filename, node *giIndex, node *includeIndex, node *skipInd
         pos = ftello(fb);
         percent = (pos * 100) / fileLen;
         if (count % 100000 == 0) {
-            clock_gettime(CLOCK_MONOTONIC, &stop);
-            estimated = (fileLen * (timespecDiff(&stop, &start) / 1000000000)) / pos;
-            printf("Reading Fasta entries: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f \t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
+            printf("Reading Fasta entries: Total: %10d\t\tPercent: %6.2f%%\t\t\r", count, percent);
         }
     }
 
     if (line) free(line);
     fclose(fb);
-    clock_gettime(CLOCK_MONOTONIC, &stop);
-    printf("Reading  Fasta entries: Total: %10d\t\tPercent: %6.2f%%\t\tTime: %10.1f\t\tEstimated time: %10.1f s   \r", count, percent, (timespecDiff(&stop, &start) / 1000000000), estimated);
+    printf("Reading  Fasta entries: Total: %10d\t\tPercent: %6.2f%%\t\t\n", count, percent);
     fflush(NULL);
 }

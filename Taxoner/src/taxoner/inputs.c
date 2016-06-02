@@ -40,6 +40,14 @@ char * bowtieFolder = NULL;
 char * InputName = NULL;
 char * OutputName = NULL;
 
+int CheckFile(char * input) {
+    if (access(input, F_OK) != -1) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 void InputFree(void) {
     int i = 0;
 
@@ -128,7 +136,7 @@ void InitializedData(void) {
 
 int FileExists(const char *fname) {
     FILE *file;
-    if (file = fopen(fname, "r")) {
+    if ((file = fopen(fname, "r"))) {
         fclose(file);
         return 1;
     }

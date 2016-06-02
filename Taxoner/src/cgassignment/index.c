@@ -47,7 +47,7 @@ giOffset_t *readIndex(int *count, char *index) {
     fi = fopen(index, "rb");
     if (!fi) {
         printf("Unable to open file!");
-        return;
+        return NULL;
     }
 
     //Get file length
@@ -65,14 +65,13 @@ giOffset_t *readIndex(int *count, char *index) {
         len++;
     }
 
-    printf("There are %d gi\n", len);
+    printf("There are %zu gi\n", len);
 
     *count = len;
     return list;
 }
 
 node *readIndexBtree(char *index) {
-    struct timespec start, stop;
     node *root = NULL;
     FILE *fi;
     off_t fileLen;
@@ -81,11 +80,10 @@ node *readIndexBtree(char *index) {
     int gi;
     int count = 0;
 
-    clock_gettime(CLOCK_MONOTONIC, &start);
     fi = fopen(index, "rb");
     if (!fi) {
         printf("Unable to open file!");
-        return;
+        return NULL;
     }
 
     fseeko(fi, 0, SEEK_END);
@@ -103,15 +101,9 @@ node *readIndexBtree(char *index) {
         count++;
     }
     fclose(fi);
-    clock_gettime(CLOCK_MONOTONIC, &stop);
-    printf("\n\tThere are %d GIs into the B+Tree. Elapsed time: %lu sec\n\n", count, timespecDiff(&stop, &start) / 1000000000);
+    printf("\n\tThere are %d GIs into the B+Tree.\n\n", count);
     fflush(NULL);
     return root;
-}
-
-int64_t timespecDiff(struct timespec *timeA_p, struct timespec *timeB_p) {
-    return ((timeA_p->tv_sec * 1000000000) + timeA_p->tv_nsec) -
-            ((timeB_p->tv_sec * 1000000000) + timeB_p->tv_nsec);
 }
 
 void createBTreeIndex(char *text, char *bin, char *index, char *output, int verbose) {
@@ -163,14 +155,11 @@ void createBTreeIndex(char *text, char *bin, char *index, char *output, int verb
     k = 1;
     printf("Performing the gene assignment ... \n");
     fflush(NULL);
-    clock_gettime(CLOCK_MONOTONIC, &start);
     while ((read = getline(&line, &len, ft)) != -1) {
         oCurr = ftello(ft);
         if ((i = sscanf(line, "%*s\t%d\t%d\t%f\t%d\t%d", &taxId, &gi, &score, &pFrom, &pTo)) == 5) {
-            clock_gettime(CLOCK_MONOTONIC, &stop);
-            j = timespecDiff(&stop, &start) / 1000000000;
             if (verbose) {
-                printf("\tLines reads %d. Reads without genes %d. GIs with genes %d. Elapsed time %lu sec. Estimated time %lu sec.\r", k, noGene, count, j, (j * oTotal / oCurr));
+                printf("\tLines reads %d. Reads without genes %d. GIs with genes %d.\r", k, noGene, count);
             }
             rec = find(root, gi, false);
             if (rec != NULL) {
@@ -187,7 +176,7 @@ void createBTreeIndex(char *text, char *bin, char *index, char *output, int verb
             exit(-1);
         }
     }
-    printf("\tLines reads %d. Reads without genes %d. GIs with genes %d. Elapsed time %lu sec. Estimated time %lu sec.\n", k++, noGene, count, j, (j * oTotal / oCurr));
+    printf("\tLines reads %d. Reads without genes %d. GIs with genes %d.\n", k++, noGene, count);
     fflush(NULL);
     if (line) free(line);
     line = malloc(sizeof (char) * 1);

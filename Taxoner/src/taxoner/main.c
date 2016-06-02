@@ -2,15 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
-#include "inputs.c"
-#include "SAMParse.c"
-#include "nodes.c"
 #include <time.h>
+#include <math.h>
+#include <ctype.h>
 #include <pthread.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+
+#include "inputs.c"
+#include "SAMParse.c"
+#include "nodes.c"
 
 /*
 Authors: Lorinc Pongor, Roberto Vera, Balazs Ligeti
@@ -55,9 +58,9 @@ struct ReadChunk {
 
 typedef struct {
     char * path;
-} rint;
+} rint_t;
 
-rint * tax = NULL;
+rint_t * tax = NULL;
 
 /*multithreaded option*/
 int TotalSams = 0;
@@ -144,13 +147,6 @@ struct ReadChunk * RemoveVirus(struct ReadChunk * psr) {
 //Checks is input is an existing file
 //returns 1 if exists, 0 if not
 
-int CheckFile(char * input) {
-    if (access(input, F_OK) != -1) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
 
 //createTaxons(int num, char * p)
 //Created Taxons struct
@@ -292,7 +288,7 @@ int databaseAlignment(int num, char * infile) {
             if (pairedend == 1) {
                 sprintf(command, "%s %d --no-mixed --no-discordant -I %d -X %d -k %d -x %s -1 %s -2 %s > %s/%s.sam", Tempcat, threads, minfrag, maxfrag, bowtieMaxHits, partailfulldb, infile, pairedFile, outaln, partialdb);
             } else {
-                sprintf(command, "%s %d -k %d -x %s -U %s > %s/%s.sam", Tempcat, threads, bowtieMaxHits, partailfulldb, outaln, infile, outaln, partialdb);
+                sprintf(command, "%s %d -k %d -x %s -U %s > %s/%s.sam", Tempcat, threads, bowtieMaxHits, partailfulldb, infile, outaln, partialdb);
             }
 
             /*if(pairedend == 1) {
@@ -713,6 +709,7 @@ void * ParallelNeighbor(void * voidA) {
         } else
             psr = psr->next;
     }
+    return NULL;
 }
 
 //ReadChunk * UninitializeStruct(struct ReadChunk * psr)
@@ -877,6 +874,7 @@ void * MultiParser(void * voidA) {
         psr = GoThroughData(psr);
         psr = psr->next;
     }
+    return NULL;
 }
 
 //InitializeNearestMulti(struct ReadChunk * psr)
@@ -1101,7 +1099,7 @@ void nearestNeighborMultithread(void) {
 //MultiNeighborParser(void * voidA)
 //Multithreaded parsing of the final neighbor file (sorted_temp_neighbors.aln)
 
-void * MultiNeighborParser(void * voidA) {
+void *MultiNeighborParser(void * voidA) {
     struct ReadChunk * psr = (struct ReadChunk *) voidA;
 
     while (psr != NULL) {
@@ -1147,6 +1145,7 @@ void * MultiNeighborParser(void * voidA) {
         psr = GoThroughData(psr);
         psr = psr->next;
     }
+    return NULL;
 }
 
 //ParseMultiNeighbors(void)

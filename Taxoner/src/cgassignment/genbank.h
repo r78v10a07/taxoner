@@ -37,6 +37,7 @@ extern "C" {
         cds_t *cds;
     } genBank_t;
 
+    extern void freeCDS(cds_t *c);
     extern genBank_t *allocGenBank();
     extern void freeGenBank(genBank_t *g);
     extern genBank_t *initGenBank(int gi, char *glocusName, int taxId, char *proteinId, char *locusName, int pFrom, int pTo, char *cog, char *protClust);
@@ -44,7 +45,7 @@ extern "C" {
     extern void printGenBank(genBank_t *g);
     extern void printGenBankBinary(FILE *fb, genBank_t *g);
     extern genBank_t *readGenBankBinary(FILE *fb);
-    extern genBank_t *readGenBankBinaryOffSet(FILE *fb, long int offset);
+    extern genBank_t *readGenBankBinaryOffSet(FILE *fb, off_t offset);
     extern int assignGenes(node **root, genBank_t **gs, int *count, FILE *fb, off_t offset, int pFrom, int pTo);
     extern int cmpGenBank(const void *a, const void * b);
     extern int cmpCDSSum(const void *a, const void * b);

@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-Linux-x86
-CND_DLIB_EXT=so
+CND_PLATFORM=GNU-MacOSX
+CND_DLIB_EXT=dylib
 CND_CONF=Release
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -65,7 +65,7 @@ LDLIBSOPTIONS=
 
 ../../bin/dbcreator: ${OBJECTFILES}
 	${MKDIR} -p ../../bin
-	${LINK.c} -o ../../bin/dbcreator ${OBJECTFILES} ${LDLIBSOPTIONS} -lrt
+	${LINK.c} -o ../../bin/dbcreator ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/btree.o: btree.c 
 	${MKDIR} -p ${OBJECTDIR}

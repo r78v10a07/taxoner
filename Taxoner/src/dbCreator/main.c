@@ -27,7 +27,6 @@ char *program_name;
  */
 int main(int argc, char** argv) {
 
-    struct timespec start, stop;
     int next_option, verbose, write;
     const char* const short_options = "hvn:g:o:s:i:";
     char *nt, *gi, *nodes, *skip, *include;
@@ -36,7 +35,6 @@ int main(int argc, char** argv) {
     node *includeIndex = NULL;
     node *skipIndex = NULL;
 
-    clock_gettime(CLOCK_MONOTONIC, &start);
     program_name = argv[0];
 
     const struct option long_options[] = {
@@ -117,7 +115,5 @@ int main(int argc, char** argv) {
     if (nodes) free(nodes);
     if (skip) free(skip);
     if (include) free(include);
-    clock_gettime(CLOCK_MONOTONIC, &stop);
-    printf("\n\tThe total time was %lu sec\n\n", timespecDiff(&stop, &start) / 1000000000);
     return (EXIT_SUCCESS);
 }

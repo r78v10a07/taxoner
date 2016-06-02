@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-Linux-x86
-CND_DLIB_EXT=so
+CND_PLATFORM=GNU-MacOSX
+CND_DLIB_EXT=dylib
 CND_CONF=Release
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -64,32 +64,32 @@ LDLIBSOPTIONS=
 
 ../../bin/cgassignment: ${OBJECTFILES}
 	${MKDIR} -p ../../bin
-	${LINK.c} -o ../../bin/cgassignment ${OBJECTFILES} ${LDLIBSOPTIONS} -lrt
+	${LINK.c} -o ../../bin/cgassignment ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/btree.o: btree.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/btree.o btree.c
+	$(COMPILE.c) -O2 -I../dbCreator2/./. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/btree.o btree.c
 
 ${OBJECTDIR}/genbank.o: genbank.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/genbank.o genbank.c
+	$(COMPILE.c) -O2 -I../dbCreator2/./. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/genbank.o genbank.c
 
 ${OBJECTDIR}/index.o: index.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/index.o index.c
+	$(COMPILE.c) -O2 -I../dbCreator2/./. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/index.o index.c
 
 ${OBJECTDIR}/main.o: main.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
+	$(COMPILE.c) -O2 -I../dbCreator2/./. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
 
 ${OBJECTDIR}/writer.o: writer.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/writer.o writer.c
+	$(COMPILE.c) -O2 -I../dbCreator2/./. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/writer.o writer.c
 
 # Subprojects
 .build-subprojects:
