@@ -1,0 +1,51 @@
+Usage: taxoner -d <folder> -s <input reads> -o <output folder> -n <nodes.dmp>
+
+
+./taxoner64 options:
+
+ -d <string>,	--dbPath	Specifies folder path to database
+ -s <string>,	--seq		Input fastq/fasta reads
+ -o <string>,	--output	Output folder path
+ -n <string>,	--taxpath	Specifies file nodes file (nodes.dmp from NCBI)
+
+ Database options:
+ -l,		--largeGenome	Bowtie2 will use large (>4Gb) genomes
+ -g,		--both-genome-sizes	Bowtie2 will use large (>4Gb) and smaller genomes
+ -i <string>,	--bwt2-indexes	Specify comma separated names of indexes to be used at
+			alignment. Indexes present in --dbPath <folder>
+
+ Read options:
+ -f,		--fasta		Input reads are in fasta format
+ -p <string>,	--paired	Specify second pair of reads for paired-end mode
+ -I <int>,	--minInsert	Minimum insert size for paired-end mode. Default: 0
+ -X <int>,	--maxInsert	Maximum insert size for paired-end mode. Default: 500
+
+ Alignment options:
+ -b <int>,	--bt2-maxhits	Maximum alignments to report. Default: 10
+ -a,		--bt2-allhits	Report all alignments
+ -w <string>,	--bowtie2	Specifies bowtie2 executable
+ -c <string>,	--host-filter	Specify bowtie2 index to host genome to filter with.
+
+ Nearest neighbor options:
+ -r <float>,	--neighbor-score	Specifies alignment score for nearest neighbor.
+				Default score: 1.0
+ -e,		--only-neighbor	Perform only nearest neighbor analysis without alignment
+ -k <string>,	--skip		Specify file containing taxon IDs to skip from analysis
+ -m,		--megan		Create megan compatible output
+ -u,		--virus-filter	Don't skip viruses from analysis 
+			If specified, IDs 10239, 28384 will be used in analysis.
+
+ Performance options:
+ -t <int>,	--threads	Number of CPU threads to use. Default: 2
+
+ -h,		--help		Display this usage information.
+ -v,		--verbose	Quiet mode (no output in terminal
+
+********************************************************************************
+
+            Lorinc Pongor (e-mail: pongorlorinc@gmail.com)
+            Roberto Vera Alvarez (e-mail: r78v10a07@gmail.com)
+
+********************************************************************************
+
+

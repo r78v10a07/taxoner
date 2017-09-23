@@ -1,0 +1,165 @@
+# depslib dependency file v1.0
+1411284508 source:/home/lorinc/bioinformatica/Taxoner2/taxoner2/inputs.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	<time.h>
+	<stdbool.h>
+	<dirent.h>
+	<sys/stat.h>
+	<pthread.h>
+	<unistd.h>
+	"main.h"
+
+1411284225 /home/lorinc/bioinformatica/Taxoner2/taxoner2/main.h
+
+1410876712 source:/home/lorinc/bioinformatica/Taxoner2/taxoner2/main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	<time.h>
+	<stdbool.h>
+	<pthread.h>
+	<unistd.h>
+	"inputs.h"
+	"main.h"
+	"nodes.h"
+
+1410690787 /home/lorinc/bioinformatica/Taxoner2/taxoner2/inputs.h
+
+1410692174 /home/lorinc/bioinformatica/Taxoner2/taxoner2/nodes.h
+
+1411283229 source:/home/lorinc/bioinformatica/Taxoner2/taxoner2/nodes.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	<time.h>
+	<stdbool.h>
+	<pthread.h>
+	<unistd.h>
+	"main.h"
+
+1411285499 source:/home/lorinc/bioinformatica/Taxoner2/taxoner2/alignments.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	<time.h>
+	<stdbool.h>
+	<pthread.h>
+	<unistd.h>
+	"main.h"
+
+1411283774 source:/home/lorinc/bioinformatica/Taxoner2/taxoner2/neighbor.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	<time.h>
+	<stdbool.h>
+	<pthread.h>
+	<unistd.h>
+	"main.h"
+
+1410876712 source:/home/lorinc/Downloads/taxoner/taxoner64/src/main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	<time.h>
+	<stdbool.h>
+	<pthread.h>
+	<unistd.h>
+	"inputs.h"
+	"main.h"
+	"nodes.h"
+
+1410690787 /home/lorinc/Downloads/taxoner/taxoner64/src/inputs.h
+
+1440581147 /home/lorinc/Downloads/taxoner/taxoner64/src/main.h
+
+1410692174 /home/lorinc/Downloads/taxoner/taxoner64/src/nodes.h
+
+1411283774 source:/home/lorinc/Downloads/taxoner/taxoner64/src/neighbor.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	<time.h>
+	<stdbool.h>
+	<pthread.h>
+	<unistd.h>
+	"main.h"
+
+1411283229 source:/home/lorinc/Downloads/taxoner/taxoner64/src/nodes.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	<time.h>
+	<stdbool.h>
+	<pthread.h>
+	<unistd.h>
+	"main.h"
+
+1452611900 source:/home/lorinc/bioinfo/taxoner/taxoner64/src/alignments.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	<time.h>
+	<stdbool.h>
+	<pthread.h>
+	<unistd.h>
+	"main.h"
+	<ctype.h>
+
+1452670504 /home/lorinc/bioinfo/taxoner/taxoner64/src/main.h
+
+1452611909 source:/home/lorinc/bioinfo/taxoner/taxoner64/src/inputs.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	<time.h>
+	<stdbool.h>
+	<dirent.h>
+	<sys/stat.h>
+	<pthread.h>
+	<unistd.h>
+	"main.h"
+	<ctype.h>
+
+1452611914 source:/home/lorinc/bioinfo/taxoner/taxoner64/src/main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	<time.h>
+	<stdbool.h>
+	<pthread.h>
+	<unistd.h>
+	"inputs.h"
+	"main.h"
+	"nodes.h"
+	<ctype.h>
+
+1410690786 /home/lorinc/bioinfo/taxoner/taxoner64/src/inputs.h
+
+1410692174 /home/lorinc/bioinfo/taxoner/taxoner64/src/nodes.h
+
+1452611903 source:/home/lorinc/bioinfo/taxoner/taxoner64/src/nodes.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<getopt.h>
+	<time.h>
+	<stdbool.h>
+	<pthread.h>
+	<unistd.h>
+	"main.h"
+	<ctype.h>
+
